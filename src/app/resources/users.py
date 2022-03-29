@@ -3,8 +3,10 @@ from http import HTTPStatus
 from typing import Any
 from urllib.error import HTTPError
 
-from services.json_database.users_json_database_service import UsersJsonDatabaseService
-from models.user import User
+from app.services.json_database.users_json_database_service import (
+    UsersJsonDatabaseService,
+)
+from app.models.user import User
 
 from flask_restful import Resource
 from webargs.flaskparser import use_kwargs

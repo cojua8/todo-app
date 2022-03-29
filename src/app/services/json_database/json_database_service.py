@@ -3,7 +3,7 @@ from io import TextIOWrapper
 from typing import Generic, TypeVar
 import json
 
-from utils.enhanced_json_encoder import EnhancedJSONEncoder
+from app.utils.enhanced_json_encoder import EnhancedJSONEncoder
 
 
 T = TypeVar("T")
