@@ -1,5 +1,6 @@
 import dataclasses
 from io import TextIOWrapper
+import os
 from typing import Generic, TypeVar
 import json
 
@@ -10,8 +11,10 @@ T = TypeVar("T")
 
 
 class JsonDatabaseService(Generic[T]):
-    def __init__(self, filepath: str) -> None:
-        self.jsonfilepath = filepath
+    filename: str
+
+    def __init__(self, directory_path: str) -> None:
+        self.jsonfilepath = os.path.join(directory_path, self.filename)
 
     def get_all(self) -> list[T]:
         with open(self.jsonfilepath, "r") as jsonfile:

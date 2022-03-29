@@ -1,4 +1,5 @@
 from http import HTTPStatus
+import os
 
 from typing import Any
 from urllib.error import HTTPError
@@ -15,7 +16,7 @@ from webargs import fields
 
 class Users(Resource):
     T = User
-    user_db_service = UsersJsonDatabaseService("./src/database/users.json")
+    user_db_service = UsersJsonDatabaseService(os.getenv("DATABASE_PATH"))
 
     def get(self) -> dict[str, Any]:
         response = {}
@@ -30,7 +31,11 @@ class Users(Resource):
         return response
 
     @use_kwargs(
-        {"id": fields.Int(), "name": fields.String(), "email": fields.Email()},
+        {
+            "id": fields.Int(),
+            "name": fields.String(),
+            "email": fields.Email(),
+        },
         location="json",
     )
     def post(self, **kwargs) -> dict[str, str]:

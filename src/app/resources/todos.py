@@ -1,4 +1,5 @@
 from http import HTTPStatus
+import os
 from typing import Any
 from urllib.error import HTTPError
 from flask_restful import Resource
@@ -12,7 +13,7 @@ from webargs.flaskparser import use_kwargs
 
 class Todos(Resource):
     T = Todo
-    todo_db_service = TodosJsonDatabaseService("./src/database/todos.json")
+    todo_db_service = TodosJsonDatabaseService(os.getenv("DATABASE_PATH"))
 
     def get(self) -> dict[str, Any]:
         response = {}
