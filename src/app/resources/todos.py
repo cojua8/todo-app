@@ -35,8 +35,7 @@ class Todos(Resource):
 
     @use_kwargs(
         {
-            "id": fields.Int(),
-            "owner_id": fields.Int(),
+            "owner_id": fields.UUID(),
             "description": fields.Str(),
             "date_created": fields.Date(),
             "due_date": fields.Date(),
@@ -57,7 +56,12 @@ class Todos(Resource):
 
         return response
 
-    @use_kwargs({"id": fields.Int()}, location="json")
+    @use_kwargs(
+        {
+            "id": fields.UUID(),
+        },
+        location="json",
+    )
     def delete(self, **kwargs) -> dict[str, Any]:
         response: dict[str, Any] = {}
         id = kwargs["id"]
@@ -72,8 +76,8 @@ class Todos(Resource):
 
     @use_kwargs(
         {
-            "id": fields.Int(),
-            "owner_id": fields.Int(),
+            "id": fields.UUID(),
+            "owner_id": fields.UUID(),
             "description": fields.Str(),
             "date_created": fields.Date(),
             "due_date": fields.Date(),

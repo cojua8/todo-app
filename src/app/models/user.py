@@ -1,8 +1,9 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
+from uuid import UUID, uuid4
 
 
 @dataclass
 class User:
-    id: int
     name: str
     email: str
+    id: UUID = field(default_factory=uuid4)

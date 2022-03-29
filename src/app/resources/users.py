@@ -39,7 +39,6 @@ class Users(Resource):
 
     @use_kwargs(
         {
-            "id": fields.Int(),
             "name": fields.String(),
             "email": fields.Email(),
         },
@@ -59,7 +58,7 @@ class Users(Resource):
 
     @use_kwargs(
         {
-            "id": fields.Int(),
+            "id": fields.UUID(),
         },
         location="json",
     )
@@ -77,7 +76,7 @@ class Users(Resource):
 
     @use_kwargs(
         {
-            "id": fields.Int(),
+            "id": fields.UUID(),
             "name": fields.String(),
             "email": fields.Email(),
         },

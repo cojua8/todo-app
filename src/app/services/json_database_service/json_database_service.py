@@ -3,6 +3,7 @@ from io import TextIOWrapper
 import os
 from typing import Generic, TypeVar
 import json
+from uuid import UUID
 
 from app.utils.enhanced_json_encoder import EnhancedJSONEncoder
 
@@ -39,22 +40,26 @@ class JsonDatabaseService(Generic[T]):
 
             self.__save_file(data, jsonfile)
 
-    def delete(self, id: int) -> None:
+    def delete(self, id: UUID) -> None:
+        id_hex = id.hex
+
         with open(self.jsonfilepath, "r+") as jsonfile:
             data = json.load(jsonfile)
 
-            data = [item for item in data if item["id"] != id]
+            data = [item for item in data if item["id"] != id_hex]
 
             self.__save_file(data, jsonfile)
 
-    def put(self, id: int, new: T) -> None:
+    def put(self, id: UUID, new: T) -> None:
+        id_hex = id.hex
+
         with open(self.jsonfilepath, "r+") as jsonfile:
             data = json.load(jsonfile)
 
             new_value = dataclasses.asdict(new)
 
             for i, item in enumerate(data):
-                if item["id"] == id:
+                if item["id"] == id_hex:
                     data[i] = new_value
                     break
 
