@@ -16,14 +16,15 @@ class Todos(Resource):
     todo_db_service = TodosJsonDatabaseService(os.environ["DATABASE_PATH"])
 
     def get(self) -> dict[str, Any]:
-        response = {}
+        response: dict[str, Any] = {}
         try:
-            users = self.todo_db_service.get_all()
+            todos = self.todo_db_service.get_all()
 
             response["status"] = HTTPStatus.OK
-            response["response"] = users
-        except HTTPError as e:
-            response["status"] = HTTPStatus(e.code)
+            response["response"] = todos
+        except Exception as e:
+            response["status"] = HTTPStatus.INTERNAL_SERVER_ERROR
+            response["response"] = str(e)
 
         return response
 
@@ -38,30 +39,31 @@ class Todos(Resource):
         },
         location="json",
     )
-    def post(self, **kwargs) -> dict[str, str]:
-        status_message = ""
-
+    def post(self, **kwargs) -> dict[str, Any]:
+        response: dict[str, Any] = {}
         new = self.T(**kwargs)
 
         try:
             self.todo_db_service.create(new)
-            status_message = "Success!"
+            response["status"] = HTTPStatus.OK
         except Exception as e:
-            status_message = str(e)
+            response["status"] = HTTPStatus.INTERNAL_SERVER_ERROR
+            response["response"] = str(e)
 
-        return {"status": status_message}
+        return response
 
     @use_kwargs({"id": fields.Int()}, location="json")
-    def delete(self, **kwargs) -> dict[str, str]:
-        status_message = ""
+    def delete(self, **kwargs) -> dict[str, Any]:
+        response: dict[str, Any] = {}
         id = kwargs["id"]
         try:
             self.todo_db_service.delete(id)
-            status_message = "Success!"
+            response["status"] = HTTPStatus.OK
         except Exception as e:
-            status_message = str(e)
+            response["status"] = HTTPStatus.INTERNAL_SERVER_ERROR
+            response["response"] = str(e)
 
-        return {"status": status_message}
+        return response
 
     @use_kwargs(
         {
@@ -74,14 +76,15 @@ class Todos(Resource):
         },
         location="json",
     )
-    def put(self, **kwargs) -> dict[str, str]:
-        status_message = ""
+    def put(self, **kwargs) -> dict[str, Any]:
+        response: dict[str, Any] = {}
         id = kwargs["id"]
         new = self.T(**kwargs)
         try:
             self.todo_db_service.put(id, new)
-            status_message = "Success!"
+            response["status"] = HTTPStatus.OK
         except Exception as e:
-            status_message = str(e)
+            response["status"] = HTTPStatus.INTERNAL_SERVER_ERROR
+            response["response"] = str(e)
 
-        return {"status": status_message}
+        return response

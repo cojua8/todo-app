@@ -19,14 +19,15 @@ class Users(Resource):
     user_db_service = UsersJsonDatabaseService(os.environ["DATABASE_PATH"])
 
     def get(self) -> dict[str, Any]:
-        response = {}
+        response: dict[str, Any] = {}
         try:
             users = self.user_db_service.get_all()
 
             response["status"] = HTTPStatus.OK
             response["response"] = users
-        except HTTPError as e:
-            response["status"] = HTTPStatus(e.code)
+        except Exception as e:
+            response["status"] = HTTPStatus.INTERNAL_SERVER_ERROR
+            response["response"] = str(e)
 
         return response
 
@@ -38,41 +39,53 @@ class Users(Resource):
         },
         location="json",
     )
-    def post(self, **kwargs) -> dict[str, str]:
-        status_message = ""
+    def post(self, **kwargs) -> dict[str, Any]:
+        response: dict[str, Any] = {}
         user = self.T(**kwargs)
         try:
             self.user_db_service.create(user)
-            status_message = "Success!"
+            response["status"] = HTTPStatus.OK
         except Exception as e:
-            status_message = str(e)
+            response["status"] = HTTPStatus.INTERNAL_SERVER_ERROR
+            response["response"] = str(e)
 
-        return {"status": status_message}
+        return response
 
-    @use_kwargs({"id": fields.Int()}, location="json")
-    def delete(self, **kwargs) -> dict[str, str]:
-        status_message = ""
+    @use_kwargs(
+        {
+            "id": fields.Int(),
+        },
+        location="json",
+    )
+    def delete(self, **kwargs) -> dict[str, Any]:
+        response: dict[str, Any] = {}
         id = kwargs["id"]
         try:
             self.user_db_service.delete(id)
-            status_message = "Success!"
+            response["status"] = HTTPStatus.OK
         except Exception as e:
-            status_message = str(e)
+            response["status"] = HTTPStatus.INTERNAL_SERVER_ERROR
+            response["response"] = str(e)
 
-        return {"status": status_message}
+        return response
 
     @use_kwargs(
-        {"id": fields.Int(), "name": fields.String(), "email": fields.Email()},
+        {
+            "id": fields.Int(),
+            "name": fields.String(),
+            "email": fields.Email(),
+        },
         location="json",
     )
-    def put(self, **kwargs) -> dict[str, str]:
-        status_message = ""
+    def put(self, **kwargs) -> dict[str, Any]:
+        response: dict[str, Any] = {}
         id = kwargs["id"]
         new = self.T(**kwargs)
         try:
             self.user_db_service.put(id, new)
-            status_message = "Success!"
+            response["status"] = HTTPStatus.OK
         except Exception as e:
-            status_message = str(e)
+            response["status"] = HTTPStatus.INTERNAL_SERVER_ERROR
+            response["response"] = str(e)
 
-        return {"status": status_message}
+        return response
