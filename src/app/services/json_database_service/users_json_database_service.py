@@ -1,5 +1,5 @@
 from app.models.user import User
-from app.services.json_database.json_database_service import (
+from app.services.json_database_service.json_database_service import (
     JsonDatabaseService,
 )
 

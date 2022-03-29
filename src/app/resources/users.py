@@ -4,7 +4,7 @@ import os
 from typing import Any
 from urllib.error import HTTPError
 
-from app.services.json_database.users_json_database_service import (
+from app.services.json_database_service.users_json_database_service import (
     UsersJsonDatabaseService,
 )
 from app.models.user import User

@@ -4,7 +4,7 @@ from typing import Any
 from urllib.error import HTTPError
 from flask_restful import Resource
 from app.models.todo import Todo
-from app.services.json_database.todos_json_database_service import (
+from app.services.json_database_service.todos_json_database_service import (
     TodosJsonDatabaseService,
 )
 from webargs import fields
