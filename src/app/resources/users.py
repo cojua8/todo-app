@@ -16,7 +16,7 @@ from webargs import fields
 
 class Users(Resource):
     T = User
-    user_db_service = UsersJsonDatabaseService(os.getenv("DATABASE_PATH"))
+    user_db_service = UsersJsonDatabaseService(os.environ["DATABASE_PATH"])
 
     def get(self) -> dict[str, Any]:
         response = {}
@@ -26,7 +26,7 @@ class Users(Resource):
             response["status"] = HTTPStatus.OK
             response["response"] = users
         except HTTPError as e:
-            response["status"] = e.code
+            response["status"] = HTTPStatus(e.code)
 
         return response
 

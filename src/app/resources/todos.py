@@ -13,7 +13,7 @@ from webargs.flaskparser import use_kwargs
 
 class Todos(Resource):
     T = Todo
-    todo_db_service = TodosJsonDatabaseService(os.getenv("DATABASE_PATH"))
+    todo_db_service = TodosJsonDatabaseService(os.environ["DATABASE_PATH"])
 
     def get(self) -> dict[str, Any]:
         response = {}
@@ -23,7 +23,7 @@ class Todos(Resource):
             response["status"] = HTTPStatus.OK
             response["response"] = users
         except HTTPError as e:
-            response["status"] = e.code
+            response["status"] = HTTPStatus(e.code)
 
         return response
 
