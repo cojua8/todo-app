@@ -16,6 +16,15 @@ class JsonDatabaseService(Generic[T]):
     def __init__(self, directory_path: str) -> None:
         self.jsonfilepath = os.path.join(directory_path, self.filename)
 
+        self.__setup()
+
+    def __setup(self):
+        if not os.path.exists(self.jsonfilepath):
+            os.makedirs(os.path.dirname(self.jsonfilepath), exist_ok=True)
+
+            with open(self.jsonfilepath, "w") as jsonfile:
+                self.__save_file([], jsonfile)
+
     def get_all(self) -> list[T]:
         with open(self.jsonfilepath, "r") as jsonfile:
             data = json.load(jsonfile)
