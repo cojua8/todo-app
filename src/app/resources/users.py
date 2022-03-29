@@ -2,7 +2,11 @@ from http import HTTPStatus
 import os
 
 from typing import Any
-from urllib.error import HTTPError
+
+
+from app.services.base_database_service.base_database_service import (
+    IDatabaseService,
+)
 
 from app.services.json_database_service.users_json_database_service import (
     UsersJsonDatabaseService,
@@ -16,7 +20,9 @@ from webargs import fields
 
 class Users(Resource):
     T = User
-    user_db_service = UsersJsonDatabaseService(os.environ["DATABASE_PATH"])
+    user_db_service: IDatabaseService[User] = UsersJsonDatabaseService(
+        os.environ["DATABASE_PATH"]
+    )
 
     def get(self) -> dict[str, Any]:
         response: dict[str, Any] = {}

@@ -1,9 +1,12 @@
 from http import HTTPStatus
 import os
 from typing import Any
-from urllib.error import HTTPError
+
 from flask_restful import Resource
 from app.models.todo import Todo
+from app.services.base_database_service.base_database_service import (
+    IDatabaseService,
+)
 from app.services.json_database_service.todos_json_database_service import (
     TodosJsonDatabaseService,
 )
@@ -13,7 +16,9 @@ from webargs.flaskparser import use_kwargs
 
 class Todos(Resource):
     T = Todo
-    todo_db_service = TodosJsonDatabaseService(os.environ["DATABASE_PATH"])
+    todo_db_service: IDatabaseService[Todo] = TodosJsonDatabaseService(
+        os.environ["DATABASE_PATH"]
+    )
 
     def get(self) -> dict[str, Any]:
         response: dict[str, Any] = {}
