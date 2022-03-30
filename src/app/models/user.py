@@ -1,11 +1,10 @@
-from dataclasses import dataclass, field
-from uuid import UUID, uuid4
+from dataclasses import dataclass
+
 
 from app.models.base_model import BaseModel
 
 
-@dataclass
+@dataclass(kw_only=True)
 class User(BaseModel):
     name: str
     email: str
-    id: UUID = field(default_factory=uuid4)
