@@ -1,4 +1,5 @@
 from app.resources.todos import Todos
+from app.resources.user_listing import UserListing
 from app.resources.users import Users
 from flask import Flask
 from flask_restful import Api
@@ -12,3 +13,5 @@ api = Api(app)
 api.add_resource(Users, "/user")
 
 api.add_resource(Todos, "/todos")
+
+api.add_resource(UserListing, "/users")
