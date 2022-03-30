@@ -9,6 +9,6 @@ dotenv.load_dotenv()
 app = Flask(__name__)
 api = Api(app)
 
-api.add_resource(Users, "/users")
+api.add_resource(Users, "/user")
 
 api.add_resource(Todos, "/todos")
