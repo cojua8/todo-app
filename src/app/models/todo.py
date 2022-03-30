@@ -7,7 +7,7 @@ from uuid import UUID, uuid4
 class Todo:
     owner_id: UUID
     description: str
-    date_created: date
     due_date: date
-    completed: bool
+    completed: bool = field(default=False)
+    date_created: date = field(default_factory=date.today)
     id: UUID = field(default_factory=uuid4)

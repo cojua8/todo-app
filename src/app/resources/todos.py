@@ -37,9 +37,7 @@ class Todos(Resource):
         {
             "owner_id": fields.UUID(),
             "description": fields.Str(),
-            "date_created": fields.Date(),
             "due_date": fields.Date(),
-            "completed": fields.Bool(),
         },
         location="json",
     )
