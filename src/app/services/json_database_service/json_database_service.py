@@ -13,6 +13,7 @@ T = TypeVar("T")
 
 class JsonDatabaseService(Generic[T]):
     filename: str
+    model_type: Type[T]
 
     def __init__(self, directory_path: str) -> None:
         self.jsonfilepath = os.path.join(directory_path, self.filename)

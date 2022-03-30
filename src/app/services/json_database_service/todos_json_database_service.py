@@ -5,5 +5,5 @@ from app.services.json_database_service.json_database_service import (
 
 
 class TodosJsonDatabaseService(JsonDatabaseService[Todo]):
-    T = Todo
+    model_type = Todo
     filename = "todos.json"

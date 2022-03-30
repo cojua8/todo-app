@@ -5,5 +5,5 @@ from app.services.json_database_service.json_database_service import (
 
 
 class UsersJsonDatabaseService(JsonDatabaseService[User]):
-    T = User
+    model_type = User
     filename = "users.json"
