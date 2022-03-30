@@ -2,9 +2,11 @@ from dataclasses import dataclass, field
 from datetime import date
 from uuid import UUID, uuid4
 
+from app.models.base_model import BaseModel
+
 
 @dataclass
-class Todo:
+class Todo(BaseModel):
     owner_id: UUID
     description: str
     due_date: date
