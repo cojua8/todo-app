@@ -1,3 +1,4 @@
+from dataclasses import is_dataclass
 import json
 from datetime import date
 from uuid import UUID
@@ -9,4 +10,6 @@ class EnhancedJSONEncoder(json.JSONEncoder):
             return date.isoformat(o)
         elif isinstance(o, UUID):
             return o.hex
+        elif is_dataclass(o):
+            return o.__dict__
         return super().default(o)

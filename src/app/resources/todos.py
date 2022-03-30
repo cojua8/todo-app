@@ -20,13 +20,20 @@ class Todos(Resource):
         os.environ["DATABASE_PATH"]
     )
 
-    def get(self) -> dict[str, Any]:
+    @use_kwargs(
+        {
+            "id": fields.UUID(),
+        },
+        location="json",
+    )
+    def get(self, **kwargs) -> dict[str, Any]:
         response: dict[str, Any] = {}
+        id = kwargs["id"]
         try:
-            todos = self.todo_db_service.get_all()
+            todo = self.todo_db_service.get(id)
 
             response["status"] = HTTPStatus.OK
-            response["response"] = todos
+            response["response"] = todo
         except Exception as e:
             response["status"] = HTTPStatus.INTERNAL_SERVER_ERROR
             response["response"] = str(e)

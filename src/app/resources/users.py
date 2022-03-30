@@ -24,13 +24,20 @@ class Users(Resource):
         os.environ["DATABASE_PATH"]
     )
 
-    def get(self) -> dict[str, Any]:
+    @use_kwargs(
+        {
+            "id": fields.UUID(),
+        },
+        location="json",
+    )
+    def get(self, **kwargs) -> dict[str, Any]:
         response: dict[str, Any] = {}
+        id = kwargs["id"]
         try:
-            users = self.user_db_service.get_all()
+            user = self.user_db_service.get(id)
 
             response["status"] = HTTPStatus.OK
-            response["response"] = users
+            response["response"] = user
         except Exception as e:
             response["status"] = HTTPStatus.INTERNAL_SERVER_ERROR
             response["response"] = str(e)
