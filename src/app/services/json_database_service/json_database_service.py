@@ -1,9 +1,10 @@
 import dataclasses
 from io import TextIOWrapper
 import os
-from typing import Generic, TypeVar
+from typing import Generic, Type, TypeVar
 import json
 from uuid import UUID
+
 
 from app.utils.enhanced_json_encoder import EnhancedJSONEncoder
 
@@ -32,6 +33,18 @@ class JsonDatabaseService(Generic[T]):
             data = json.load(jsonfile)
 
         return data
+
+    def get(self, id: UUID) -> T | None:
+        id_hex = id.hex
+
+        with open(self.jsonfilepath, "r") as jsonfile:
+            data = json.load(jsonfile)
+
+        for item in data:
+            if item["id"] == id_hex:
+                return self.model_type(**item)
+
+        return None
 
     def create(self, new: T) -> None:
         with open(self.jsonfilepath, "r+") as jsonfile:

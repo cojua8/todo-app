@@ -9,6 +9,9 @@ class IDatabaseService(Protocol, Generic[T]):
     def get_all(self) -> list[T]:
         ...
 
+    def get(self, id: UUID) -> T | None:
+        ...
+
     def create(self, new: T) -> None:
         ...
 
