@@ -5,5 +5,8 @@ from app.services.json_database_service.json_database_service import (
 
 
 class TodosJsonDatabaseService(JsonDatabaseService[Todo]):
-    model_type = Todo
-    filename = "todos.json"
+    def __init__(self, directory_path: str) -> None:
+        filename = "todos.json"
+        model_type = Todo
+
+        super().__init__(directory_path, filename, model_type)

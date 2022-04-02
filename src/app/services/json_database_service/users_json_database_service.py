@@ -5,5 +5,8 @@ from app.services.json_database_service.json_database_service import (
 
 
 class UsersJsonDatabaseService(JsonDatabaseService[User]):
-    model_type = User
-    filename = "users.json"
+    def __init__(self, directory_path: str) -> None:
+        model_type = User
+        filename = "users.json"
+
+        super().__init__(directory_path, filename, model_type)

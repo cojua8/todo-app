@@ -1,5 +1,5 @@
 from http import HTTPStatus
-import os
+
 
 from typing import Any
 
@@ -8,9 +8,7 @@ from app.services.base_database_service.base_database_service import (
     IDatabaseService,
 )
 
-from app.services.json_database_service.users_json_database_service import (
-    UsersJsonDatabaseService,
-)
+
 from app.models.user import User
 
 from flask_restful import Resource
@@ -19,10 +17,10 @@ from webargs import fields
 
 
 class Users(Resource):
-    T = User
-    user_db_service: IDatabaseService[User] = UsersJsonDatabaseService(
-        os.environ["DATABASE_PATH"]
-    )
+    def __init__(self, db_service: IDatabaseService[User]) -> None:
+        super().__init__()
+        self.user_db_service = db_service
+        self.T = User
 
     @use_kwargs(
         {

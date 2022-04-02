@@ -1,5 +1,4 @@
 from http import HTTPStatus
-import os
 from typing import Any
 
 from flask_restful import Resource
@@ -7,18 +6,15 @@ from app.models.todo import Todo
 from app.services.base_database_service.base_database_service import (
     IDatabaseService,
 )
-from app.services.json_database_service.todos_json_database_service import (
-    TodosJsonDatabaseService,
-)
 from webargs import fields
 from webargs.flaskparser import use_kwargs
 
 
 class Todos(Resource):
-    T = Todo
-    todo_db_service: IDatabaseService[Todo] = TodosJsonDatabaseService(
-        os.environ["DATABASE_PATH"]
-    )
+    def __init__(self, db_service: IDatabaseService[Todo]) -> None:
+        super().__init__()
+        self.todo_db_service = db_service
+        self.T = Todo
 
     @use_kwargs(
         {
