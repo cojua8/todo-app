@@ -1,5 +1,5 @@
-from dataclasses import is_dataclass
 import json
+from dataclasses import is_dataclass
 from datetime import date
 from uuid import UUID
 

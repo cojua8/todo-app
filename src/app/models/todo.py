@@ -1,7 +1,8 @@
 from dataclasses import dataclass, field
 from datetime import date
-from app.models.base_model import BaseModel
 from uuid import UUID
+
+from app.models.base_model import BaseModel
 
 
 @dataclass(kw_only=True)

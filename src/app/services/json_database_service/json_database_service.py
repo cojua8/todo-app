@@ -1,12 +1,10 @@
+import json
 import os
 from typing import Generic, Type, TypeVar
-import json
 from uuid import UUID
+
 from app.models.base_model import BaseModel
-
-
 from app.utils.enhanced_json_encoder import EnhancedJSONEncoder
-
 
 T = TypeVar("T", bound=BaseModel)
 

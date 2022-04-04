@@ -1,12 +1,11 @@
 from http import HTTPStatus
-
 from typing import Any
+
 from flask_restful import Resource
 
 from app.models.user import User
-from app.services.base_database_service.base_database_service import (
-    IDatabaseService,
-)
+from app.services.base_database_service.base_database_service import \
+    IDatabaseService
 
 
 class UserListing(Resource):

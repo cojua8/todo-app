@@ -2,12 +2,12 @@ from http import HTTPStatus
 from typing import Any
 
 from flask_restful import Resource
-from app.models.todo import Todo
-from app.services.base_database_service.base_database_service import (
-    IDatabaseService,
-)
 from webargs import fields
 from webargs.flaskparser import use_kwargs
+
+from app.models.todo import Todo
+from app.services.base_database_service.base_database_service import \
+    IDatabaseService
 
 
 class Todos(Resource):

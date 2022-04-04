@@ -1,7 +1,6 @@
 from typing import Generic, Protocol, TypeVar
 from uuid import UUID
 
-
 T = TypeVar("T")
 
 

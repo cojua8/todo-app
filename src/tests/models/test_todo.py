@@ -1,7 +1,9 @@
 from datetime import date
 from uuid import UUID, uuid4
-from app.models.todo import Todo
+
 import freezegun
+
+from app.models.todo import Todo
 
 
 @freezegun.freeze_time(

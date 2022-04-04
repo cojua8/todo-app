@@ -1,19 +1,13 @@
 from http import HTTPStatus
-
-
 from typing import Any
 
-
-from app.services.base_database_service.base_database_service import (
-    IDatabaseService,
-)
-
+from flask_restful import Resource
+from webargs import fields
+from webargs.flaskparser import use_kwargs
 
 from app.models.user import User
-
-from flask_restful import Resource
-from webargs.flaskparser import use_kwargs
-from webargs import fields
+from app.services.base_database_service.base_database_service import \
+    IDatabaseService
 
 
 class Users(Resource):

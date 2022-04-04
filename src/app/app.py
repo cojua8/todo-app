@@ -1,18 +1,17 @@
 import json
 import os
+
+import dotenv
+from flask import Flask, make_response
+from flask_restful import Api
+
 from app.resources.todos import Todos
 from app.resources.user_listing import UserListing
 from app.resources.users import Users
-from flask import Flask, make_response
-from flask_restful import Api
-import dotenv
-from app.services.json_database_service.todos_json_database_service import (
-    TodosJsonDatabaseService,
-)
-from app.services.json_database_service.users_json_database_service import (
-    UsersJsonDatabaseService,
-)
-
+from app.services.json_database_service.todos_json_database_service import \
+    TodosJsonDatabaseService
+from app.services.json_database_service.users_json_database_service import \
+    UsersJsonDatabaseService
 from app.utils.enhanced_json_encoder import EnhancedJSONEncoder
 
 dotenv.load_dotenv()
