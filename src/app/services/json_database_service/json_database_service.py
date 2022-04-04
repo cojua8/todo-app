@@ -1,15 +1,14 @@
-import dataclasses
-from io import TextIOWrapper
 import os
 from typing import Generic, Type, TypeVar
 import json
 from uuid import UUID
+from app.models.base_model import BaseModel
 
 
 from app.utils.enhanced_json_encoder import EnhancedJSONEncoder
 
 
-T = TypeVar("T")
+T = TypeVar("T", bound=BaseModel)
 
 
 class JsonDatabaseService(Generic[T]):
@@ -26,61 +25,56 @@ class JsonDatabaseService(Generic[T]):
         if not os.path.exists(self.jsonfilepath):
             os.makedirs(os.path.dirname(self.jsonfilepath), exist_ok=True)
 
-            with open(self.jsonfilepath, "w") as jsonfile:
-                self.__save_file([], jsonfile)
+            self.__save_file([])
 
     def get_all(self) -> list[T]:
-        with open(self.jsonfilepath, "r") as jsonfile:
-            data = json.load(jsonfile)
-
-        return data
+        return self.__get_data()
 
     def get(self, id: UUID) -> T | None:
         id_hex = id.hex
 
-        with open(self.jsonfilepath, "r") as jsonfile:
-            data = json.load(jsonfile)
+        data = self.__get_data()
 
         for item in data:
-            if item["id"] == id_hex:
-                return self.model_type(**item)
+            if item.id == id_hex:
+                return item
 
         return None
 
     def create(self, new: T) -> None:
-        with open(self.jsonfilepath, "r+") as jsonfile:
-            data = json.load(jsonfile)
+        data = self.__get_data()
 
-            data.append(dataclasses.asdict(new))
+        data.append(new)
 
-            self.__save_file(data, jsonfile)
+        self.__save_file(data)
 
     def delete(self, id: UUID) -> None:
         id_hex = id.hex
 
-        with open(self.jsonfilepath, "r+") as jsonfile:
-            data = json.load(jsonfile)
+        data = self.__get_data()
 
-            data = [item for item in data if item["id"] != id_hex]
+        data = [item for item in data if item.id != id_hex]
 
-            self.__save_file(data, jsonfile)
+        self.__save_file(data)
 
     def put(self, id: UUID, new: T) -> None:
         id_hex = id.hex
 
-        with open(self.jsonfilepath, "r+") as jsonfile:
+        data = self.__get_data()
+
+        for i, item in enumerate(data):
+            if item.id == id_hex:
+                data[i] = new
+                break
+
+            self.__save_file(data)
+
+    def __get_data(self) -> list[T]:
+        with open(self.jsonfilepath, "r") as jsonfile:
             data = json.load(jsonfile)
 
-            new_value = dataclasses.asdict(new)
+        return [self.model_type(**item) for item in data]
 
-            for i, item in enumerate(data):
-                if item["id"] == id_hex:
-                    data[i] = new_value
-                    break
-
-            self.__save_file(data, jsonfile)
-
-    def __save_file(self, data: list, file: TextIOWrapper) -> None:
-        file.truncate(0)
-        file.seek(0)
-        json.dump(data, file, indent=4, cls=EnhancedJSONEncoder)
+    def __save_file(self, data: list) -> None:
+        with open(self.jsonfilepath, "w") as jsonfile:
+            json.dump(data, jsonfile, indent=4, cls=EnhancedJSONEncoder)
