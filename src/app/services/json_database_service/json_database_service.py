@@ -65,7 +65,7 @@ class JsonDatabaseService(Generic[T]):
                 data[i] = new
                 break
 
-            self.__save_file(data)
+        self.__save_file(data)
 
     def __get_data(self) -> list[T]:
         with open(self.jsonfilepath, "r") as jsonfile:
