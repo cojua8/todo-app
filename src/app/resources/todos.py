@@ -6,8 +6,9 @@ from webargs import fields
 from webargs.flaskparser import use_kwargs
 
 from app.models.todo import Todo
-from app.services.base_database_service.base_database_service import \
-    IDatabaseService
+from app.services.base_database_service.base_database_service import (
+    IDatabaseService,
+)
 
 
 class Todos(Resource):

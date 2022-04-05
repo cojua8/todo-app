@@ -8,10 +8,12 @@ from flask_restful import Api
 from app.resources.todos import Todos
 from app.resources.user_listing import UserListing
 from app.resources.users import Users
-from app.services.json_database_service.todos_json_database_service import \
-    TodosJsonDatabaseService
-from app.services.json_database_service.users_json_database_service import \
-    UsersJsonDatabaseService
+from app.services.json_database_service.todos_json_database_service import (
+    TodosJsonDatabaseService,
+)
+from app.services.json_database_service.users_json_database_service import (
+    UsersJsonDatabaseService,
+)
 from app.utils.enhanced_json_encoder import EnhancedJSONEncoder
 
 dotenv.load_dotenv()

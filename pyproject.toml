@@ -5,3 +5,11 @@ line-length = 79
 testpaths = [
     "src/tests"
 ]
+
+[tool.flake8]
+exclude = [
+    "venv/"
+]
+
+[tool.isort]
+profile= "black"
