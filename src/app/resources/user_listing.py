@@ -4,13 +4,13 @@ from typing import Any
 from flask_restful import Resource
 
 from app.models.user import User
-from app.services.base_database_service.base_database_service import (
-    IDatabaseService,
+from app.services.service_protocols.database_service_protocol import (
+    DatabaseServiceProtocol,
 )
 
 
 class UserListing(Resource):
-    def __init__(self, db_service: IDatabaseService[User]) -> None:
+    def __init__(self, db_service: DatabaseServiceProtocol[User]) -> None:
         super().__init__()
         self.user_db_service = db_service
         self.T = User

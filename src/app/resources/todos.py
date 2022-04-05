@@ -6,13 +6,13 @@ from webargs import fields
 from webargs.flaskparser import use_kwargs
 
 from app.models.todo import Todo
-from app.services.base_database_service.base_database_service import (
-    IDatabaseService,
+from app.services.service_protocols.database_service_protocol import (
+    DatabaseServiceProtocol,
 )
 
 
 class Todos(Resource):
-    def __init__(self, db_service: IDatabaseService[Todo]) -> None:
+    def __init__(self, db_service: DatabaseServiceProtocol[Todo]) -> None:
         super().__init__()
         self.todo_db_service = db_service
         self.T = Todo

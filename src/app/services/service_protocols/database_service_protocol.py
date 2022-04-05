@@ -4,7 +4,7 @@ from uuid import UUID
 T = TypeVar("T")
 
 
-class IDatabaseService(Protocol, Generic[T]):
+class DatabaseServiceProtocol(Protocol, Generic[T]):
     def get_all(self) -> list[T]:
         ...
 
