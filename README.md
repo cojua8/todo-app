@@ -19,4 +19,5 @@ All of the setting for these tools are in the `pyproject.toml` file.
 ## On Generics and Protocols.
 These are two concepts that I have been using in my code. Though they help the type checker tell if something is wrong in code (static analysis), they really have no influence in runtime.
 
-## More to be added...
+## Dependendy Injection
+[Dependency injection](https://python-dependency-injector.ets-labs.org/introduction/di_in_python.html) is used to decouple the different parts of the program. To use this, objects must not create new instances of classes in their constructors, but receive them as parameters. 
