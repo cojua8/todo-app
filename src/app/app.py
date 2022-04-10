@@ -18,29 +18,35 @@ from app.utils.enhanced_json_encoder import EnhancedJSONEncoder
 
 dotenv.load_dotenv()
 
-app = Flask(__name__)
-api = Api(app)
-
-
-@api.representation("application/json")
-def output_json(data, code, headers=None):
-    resp = make_response(json.dumps(data, cls=EnhancedJSONEncoder), code)
-    resp.headers.extend(headers or {})
-    return resp
-
-
 users_database = UsersJsonDatabaseService(os.environ["DATABASE_PATH"])
 todos_database = TodosJsonDatabaseService(os.environ["DATABASE_PATH"])
 
 
-api.add_resource(
-    Users, "/user", resource_class_kwargs={"db_service": users_database}
-)
+def app_factory():
+    app = Flask(__name__)
+    api = Api(app)
 
-api.add_resource(
-    Todos, "/todos", resource_class_kwargs={"db_service": todos_database}
-)
+    @api.representation("application/json")
+    def output_json(data, code, headers=None):
+        resp = make_response(json.dumps(data, cls=EnhancedJSONEncoder), code)
+        resp.headers.extend(headers or {})
+        return resp
 
-api.add_resource(
-    UserListing, "/users", resource_class_kwargs={"db_service": users_database}
-)
+    api.add_resource(
+        Users, "/user", resource_class_kwargs={"db_service": users_database}
+    )
+
+    api.add_resource(
+        Todos, "/todos", resource_class_kwargs={"db_service": todos_database}
+    )
+
+    api.add_resource(
+        UserListing,
+        "/users",
+        resource_class_kwargs={"db_service": users_database},
+    )
+
+    return app
+
+
+app = app_factory()
