@@ -1,10 +1,12 @@
 from http import HTTPStatus
 from typing import Any
 
+from dependency_injector.wiring import Provide, inject
 from flask_restful import Resource
 from webargs import fields
 from webargs.flaskparser import use_kwargs
 
+from app.containers import Container
 from app.models.todo import Todo
 from app.services.service_protocols.database_service_protocol import (
     DatabaseServiceProtocol,
@@ -12,7 +14,13 @@ from app.services.service_protocols.database_service_protocol import (
 
 
 class Todos(Resource):
-    def __init__(self, db_service: DatabaseServiceProtocol[Todo]) -> None:
+    @inject
+    def __init__(
+        self,
+        db_service: DatabaseServiceProtocol[Todo] = (
+            Provide[Container.todos_database]
+        ),
+    ) -> None:
         super().__init__()
         self.todo_db_service = db_service
         self.T = Todo
