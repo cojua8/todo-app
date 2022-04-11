@@ -1,0 +1,6 @@
+*_cache/
+.vscode/
+venv/
+.env
+Dockerfile
+.dockerignore

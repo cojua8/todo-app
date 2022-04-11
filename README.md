@@ -21,3 +21,11 @@ These are two concepts that I have been using in my code. Though they help the t
 
 ## Dependendy Injection
 [Dependency injection](https://python-dependency-injector.ets-labs.org/introduction/di_in_python.html) is used to decouple the different parts of the program. To use this, objects must not create new instances of classes in their constructors, but receive them as parameters. 
+
+
+## Docker
+[Docker](https://www.docker.com/) is used to run the app in a container. The command used to create and start the containers is:
+    
+    docker-compose up -d
+
+This will run the container in detached mode.

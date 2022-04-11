@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  todo-app:
+    container_name: backend
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - FLASK_ENV=development
+        - FLASK_APP=./src/app/app.py
+    ports:
+      - 5000:5000
+    working_dir: /app
+    volumes:
+      # this binds the host folder to the container folder
+      - ./:/app
+      # the json database will be stored in /database/json_database,
+      # in the data volume
+      - data:/database/json_database
+    environment:
+      # in the container, saves the database in this path
+      - DATABASE_PATH=/database/json_database
+
+volumes:
+  data:
