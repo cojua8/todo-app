@@ -29,3 +29,6 @@ These are two concepts that I have been using in my code. Though they help the t
     docker-compose up -d
 
 This will run the container in detached mode.
+
+## Asyncio
+[Asyncio](https://docs.python.org/3/library/asyncio.html) is used together with [aiofiles](https://aiofiles.readthedocs.io/en/stable/) to read and write files in an asyncronous way
