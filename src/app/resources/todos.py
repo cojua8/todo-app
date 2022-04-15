@@ -8,8 +8,8 @@ from webargs.flaskparser import use_kwargs
 
 from app.containers import Container
 from app.models.todo import Todo
-from app.services.service_protocols.database_service_protocol import (
-    DatabaseServiceProtocol,
+from app.services.service_protocols.todo_service_protocol import (
+    TodoServiceProtocol,
 )
 
 
@@ -17,13 +17,9 @@ class Todos(Resource):
     @inject
     def __init__(
         self,
-        db_service: DatabaseServiceProtocol[Todo] = (
-            Provide[Container.todos_database]
-        ),
+        todo_service: TodoServiceProtocol = Provide[Container.todos_service],
     ) -> None:
-        super().__init__()
-        self.todo_db_service = db_service
-        self.T = Todo
+        self.todo_service = todo_service
 
     @use_kwargs(
         {
@@ -35,7 +31,7 @@ class Todos(Resource):
         response: dict[str, Any] = {}
         id = kwargs["id"]
         try:
-            todo = self.todo_db_service.get(id)
+            todo = self.todo_service.get(id)
 
             response["status"] = HTTPStatus.OK
             response["response"] = todo
@@ -55,10 +51,10 @@ class Todos(Resource):
     )
     def post(self, **kwargs) -> dict[str, Any]:
         response: dict[str, Any] = {}
-        new = self.T(**kwargs)
+        new = Todo(**kwargs)
 
         try:
-            self.todo_db_service.create(new)
+            self.todo_service.create(new)
             response["status"] = HTTPStatus.OK
         except Exception as e:
             response["status"] = HTTPStatus.INTERNAL_SERVER_ERROR
@@ -76,7 +72,7 @@ class Todos(Resource):
         response: dict[str, Any] = {}
         id = kwargs["id"]
         try:
-            self.todo_db_service.delete(id)
+            self.todo_service.delete(id)
             response["status"] = HTTPStatus.OK
         except Exception as e:
             response["status"] = HTTPStatus.INTERNAL_SERVER_ERROR
@@ -98,9 +94,9 @@ class Todos(Resource):
     def put(self, **kwargs) -> dict[str, Any]:
         response: dict[str, Any] = {}
         id = kwargs["id"]
-        new = self.T(**kwargs)
+        new = Todo(**kwargs)
         try:
-            self.todo_db_service.put(id, new)
+            self.todo_service.put(id, new)
             response["status"] = HTTPStatus.OK
         except Exception as e:
             response["status"] = HTTPStatus.INTERNAL_SERVER_ERROR

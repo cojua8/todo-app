@@ -5,9 +5,8 @@ from dependency_injector.wiring import Provide, inject
 from flask_restful import Resource
 
 from app.containers import Container
-from app.models.user import User
-from app.services.service_protocols.database_service_protocol import (
-    DatabaseServiceProtocol,
+from app.services.service_protocols.user_service_protocol import (
+    UserServiceProtocol,
 )
 
 
@@ -15,18 +14,14 @@ class UserListing(Resource):
     @inject
     def __init__(
         self,
-        db_service: DatabaseServiceProtocol[User] = (
-            Provide[Container.users_database]
-        ),
+        user_service: UserServiceProtocol = (Provide[Container.users_service]),
     ) -> None:
-        super().__init__()
-        self.user_db_service = db_service
-        self.T = User
+        self.user_service = user_service
 
     def get(self):
         response: dict[str, Any] = {}
         try:
-            users = self.user_db_service.get_all()
+            users = self.user_service.get_all()
 
             response["status"] = HTTPStatus.OK
             response["response"] = users

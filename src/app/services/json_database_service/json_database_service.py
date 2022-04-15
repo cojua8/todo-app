@@ -7,12 +7,15 @@ from uuid import UUID
 import aiofiles
 
 from app.models.base_model import BaseModel
+from app.services.service_protocols.database_service_protocol import (
+    DatabaseServiceProtocol,
+)
 from app.utils.enhanced_json_encoder import EnhancedJSONEncoder
 
 T = TypeVar("T", bound=BaseModel)
 
 
-class JsonDatabaseService(Generic[T]):
+class JsonDatabaseService(DatabaseServiceProtocol[T], Generic[T]):
     def __init__(
         self, directory_path: str, filename: str, model_type: Type[T]
     ) -> None:
@@ -26,15 +29,15 @@ class JsonDatabaseService(Generic[T]):
         if not os.path.exists(self.jsonfilepath):
             os.makedirs(os.path.dirname(self.jsonfilepath), exist_ok=True)
 
-            asyncio.run(self.__save_file([]))
+            asyncio.run(self._save_file([]))
 
     def get_all(self) -> list[T]:
-        return asyncio.run(self.__get_data())
+        return asyncio.run(self._get_data())
 
     def get(self, id: UUID) -> T | None:
         id_hex = id.hex
 
-        data = asyncio.run(self.__get_data())
+        data = asyncio.run(self._get_data())
 
         for item in data:
             if item.id == id_hex:
@@ -43,34 +46,34 @@ class JsonDatabaseService(Generic[T]):
         return None
 
     def create(self, new: T) -> None:
-        data = asyncio.run(self.__get_data())
+        data = asyncio.run(self._get_data())
 
         data.append(new)
 
-        asyncio.run(self.__save_file(data))
+        asyncio.run(self._save_file(data))
 
     def delete(self, id: UUID) -> None:
         id_hex = id.hex
 
-        data = asyncio.run(self.__get_data())
+        data = asyncio.run(self._get_data())
 
         data = [item for item in data if item.id != id_hex]
 
-        asyncio.run(self.__save_file(data))
+        asyncio.run(self._save_file(data))
 
     def put(self, id: UUID, new: T) -> None:
         id_hex = id.hex
 
-        data = asyncio.run(self.__get_data())
+        data = asyncio.run(self._get_data())
 
         for i, item in enumerate(data):
             if item.id == id_hex:
                 data[i] = new
                 break
 
-        asyncio.run(self.__save_file(data))
+        asyncio.run(self._save_file(data))
 
-    async def __get_data(self) -> list[T]:
+    async def _get_data(self) -> list[T]:
         async with aiofiles.open(self.jsonfilepath, "r") as jsonfile:
             files_contents = await jsonfile.read()
 
@@ -78,7 +81,7 @@ class JsonDatabaseService(Generic[T]):
 
         return [self.model_type(**item) for item in data]
 
-    async def __save_file(self, data: list) -> None:
+    async def _save_file(self, data: list) -> None:
         file_contents = json.dumps(data, indent=4, cls=EnhancedJSONEncoder)
 
         async with aiofiles.open(self.jsonfilepath, "w") as jsonfile:

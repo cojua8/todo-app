@@ -14,12 +14,12 @@ class Container(containers.DeclarativeContainer):
 
     wiring_config = containers.WiringConfiguration(packages=["app.resources"])
 
-    users_database = providers.Factory(
+    users_service = providers.Factory(
         UsersJsonDatabaseService,
         directory_path=os.environ["DATABASE_PATH"],
     )
 
-    todos_database = providers.Factory(
+    todos_service = providers.Factory(
         TodosJsonDatabaseService,
         directory_path=os.environ["DATABASE_PATH"],
     )

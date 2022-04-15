@@ -5,9 +5,8 @@ from dependency_injector.wiring import Provide, inject
 from flask_restful import Resource
 
 from app.containers import Container
-from app.models.todo import Todo
-from app.services.service_protocols.database_service_protocol import (
-    DatabaseServiceProtocol,
+from app.services.service_protocols.todo_service_protocol import (
+    TodoServiceProtocol,
 )
 
 
@@ -15,18 +14,14 @@ class TodoListing(Resource):
     @inject
     def __init__(
         self,
-        db_service: DatabaseServiceProtocol[Todo] = (
-            Provide[Container.todos_database]
-        ),
+        todo_service: TodoServiceProtocol = Provide[Container.todos_service],
     ) -> None:
-        super().__init__()
-        self.todo_db_service = db_service
-        self.T = Todo
+        self.todo_service = todo_service
 
     def get(self):
         response: dict[str, Any] = {}
         try:
-            users = self.todo_db_service.get_all()
+            users = self.todo_service.get_all()
 
             response["status"] = HTTPStatus.OK
             response["response"] = users

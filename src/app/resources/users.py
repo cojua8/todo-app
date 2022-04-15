@@ -8,8 +8,8 @@ from webargs.flaskparser import use_kwargs
 
 from app.containers import Container
 from app.models.user import User
-from app.services.service_protocols.database_service_protocol import (
-    DatabaseServiceProtocol,
+from app.services.service_protocols.user_service_protocol import (
+    UserServiceProtocol,
 )
 
 
@@ -17,13 +17,9 @@ class Users(Resource):
     @inject
     def __init__(
         self,
-        db_service: DatabaseServiceProtocol[User] = (
-            Provide[Container.users_database]
-        ),
+        user_service: UserServiceProtocol = (Provide[Container.users_service]),
     ) -> None:
-        super().__init__()
-        self.user_db_service = db_service
-        self.T = User
+        self.user_service = user_service
 
     @use_kwargs(
         {
@@ -35,7 +31,7 @@ class Users(Resource):
         response: dict[str, Any] = {}
         id = kwargs["id"]
         try:
-            user = self.user_db_service.get(id)
+            user = self.user_service.get(id)
 
             response["status"] = HTTPStatus.OK
             response["response"] = user
@@ -54,9 +50,9 @@ class Users(Resource):
     )
     def post(self, **kwargs) -> dict[str, Any]:
         response: dict[str, Any] = {}
-        user = self.T(**kwargs)
+        user = User(**kwargs)
         try:
-            self.user_db_service.create(user)
+            self.user_service.create(user)
             response["status"] = HTTPStatus.OK
         except Exception as e:
             response["status"] = HTTPStatus.INTERNAL_SERVER_ERROR
@@ -74,7 +70,7 @@ class Users(Resource):
         response: dict[str, Any] = {}
         id = kwargs["id"]
         try:
-            self.user_db_service.delete(id)
+            self.user_service.delete(id)
             response["status"] = HTTPStatus.OK
         except Exception as e:
             response["status"] = HTTPStatus.INTERNAL_SERVER_ERROR
@@ -93,9 +89,9 @@ class Users(Resource):
     def put(self, **kwargs) -> dict[str, Any]:
         response: dict[str, Any] = {}
         id = kwargs["id"]
-        new = self.T(**kwargs)
+        new = User(**kwargs)
         try:
-            self.user_db_service.put(id, new)
+            self.user_service.put(id, new)
             response["status"] = HTTPStatus.OK
         except Exception as e:
             response["status"] = HTTPStatus.INTERNAL_SERVER_ERROR
