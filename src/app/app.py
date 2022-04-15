@@ -7,6 +7,7 @@ from flask_restful import Api
 
 from app.containers import Container
 from app.resources.todos import Todos
+from app.resources.todos_listing import TodoListing
 from app.resources.user_listing import UserListing
 from app.resources.users import Users
 from app.utils.enhanced_json_encoder import EnhancedJSONEncoder
@@ -30,10 +31,11 @@ def app_factory() -> Flask:
 
     api.add_resource(Users, "/user")
 
-    api.add_resource(Todos, "/todos")
-
     api.add_resource(UserListing, "/users")
 
+    api.add_resource(Todos, "/todo")
+
+    api.add_resource(TodoListing, "/todos")
     return app
 
 
