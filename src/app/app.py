@@ -2,6 +2,7 @@ import json
 
 import dotenv
 from flask import Flask, make_response
+from flask_cors import CORS
 from flask_restful import Api
 
 from app.containers import Container
@@ -17,6 +18,7 @@ def app_factory() -> Flask:
     container = Container()
 
     app = Flask(__name__)
+    CORS(app, origins=["http://localhost:3000"])
     app.container = container
     api = Api(app)
 
