@@ -7,3 +7,4 @@ from app.models.base_model import BaseModel
 class User(BaseModel):
     name: str
     email: str
+    password: str

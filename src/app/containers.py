@@ -2,6 +2,9 @@ import os
 
 from dependency_injector import containers, providers
 
+from app.services.authentication_service.authentication_service import (
+    AuthenticationService,
+)
 from app.services.json_database_service.todos_json_database_service import (
     TodosJsonDatabaseService,
 )
@@ -22,4 +25,9 @@ class Container(containers.DeclarativeContainer):
     todos_service = providers.Factory(
         TodosJsonDatabaseService,
         directory_path=os.environ["DATABASE_PATH"],
+    )
+
+    authentication_service = providers.Factory(
+        AuthenticationService,
+        user_service=users_service,
     )

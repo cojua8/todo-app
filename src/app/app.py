@@ -6,6 +6,7 @@ from flask_cors import CORS
 from flask_restful import Api
 
 from app.containers import Container
+from app.resources.register import Register
 from app.resources.todos import Todos
 from app.resources.todos_listing import TodoListing
 from app.resources.user_listing import UserListing
@@ -36,6 +37,8 @@ def app_factory() -> Flask:
     api.add_resource(Todos, "/todo")
 
     api.add_resource(TodoListing, "/todos")
+
+    api.add_resource(Register, "/register")
     return app
 
 

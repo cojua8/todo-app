@@ -1,0 +1,38 @@
+from dependency_injector.wiring import inject
+
+from app.models.user import User
+from app.services.authentication_service.authentication_service_protocol import (  # noqa: E501
+    AuthenticationServiceProtocol,
+    RegistrationResult,
+)
+from app.services.service_protocols.user_service_protocol import (
+    UserServiceProtocol,
+)
+
+
+class AuthenticationService(AuthenticationServiceProtocol):
+    @inject
+    def __init__(
+        self,
+        user_service: UserServiceProtocol,
+    ) -> None:
+        self.user_service = user_service
+
+    def register(
+        self, name: str, email: str, password: str, confirm_password: str
+    ) -> RegistrationResult:
+
+        result = RegistrationResult.SUCCESS
+
+        if password != confirm_password:
+            result = RegistrationResult.PASSWORD_NOT_MATCHING
+        elif self.user_service.get_by_username(name):
+            result = RegistrationResult.USERNAME_ALREADY_EXISTS
+        elif self.user_service.get_by_email(email):
+            result = RegistrationResult.EMAIL_ALREADY_EXISTS
+
+        if result == RegistrationResult.SUCCESS:
+            new = User(name=name, email=email, password=password)
+            self.user_service.create(new)
+
+        return result
