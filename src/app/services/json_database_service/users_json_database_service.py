@@ -30,7 +30,7 @@ class UsersJsonDatabaseService(JsonDatabaseService[User], UserServiceProtocol):
         users = asyncio.run(self._get_data())
 
         for user in users:
-            if user.name == username:
+            if user.username == username:
                 return user
 
         return None

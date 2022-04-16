@@ -11,6 +11,6 @@ class RegistrationResult(Enum):
 
 class AuthenticationServiceProtocol(Protocol):
     def register(
-        self, name: str, email: str, password: str, confirm_password: str
+        self, username: str, email: str, password: str, confirm_password: str
     ) -> RegistrationResult:
         ...

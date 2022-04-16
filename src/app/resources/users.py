@@ -43,8 +43,9 @@ class Users(Resource):
 
     @use_kwargs(
         {
-            "name": fields.String(),
+            "username": fields.String(),
             "email": fields.Email(),
+            "password": fields.String(),
         },
         location="json",
     )
@@ -81,8 +82,9 @@ class Users(Resource):
     @use_kwargs(
         {
             "id": fields.UUID(),
-            "name": fields.String(),
+            "username": fields.String(),
             "email": fields.Email(),
+            "password": fields.String(),
         },
         location="json",
     )

@@ -19,20 +19,20 @@ class AuthenticationService(AuthenticationServiceProtocol):
         self.user_service = user_service
 
     def register(
-        self, name: str, email: str, password: str, confirm_password: str
+        self, username: str, email: str, password: str, confirm_password: str
     ) -> RegistrationResult:
 
         result = RegistrationResult.SUCCESS
 
         if password != confirm_password:
             result = RegistrationResult.PASSWORD_NOT_MATCHING
-        elif self.user_service.get_by_username(name):
+        elif self.user_service.get_by_username(username):
             result = RegistrationResult.USERNAME_ALREADY_EXISTS
         elif self.user_service.get_by_email(email):
             result = RegistrationResult.EMAIL_ALREADY_EXISTS
 
         if result == RegistrationResult.SUCCESS:
-            new = User(name=name, email=email, password=password)
+            new = User(username=username, email=email, password=password)
             self.user_service.create(new)
 
         return result

@@ -5,6 +5,6 @@ from app.models.base_model import BaseModel
 
 @dataclass(kw_only=True)
 class User(BaseModel):
-    name: str
+    username: str
     email: str
     password: str

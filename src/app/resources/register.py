@@ -24,18 +24,20 @@ class Register(Resource):
 
     @use_kwargs(
         {
-            "name": fields.String(),
+            "username": fields.String(),
             "email": fields.Email(),
             "password": fields.String(),
             "confirm_password": fields.String(),
         },
         location="json",
     )
-    def post(self, name, email, password, confirm_password) -> dict[str, Any]:
+    def post(
+        self, username, email, password, confirm_password
+    ) -> dict[str, Any]:
         response: dict[str, Any] = {}
         try:
             result = self.authentication_service.register(
-                name=name,
+                username=username,
                 email=email,
                 password=password,
                 confirm_password=confirm_password,
