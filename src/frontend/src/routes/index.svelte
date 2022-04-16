@@ -1,2 +1,11 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<script>
+    import UserRegisterForm from "../components/UserRegisterForm.svelte";
+
+    let year = new Date().getFullYear();
+</script>
+
+<UserRegisterForm />
+
+<p class="text-center text-gray-500 text-xs">
+    &copy;{year} Joaquin. All rights reserved.
+</p>
