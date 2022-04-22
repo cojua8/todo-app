@@ -6,21 +6,21 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      args:
-        - FLASK_ENV=development
-        - FLASK_APP=./src/app/app.py
     ports:
       - 5000:5000
-    working_dir: /app
+    working_dir: /app/backend
     volumes:
       # this binds the host folder to the container folder
-      - ./:/app
+      - ./src/backend/app:/app/backend/app
       # the json database will be stored in /database/json_database,
       # in the data volume
       - data:/database/json_database
     environment:
       # in the container, saves the database in this path
       - DATABASE_PATH=/database/json_database
+      - FLASK_APP=app/app.py
+      - FLASK_ENV=development
 
+# the path of data won't be erased on rebuild
 volumes:
   data:

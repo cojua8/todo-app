@@ -1,6 +1,6 @@
-*_cache/
-.vscode/
-venv/
+.vscode
+venv
 .env
 Dockerfile
 .dockerignore
+**/__pycache__
