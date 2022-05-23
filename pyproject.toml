@@ -1,7 +1,7 @@
 # Testing
 [tool.pytest.ini_options]
 testpaths = [
-    "src/tests"
+    "src/backend/tests"
 ]
 
 # Formatting

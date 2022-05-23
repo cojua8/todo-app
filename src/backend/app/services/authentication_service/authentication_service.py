@@ -1,5 +1,3 @@
-from dependency_injector.wiring import inject
-
 from app.models.user import User
 from app.services.authentication_service.authentication_service_protocol import (  # noqa: E501
     AuthenticationServiceProtocol,
@@ -8,6 +6,7 @@ from app.services.authentication_service.authentication_service_protocol import 
 from app.services.service_protocols.user_service_protocol import (
     UserServiceProtocol,
 )
+from dependency_injector.wiring import inject
 
 
 class AuthenticationService(AuthenticationServiceProtocol):
@@ -33,6 +32,7 @@ class AuthenticationService(AuthenticationServiceProtocol):
 
         if result == RegistrationResult.SUCCESS:
             new = User(username=username, email=email, password=password)
+            print(new.id)
             self.user_service.create(new)
 
         return result
