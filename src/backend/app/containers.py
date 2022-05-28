@@ -1,7 +1,5 @@
 import os
 
-from dependency_injector import containers, providers
-
 from app.services.authentication_service.authentication_service import (
     AuthenticationService,
 )
@@ -11,6 +9,7 @@ from app.services.json_database_service.todos_json_database_service import (
 from app.services.json_database_service.users_json_database_service import (
     UsersJsonDatabaseService,
 )
+from dependency_injector import containers, providers
 
 
 class Container(containers.DeclarativeContainer):

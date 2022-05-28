@@ -1,16 +1,15 @@
 from http import HTTPStatus
 from typing import Any
 
-from dependency_injector.wiring import Provide, inject
-from flask_restful import Resource
-from webargs import fields
-from webargs.flaskparser import use_kwargs
-
 from app.containers import Container
 from app.models.user import User
 from app.services.service_protocols.user_service_protocol import (
     UserServiceProtocol,
 )
+from dependency_injector.wiring import Provide, inject
+from flask_restful import Resource
+from webargs import fields
+from webargs.flaskparser import use_kwargs
 
 
 class Users(Resource):

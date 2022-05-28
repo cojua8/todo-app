@@ -5,7 +5,6 @@ from typing import Generic, Type, TypeVar
 from uuid import UUID
 
 import aiofiles
-
 from app.models.base_model import BaseModel
 from app.services.service_protocols.database_service_protocol import (
     DatabaseServiceProtocol,

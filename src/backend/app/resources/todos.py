@@ -1,16 +1,15 @@
 from http import HTTPStatus
 from typing import Any
 
-from dependency_injector.wiring import Provide, inject
-from flask_restful import Resource
-from webargs import fields
-from webargs.flaskparser import use_kwargs
-
 from app.containers import Container
 from app.models.todo import Todo
 from app.services.service_protocols.todo_service_protocol import (
     TodoServiceProtocol,
 )
+from dependency_injector.wiring import Provide, inject
+from flask_restful import Resource
+from webargs import fields
+from webargs.flaskparser import use_kwargs
 
 
 class Todos(Resource):

@@ -1,10 +1,6 @@
 import json
 
 import dotenv
-from flask import Flask, make_response
-from flask_cors import CORS
-from flask_restful import Api
-
 from app.containers import Container
 from app.resources.register import Register
 from app.resources.todos import Todos
@@ -12,6 +8,9 @@ from app.resources.todos_listing import TodoListing
 from app.resources.user_listing import UserListing
 from app.resources.users import Users
 from app.utils.enhanced_json_encoder import EnhancedJSONEncoder
+from flask import Flask, make_response
+from flask_cors import CORS
+from flask_restful import Api
 
 dotenv.load_dotenv()
 

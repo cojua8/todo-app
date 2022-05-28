@@ -1,13 +1,12 @@
 from http import HTTPStatus
 from typing import Any
 
-from dependency_injector.wiring import Provide, inject
-from flask_restful import Resource
-
 from app.containers import Container
 from app.services.service_protocols.todo_service_protocol import (
     TodoServiceProtocol,
 )
+from dependency_injector.wiring import Provide, inject
+from flask_restful import Resource
 
 
 class TodoListing(Resource):
