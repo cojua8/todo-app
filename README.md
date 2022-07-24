@@ -25,10 +25,14 @@ These are two concepts that I have been using in my code. Though they help the t
 
 ## Docker
 [Docker](https://www.docker.com/) is used to run the app in a container. The command used to create and start the containers is:
-    
-    docker-compose up -d
 
-This will run the container in detached mode.
 
 ## Asyncio
 [Asyncio](https://docs.python.org/3/library/asyncio.html) is used together with [aiofiles](https://aiofiles.readthedocs.io/en/stable/) to read and write files in an asyncronous way
+
+
+## Development Mode
+
+The easiest way to set up a development environment is to use
+
+    docker-compose -f docker-compose.development.yml up

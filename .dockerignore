@@ -1,6 +1,0 @@
-.vscode
-venv
-.env
-Dockerfile
-.dockerignore
-**/__pycache__

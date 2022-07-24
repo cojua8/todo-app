@@ -1,11 +1,11 @@
 version: '3.8'
 
 services:
-  todo-app:
+  todo-app-backend:
     container_name: backend
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: ./src/backend/app/Dockerfile
     ports:
       - 5000:5000
     working_dir: /app/backend
@@ -20,6 +20,21 @@ services:
       - DATABASE_PATH=/database/json_database
       - FLASK_APP=app/app.py
       - FLASK_ENV=development
+
+  todo-app-frontend:
+    container_name: frontend
+    build:
+      context: .
+      dockerfile: ./src/frontend/Dockerfile
+    ports:
+      - 3000:3000
+    working_dir: /app/frontend/
+    volumes:
+      - ./src/frontend/:/app/frontend/
+      # avoid copying the node_modules folder from local to the container
+      - /app/frontend/node_modules/
+    environment:
+      - NODE_ENV=development
 
 # the path of data won't be erased on rebuild
 volumes:
