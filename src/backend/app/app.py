@@ -16,11 +16,16 @@ dotenv.load_dotenv()
 
 
 def app_factory() -> Flask:
-    container = Container()
-
     app = Flask(__name__)
     CORS(app, origins=["http://localhost:3000"])
+
+    @app.route("/")
+    def status():
+        return "<h1>Up and running</h1>"
+
+    container = Container()
     app.container = container
+
     api = Api(app)
 
     @api.representation("application/json")
@@ -38,6 +43,7 @@ def app_factory() -> Flask:
     api.add_resource(TodoListing, "/todos")
 
     api.add_resource(Register, "/register")
+
     return app
 
 
