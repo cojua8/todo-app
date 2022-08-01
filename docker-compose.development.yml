@@ -35,6 +35,7 @@ services:
       - /app/frontend/node_modules/
     environment:
       - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true # allows hot reload on windows
 
 # the path of data won't be erased on rebuild
 volumes:
