@@ -1,8 +1,6 @@
 import os
 
-from app.services.authentication_service.authentication_service import (
-    AuthenticationService,
-)
+from app.services.authentication_service import AuthenticationService
 from app.services.json_database_service.todos_json_database_service import (
     TodosJsonDatabaseService,
 )

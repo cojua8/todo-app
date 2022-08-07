@@ -1,3 +1,4 @@
+from app.exceptions.login_exception import LoginException
 from app.models.user import User
 from app.services.service_protocols.authentication_service_protocol import (  # noqa: E501
     AuthenticationServiceProtocol,
@@ -32,7 +33,14 @@ class AuthenticationService(AuthenticationServiceProtocol):
 
         if result == RegistrationResult.SUCCESS:
             new = User(username=username, email=email, password=password)
-            print(new.id)
             self.user_service.create(new)
 
         return result
+
+    def login(self, username: str, password: str) -> User:
+        user = self.user_service.get_by_username(username)
+
+        if not user or password != user.password:
+            raise LoginException()
+
+        return user

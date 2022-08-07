@@ -1,7 +1,5 @@
 from app.models.user import User
-from app.services.authentication_service.authentication_service import (
-    AuthenticationService,
-)
+from app.services.authentication_service import AuthenticationService
 from app.services.service_protocols.authentication_service_protocol import (  # noqa: E501
     RegistrationResult,
 )
