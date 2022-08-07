@@ -1,10 +1,8 @@
-from unittest import mock
-
 from app.models.user import User
 from app.services.authentication_service.authentication_service import (
     AuthenticationService,
 )
-from app.services.authentication_service.authentication_service_protocol import (  # noqa: E501
+from app.services.service_protocols.authentication_service_protocol import (  # noqa: E501
     RegistrationResult,
 )
 from app.services.service_protocols.user_service_protocol import (
@@ -12,9 +10,9 @@ from app.services.service_protocols.user_service_protocol import (
 )
 
 
-def test_password_not_matching(faker):
+def test_passwords_not_matching(faker, mocker):
     # arrange
-    mock_user_service = mock.MagicMock(spec=UserServiceProtocol)
+    mock_user_service = mocker.MagicMock(spec=UserServiceProtocol)
     auth_service = AuthenticationService(mock_user_service)
 
     username = faker.user_name()
@@ -29,66 +27,65 @@ def test_password_not_matching(faker):
     assert result == RegistrationResult.PASSWORD_NOT_MATCHING
 
 
-def test_username_already_exists(faker):
+def test_username_already_exists(user_factory, mocker):
     # arrange
-    username = faker.user_name()
-    email = faker.email()
-    password = "password"
-    confirm_password = "password"
+    mock_user: User = user_factory()
 
-    mock_user = User(username=username, email=email, password=password)
-
-    mock_user_service = mock.MagicMock(spec=UserServiceProtocol)
-    mock_user_service.get_by_username = mock.MagicMock(return_value=mock_user)
+    mock_user_service = mocker.MagicMock(spec=UserServiceProtocol)
+    mock_user_service.get_by_username = mocker.MagicMock(
+        return_value=mock_user
+    )
 
     auth_service = AuthenticationService(mock_user_service)
 
     # act
-    result = auth_service.register(username, email, password, confirm_password)
+    result = auth_service.register(
+        mock_user.username,
+        mock_user.email,
+        mock_user.password,
+        mock_user.password,
+    )
 
     # assert
     assert result == RegistrationResult.USERNAME_ALREADY_EXISTS
 
 
-def test_email_already_exists(faker):
+def test_email_already_exists(mocker, user_factory):
     # arrange
-    username = faker.user_name()
-    email = faker.email()
-    password = "password"
-    confirm_password = "password"
+    mock_user: User = user_factory()
 
-    mock_user = User(username=username, email=email, password=password)
-
-    mock_user_service = mock.MagicMock(spec=UserServiceProtocol)
-    mock_user_service.get_by_username = mock.MagicMock(return_value=None)
-    mock_user_service.get_by_email = mock.MagicMock(return_value=mock_user)
+    mock_user_service = mocker.MagicMock(spec=UserServiceProtocol)
+    mock_user_service.get_by_username = mocker.MagicMock(return_value=None)
+    mock_user_service.get_by_email = mocker.MagicMock(return_value=mock_user)
 
     auth_service = AuthenticationService(mock_user_service)
 
     # act
-    result = auth_service.register(username, email, password, confirm_password)
+    result = auth_service.register(
+        mock_user.username,
+        mock_user.email,
+        mock_user.password,
+        mock_user.password,
+    )
 
     # assert
     assert result == RegistrationResult.EMAIL_ALREADY_EXISTS
 
 
-def test_success_creates_user(faker):
+def test_success_creates_user(mocker, user_factory):
     # arrange
-    username = faker.user_name()
-    email = faker.email()
-    password = "password"
-    confirm_password = "password"
+    user: User = user_factory()
 
-    mock_user_service = mock.MagicMock(spec=UserServiceProtocol)
-    mock_user_service.get_by_username = mock.MagicMock(return_value=None)
-    mock_user_service.get_by_email = mock.MagicMock(return_value=None)
+    mock_user_service = mocker.MagicMock(spec=UserServiceProtocol)
+    mock_user_service.get_by_username = mocker.MagicMock(return_value=None)
+    mock_user_service.get_by_email = mocker.MagicMock(return_value=None)
 
     auth_service = AuthenticationService(mock_user_service)
 
     # act
-    # expected_user = User(username=username, email=email, password=password)
-
-    result = auth_service.register(username, email, password, confirm_password)
+    result = auth_service.register(
+        user.username, user.email, user.password, user.password
+    )
 
     # assert
     assert result == RegistrationResult.SUCCESS
