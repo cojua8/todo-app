@@ -7,11 +7,9 @@ from app.services.service_protocols.authentication_service_protocol import (  # 
 from app.services.service_protocols.user_service_protocol import (
     UserServiceProtocol,
 )
-from dependency_injector.wiring import inject
 
 
 class AuthenticationService(AuthenticationServiceProtocol):
-    @inject
     def __init__(
         self,
         user_service: UserServiceProtocol,

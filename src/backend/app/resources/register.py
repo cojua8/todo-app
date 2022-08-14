@@ -2,7 +2,7 @@ from http import HTTPStatus
 from typing import Any
 
 from app.containers import Container
-from app.services.authentication_service.authentication_service_protocol import (  # noqa: E501
+from app.services.service_protocols.authentication_service_protocol import (
     AuthenticationServiceProtocol,
 )
 from dependency_injector.wiring import Provide, inject
