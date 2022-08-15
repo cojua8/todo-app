@@ -7,4 +7,4 @@ class BaseModelFactory(factory.Factory):
         abstract = True
         model = BaseModel
 
-    id = factory.Faker("uuid4")
+    id = factory.Faker("uuid4", cast_to=None)

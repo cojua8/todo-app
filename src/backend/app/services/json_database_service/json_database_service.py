@@ -26,12 +26,10 @@ class JsonDatabaseService(DatabaseServiceProtocol[T], Generic[T], ABC):
         return asyncio.run(self._get_data())
 
     def get(self, id: UUID) -> T | None:
-        id_hex = id.hex
-
         data = asyncio.run(self._get_data())
 
         for item in data:
-            if item.id == id_hex:
+            if item.id == id:
                 return item
 
         return None
@@ -44,21 +42,17 @@ class JsonDatabaseService(DatabaseServiceProtocol[T], Generic[T], ABC):
         asyncio.run(self._save_file(data))
 
     def delete(self, id: UUID) -> None:
-        id_hex = id.hex
-
         data = asyncio.run(self._get_data())
 
-        data = [item for item in data if item.id != id_hex]
+        data = [item for item in data if item.id != id]
 
         asyncio.run(self._save_file(data))
 
     def put(self, id: UUID, new: T) -> None:
-        id_hex = id.hex
-
         data = asyncio.run(self._get_data())
 
         for i, item in enumerate(data):
-            if item.id == id_hex:
+            if item.id == id:
                 data[i] = new
                 break
 
