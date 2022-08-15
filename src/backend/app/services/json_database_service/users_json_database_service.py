@@ -19,7 +19,7 @@ class UsersJsonDatabaseService(JsonDatabaseService[User], UserServiceProtocol):
         super().__init__(io_service, model_type)
 
     def get_by_email(self, email: str) -> Optional[User]:
-        users = asyncio.run(self.__get_data())
+        users = asyncio.run(self._get_data())
 
         for user in users:
             if user.email == email:
@@ -28,7 +28,7 @@ class UsersJsonDatabaseService(JsonDatabaseService[User], UserServiceProtocol):
         return None
 
     def get_by_username(self, username: str) -> Optional[User]:
-        users = asyncio.run(self.__get_data())
+        users = asyncio.run(self._get_data())
 
         for user in users:
             if user.username == username:

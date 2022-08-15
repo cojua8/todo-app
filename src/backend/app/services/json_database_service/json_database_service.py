@@ -1,5 +1,4 @@
 import asyncio
-import json
 from abc import ABC
 from typing import Generic, Type, TypeVar
 from uuid import UUID
@@ -11,7 +10,7 @@ from app.services.service_protocols.database_service_protocol import (
 from app.services.service_protocols.io_service_protocol import (
     IOServiceProtocol,
 )
-from app.utils.enhanced_json_encoder import EnhancedJSONEncoder
+from app.utils import json_utils
 
 T = TypeVar("T", bound=BaseModel)
 
@@ -24,12 +23,12 @@ class JsonDatabaseService(DatabaseServiceProtocol[T], Generic[T], ABC):
         self._io_service = io_service
 
     def get_all(self) -> list[T]:
-        return asyncio.run(self.__get_data())
+        return asyncio.run(self._get_data())
 
     def get(self, id: UUID) -> T | None:
         id_hex = id.hex
 
-        data = asyncio.run(self.__get_data())
+        data = asyncio.run(self._get_data())
 
         for item in data:
             if item.id == id_hex:
@@ -38,41 +37,41 @@ class JsonDatabaseService(DatabaseServiceProtocol[T], Generic[T], ABC):
         return None
 
     def create(self, new: T) -> None:
-        data = asyncio.run(self.__get_data())
+        data = asyncio.run(self._get_data())
 
         data.append(new)
 
-        asyncio.run(self.__save_file(data))
+        asyncio.run(self._save_file(data))
 
     def delete(self, id: UUID) -> None:
         id_hex = id.hex
 
-        data = asyncio.run(self.__get_data())
+        data = asyncio.run(self._get_data())
 
         data = [item for item in data if item.id != id_hex]
 
-        asyncio.run(self.__save_file(data))
+        asyncio.run(self._save_file(data))
 
     def put(self, id: UUID, new: T) -> None:
         id_hex = id.hex
 
-        data = asyncio.run(self.__get_data())
+        data = asyncio.run(self._get_data())
 
         for i, item in enumerate(data):
             if item.id == id_hex:
                 data[i] = new
                 break
 
-        asyncio.run(self.__save_file(data))
+        asyncio.run(self._save_file(data))
 
-    async def __get_data(self) -> list[T]:
+    async def _get_data(self) -> list[T]:
         files_contents = await self._io_service.read()
 
-        data = json.loads(files_contents)
+        data = json_utils.loads(files_contents)
 
         return [self.model_type(**item) for item in data]
 
-    async def __save_file(self, data: list) -> None:
-        file_contents = json.dumps(data, indent=4, cls=EnhancedJSONEncoder)
+    async def _save_file(self, data: list) -> None:
+        file_contents = json_utils.dumps(data, indent=4)
 
         await self._io_service.write(file_contents)
