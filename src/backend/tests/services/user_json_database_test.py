@@ -14,11 +14,13 @@ from tests.factories.user_factory import UserFactory
 
 
 @pytest.fixture
-def setup(request):
+def setup(request, user_factory: UserFactory):
     expected_values = request.param[0]
-    expected_user = UserFactory(**expected_values)
+    expected_user = user_factory.create(**expected_values)
 
-    existing_users = request.param[1]
+    existing_users = user_factory.create_batch(
+        request.param[1], **request.param[2]
+    )
 
     db_users = [expected_user, *existing_users]
 
@@ -28,11 +30,8 @@ def setup(request):
 @pytest.mark.parametrize(
     "setup",
     [
-        ({"email": "some@email.com"}, UserFactory.create_batch(4)),
-        (
-            {"email": "some@email.com"},
-            UserFactory.create_batch(4, email="some@email.com"),
-        ),
+        ({"email": "some@email.com"}, 4, {}),
+        ({"email": "some@email.com"}, 4, {"email": "some@email.com"}),
     ],
     indirect=True,
     ids=["return_user", "return_first_match"],
@@ -51,11 +50,11 @@ def test_get_by_email_returns_user(mocker, setup):
     assert user.id == expected_user.id
 
 
-def test_get_by_email_returns_none(mocker):
+def test_get_by_email_returns_none(mocker, user_factory: UserFactory):
     # arrange
     io_service = mocker.MagicMock(spec=IOServiceProtocol)
     io_service.read.return_value = json_utils.dumps(
-        UserFactory.create_batch(4)
+        user_factory.create_batch(4)
     )
 
     service = UsersJsonDatabaseService(io_service)
@@ -69,11 +68,8 @@ def test_get_by_email_returns_none(mocker):
 @pytest.mark.parametrize(
     "setup",
     [
-        ({"username": "someusername"}, UserFactory.create_batch(4)),
-        (
-            {"username": "someusername"},
-            UserFactory.create_batch(4, username="someusername"),
-        ),
+        ({"username": "someusername"}, 4, {}),
+        ({"username": "someusername"}, 4, {"username": "someusername"}),
     ],
     indirect=True,
     ids=["return_user", "return_first_match"],
@@ -93,10 +89,10 @@ def test_get_by_username_returns_user(mocker, setup):
         assert user.id == expected_user.id
 
 
-def test_get_by_username_returns_none(mocker):
+def test_get_by_username_returns_none(mocker, user_factory: UserFactory):
     # arrange
     username = "username"
-    users = UserFactory.create_batch(4)
+    users = user_factory.create_batch(4)
 
     io_service = mocker.MagicMock(spec=IOServiceProtocol)
     io_service.read.return_value = json_utils.dumps(users)
@@ -111,7 +107,7 @@ def test_get_by_username_returns_none(mocker):
 
 @pytest.mark.parametrize(
     "setup",
-    [({}, UserFactory.create_batch(4)), ({}, [])],
+    [({}, 4, {}), ({}, 0, {})],
     indirect=True,
     ids=["return_users", "return_empty"],
 )
@@ -132,7 +128,7 @@ def test_get_all_ok(mocker, setup):
 
 @pytest.mark.parametrize(
     "setup",
-    [({"id": uuid4()}, UserFactory.create_batch(4)), ({}, [])],
+    [({"id": uuid4()}, 4, {}), ({}, 0, {})],
     indirect=True,
     ids=["return_user", "return_none"],
 )
@@ -151,10 +147,10 @@ def test_get_returns_user(mocker, setup):
         assert actual_user.id == expected_user.id
 
 
-def test_get_returns_none(mocker):
+def test_get_returns_none(mocker, user_factory: UserFactory):
     # arrange
     id = uuid4()
-    users = UserFactory.create_batch(4)
+    users = user_factory.create_batch(4)
 
     io_service = mocker.MagicMock(spec=IOServiceProtocol)
     io_service.read.return_value = json_utils.dumps(users)
@@ -167,9 +163,9 @@ def test_get_returns_none(mocker):
     assert actual_user is None
 
 
-def test_create_ok(mocker):
+def test_create_ok(mocker, user_factory: UserFactory):
     # arrange
-    user = UserFactory.create()
+    user = user_factory.create()
     io_service = mocker.MagicMock(spec=IOServiceProtocol)
     io_service.read.return_value = "[]"
 
@@ -183,11 +179,7 @@ def test_create_ok(mocker):
     )
 
 
-@pytest.mark.parametrize(
-    "setup",
-    [({}, UserFactory.create_batch(4))],
-    indirect=True,
-)
+@pytest.mark.parametrize("setup", [({}, 4, {})], indirect=True)
 def test_delete_ok(mocker, setup):
     # arrange
     users, expected_user = setup
@@ -204,15 +196,11 @@ def test_delete_ok(mocker, setup):
     )
 
 
-@pytest.mark.parametrize(
-    "setup",
-    [({}, UserFactory.create_batch(4))],
-    indirect=True,
-)
-def test_put_ok(mocker, setup):
+@pytest.mark.parametrize("setup", [({}, 4, {})], indirect=True)
+def test_put_ok(mocker, setup, user_factory: UserFactory):
     # arrange
     users, expected_user = setup
-    updated_user = UserFactory.create(id=expected_user.id)
+    updated_user = user_factory.create(id=expected_user.id)
     expected_users = [updated_user, *json_utils.loads(users)[1:]]
 
     io_service = mocker.MagicMock(spec=IOServiceProtocol)
