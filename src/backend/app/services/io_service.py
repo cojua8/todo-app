@@ -29,5 +29,5 @@ class IOService(IOServiceProtocol):
         return str(content)
 
     async def write(self, content: str):
-        async with self._file_path.open() as file:
+        async with self._file_path.open("w") as file:
             await file.write(content)
