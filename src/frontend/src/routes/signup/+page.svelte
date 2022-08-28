@@ -1,8 +1,7 @@
 <script>
-    import { newUser } from "../services/Users";
-
-    import FormItem from "./FormItem.svelte";
-    import StatusMessage from "./StatusMessage.svelte";
+    import FormItem from "#components/FormItem.svelte";
+    import StatusMessage from "#components/StatusMessage.svelte";
+    import { createUser } from "#services/TodoApi";
 
     let form = {};
     let errors = {};
@@ -49,10 +48,11 @@
             return;
         }
 
-        let response = await newUser(form);
+        let response = await createUser(form);
 
         if (response.status != 200) {
             registerStatus = "ERROR";
+            console.log(response.response);
             registerMessage = "Registration failed";
             return;
         }

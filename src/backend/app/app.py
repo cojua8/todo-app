@@ -1,5 +1,6 @@
 import dotenv
 from app.containers import Container
+from app.resources.login import Login
 from app.resources.register import Register
 from app.resources.todos import Todos
 from app.resources.todos_listing import TodoListing
@@ -41,6 +42,8 @@ def app_factory() -> Flask:
     api.add_resource(TodoListing, "/todos")
 
     api.add_resource(Register, "/register")
+
+    api.add_resource(Login, "/login")
 
     return app
 

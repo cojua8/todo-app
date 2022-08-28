@@ -6,7 +6,8 @@ const config = {
         adapter: adapter(),
         alias:
         {
-            "#components": "src/components"
+            "#components": "src/components",
+            "#services": "src/services"
         }
     }
 };
