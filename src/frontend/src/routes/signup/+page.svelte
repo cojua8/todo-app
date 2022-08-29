@@ -1,7 +1,9 @@
 <script>
     import FormItem from "#components/FormItem.svelte";
     import StatusMessage from "#components/StatusMessage.svelte";
-    import { createUser } from "#services/TodoApi";
+    import { createUser, loginUser } from "#services/TodoApi";
+    import { loggedUser } from "#stores/UserStore.js";
+    import { goto } from "$app/navigation";
 
     let form = {};
     let errors = {};
@@ -61,6 +63,7 @@
             case "SUCCESS":
                 registerStatus = "SUCCESS";
                 registerMessage = "Registration successful";
+                setLoggedUser();
                 break;
             case "PASSWORD_NOT_MATCHING":
                 errors.confirm_password = "Passwords do not match";
@@ -73,6 +76,27 @@
                 break;
         }
     }
+
+    async function setLoggedUser() {
+        let response = await loginUser({
+            username: form.username,
+            password: form.password,
+        });
+
+        if (response.status != 200) {
+            registerStatus = "ERROR";
+            console.log("Login failed", response.response);
+            return;
+        }
+
+        loggedUser.set(response.response);
+    }
+
+    loggedUser.subscribe((v) => {
+        if (v !== null) {
+            goto("/dashboard");
+        }
+    });
 </script>
 
 <div class="flex justify-center mt-4">

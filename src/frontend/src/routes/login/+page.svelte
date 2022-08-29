@@ -1,7 +1,9 @@
 <script>
+    import { loggedUser } from "#stores/UserStore.js";
     import { loginUser } from "#services/TodoApi.js";
     import FormItem from "#components/FormItem.svelte";
     import StatusMessage from "#components/StatusMessage.svelte";
+    import { goto } from "$app/navigation";
 
     let form = {};
     let errors = {};
@@ -41,7 +43,13 @@
             return;
         }
 
-        console.log(response.response);
+        loggedUser.set(response.response);
+
+        loggedUser.subscribe((v) => {
+            if (v !== null) {
+                goto("/dashboard");
+            }
+        });
     }
 </script>
 
@@ -77,6 +85,13 @@
                         Login
                     </button>
                     <StatusMessage message={loginMessage} type={loginStatus} />
+
+                    <a
+                        href="/signup"
+                        class="text-xs hover:underline text-blue-700 mt-1"
+                    >
+                        Signup
+                    </a>
                 </div>
             </div>
         </form>
