@@ -149,7 +149,7 @@ def test_get_returns_user(mocker, setup):
 
 def test_get_returns_none(mocker, user_factory: UserFactory):
     # arrange
-    id = uuid4()
+    id_ = uuid4()
     users = user_factory.create_batch(4)
 
     io_service = mocker.MagicMock(spec=IOServiceProtocol)
@@ -157,7 +157,7 @@ def test_get_returns_none(mocker, user_factory: UserFactory):
 
     service = UsersJsonDatabaseService(io_service)
     # act
-    actual_user = cast(User, service.get(id))
+    actual_user = cast(User, service.get(id_))
 
     # assert
     assert actual_user is None

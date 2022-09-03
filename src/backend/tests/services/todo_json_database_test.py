@@ -69,7 +69,7 @@ def test_get_returns_user(mocker, setup):
 
 def test_get_returns_none(mocker, todo_factory: TodoFactory):
     # arrange
-    id = uuid4()
+    id_ = uuid4()
     todos = todo_factory.create_batch(4)
 
     io_service = mocker.MagicMock(spec=IOServiceProtocol)
@@ -77,7 +77,7 @@ def test_get_returns_none(mocker, todo_factory: TodoFactory):
 
     service = TodosJsonDatabaseService(io_service)
     # act
-    actual_todo = cast(Todo, service.get(id))
+    actual_todo = cast(Todo, service.get(id_))
 
     # assert
     assert actual_todo is None

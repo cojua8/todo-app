@@ -20,18 +20,10 @@ class UsersJsonDatabaseService(JsonDatabaseService[User], UserServiceProtocol):
 
     def get_by_email(self, email: str) -> Optional[User]:
         users = asyncio.run(self._get_data())
-
-        for user in users:
-            if user.email == email:
-                return user
-
-        return None
+        return next((user for user in users if user.email == email), None)
 
     def get_by_username(self, username: str) -> Optional[User]:
         users = asyncio.run(self._get_data())
-
-        for user in users:
-            if user.username == username:
-                return user
-
-        return None
+        return next(
+            (user for user in users if user.username == username), None
+        )

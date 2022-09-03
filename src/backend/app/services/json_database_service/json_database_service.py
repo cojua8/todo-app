@@ -27,12 +27,7 @@ class JsonDatabaseService(DatabaseServiceProtocol[T], Generic[T], ABC):
 
     def get(self, id: UUID) -> T | None:
         data = asyncio.run(self._get_data())
-
-        for item in data:
-            if item.id == id:
-                return item
-
-        return None
+        return next((item for item in data if item.id == id), None)
 
     def create(self, new: T) -> None:
         data = asyncio.run(self._get_data())

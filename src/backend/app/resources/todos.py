@@ -28,9 +28,9 @@ class Todos(Resource):
     )
     def get(self, **kwargs) -> dict[str, Any]:
         response: dict[str, Any] = {}
-        id = kwargs["id"]
+        id_ = kwargs["id"]
         try:
-            todo = self.todo_service.get(id)
+            todo = self.todo_service.get(id_)
 
             response["status"] = HTTPStatus.OK
             response["response"] = todo
@@ -69,9 +69,9 @@ class Todos(Resource):
     )
     def delete(self, **kwargs) -> dict[str, Any]:
         response: dict[str, Any] = {}
-        id = kwargs["id"]
+        id_ = kwargs["id"]
         try:
-            self.todo_service.delete(id)
+            self.todo_service.delete(id_)
             response["status"] = HTTPStatus.OK
         except Exception as e:
             response["status"] = HTTPStatus.INTERNAL_SERVER_ERROR
@@ -92,10 +92,10 @@ class Todos(Resource):
     )
     def put(self, **kwargs) -> dict[str, Any]:
         response: dict[str, Any] = {}
-        id = kwargs["id"]
+        id_ = kwargs["id"]
         new = Todo(**kwargs)
         try:
-            self.todo_service.put(id, new)
+            self.todo_service.put(id_, new)
             response["status"] = HTTPStatus.OK
         except Exception as e:
             response["status"] = HTTPStatus.INTERNAL_SERVER_ERROR
