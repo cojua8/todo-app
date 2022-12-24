@@ -16,8 +16,10 @@ class _EnhancedJSONEncoder(json.JSONEncoder):
 
 
 def _id_as_uuid(dict_):
-    if "id" in dict_:
-        dict_["id"] = UUID(dict_["id"])
+    for key in dict_:
+        if key == "id" or "_id" in key:
+            dict_[key] = UUID(dict_[key])
+
     return dict_
 
 

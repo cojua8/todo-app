@@ -1,5 +1,6 @@
 from http import HTTPStatus
 from typing import Any
+from uuid import UUID
 
 from app.containers import Container
 from app.services.service_protocols.todo_service_protocol import (
@@ -7,6 +8,8 @@ from app.services.service_protocols.todo_service_protocol import (
 )
 from dependency_injector.wiring import Provide, inject
 from flask_restful import Resource
+from webargs import fields
+from webargs.flaskparser import use_kwargs
 
 
 class TodoListing(Resource):
@@ -17,10 +20,16 @@ class TodoListing(Resource):
     ) -> None:
         self.todo_service = todo_service
 
-    def get(self):
+    @use_kwargs(
+        {
+            "user_id": fields.UUID(),
+        },
+        location="query",
+    )
+    def get(self, user_id: UUID):
         response: dict[str, Any] = {}
         try:
-            users = self.todo_service.get_all()
+            users = self.todo_service.get_all_by_user_id(user_id)
 
             response["status"] = HTTPStatus.OK
             response["response"] = users
