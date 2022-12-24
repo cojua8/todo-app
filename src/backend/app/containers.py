@@ -11,34 +11,54 @@ from app.services.json_database_service.users_json_database_service import (
 from dependency_injector import containers, providers
 
 
-async def make_io_services(database_directory: str):
-    return await asyncio.gather(
-        IOService.create_service(database_directory, "users.json"),
-        IOService.create_service(database_directory, "todos.json"),
-    )
-
-
 class Container(containers.DeclarativeContainer):
-    config = providers.Configuration()
-    config.json_database.directory_path.from_env("DATABASE_PATH")
+    @classmethod
+    def add_config(cls):
+        cls.config = providers.Configuration()
+        cls.config.json_database.directory_path.from_env("DATABASE_PATH")
 
-    wiring_config = containers.WiringConfiguration(packages=["app.resources"])
+        cls.wiring_config = containers.WiringConfiguration(
+            packages=["app.resources"]
+        )
 
-    users_io_service, todo_io_service = asyncio.run(
-        make_io_services(config.json_database.directory_path())
-    )
+        return cls
 
-    users_service = providers.Factory(
-        UsersJsonDatabaseService,
-        io_service=users_io_service,
-    )
+    @classmethod
+    def add_json_database_services(cls):
+        cls.users_io_service = asyncio.run(
+            IOService.create_service(
+                cls.config.json_database.directory_path(),
+                "users.json",
+            )
+        )
 
-    todos_service = providers.Factory(
-        TodosJsonDatabaseService,
-        io_service=todo_io_service,
-    )
+        cls.todo_io_service = asyncio.run(
+            IOService.create_service(
+                cls.config.json_database.directory_path(),
+                "todos.json",
+            )
+        )
 
-    authentication_service = providers.Factory(
-        AuthenticationService,
-        user_service=users_service,
-    )
+        return cls
+
+    @classmethod
+    def add_services(cls):
+        cls.users_service = providers.Factory(
+            UsersJsonDatabaseService,
+            io_service=cls.users_io_service,
+        )
+
+        cls.todos_service = providers.Factory(
+            TodosJsonDatabaseService,
+            io_service=cls.todo_io_service,
+        )
+
+        cls.authentication_service = providers.Factory(
+            AuthenticationService,
+            user_service=cls.users_service,
+        )
+
+        return cls
+
+
+Container.add_config().add_json_database_services().add_services()
