@@ -19,3 +19,11 @@ export const createUser = async (body) => {
 export const loginUser = async (body) => {
     return await fetchFromApi("POST", "/login", body)
 }
+
+export const getUserTodos = async (user_id) => {
+    return await fetchFromApi("GET", `/todos?user_id=${user_id}`)
+}
+
+export const createTodo = async (body) => {
+    return await fetchFromApi("POST", "/todo", body)
+}
