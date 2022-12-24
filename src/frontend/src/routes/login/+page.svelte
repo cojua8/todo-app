@@ -5,7 +5,7 @@
     import StatusMessage from "#components/StatusMessage.svelte";
     import { goto } from "$app/navigation";
 
-    let form = {};
+    let form = { username: "Joaco92", password: "1234" };
     let errors = {};
     let loginMessage = "";
     let loginStatus = "";
