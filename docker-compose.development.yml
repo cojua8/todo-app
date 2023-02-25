@@ -37,6 +37,19 @@ services:
       - NODE_ENV=development
       - CHOKIDAR_USEPOLLING=true # allows hot reload on windows
 
+  todo_app_postgres:
+    container_name: postgres_db
+    image: postgres:15.1-alpine
+    restart: always
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres_db:/database/postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
 # the path of data won't be erased on rebuild
 volumes:
   data:
+  postgres_db:
+    driver: local
