@@ -1,10 +1,10 @@
 import asyncio
 from abc import ABC
-from typing import Generic, Type, TypeVar
+from typing import Generic, Type
 from uuid import UUID
 
-from app.models.base_model import BaseModel
 from app.services.service_protocols.database_service_protocol import (
+    BMT,
     DatabaseServiceProtocol,
 )
 from app.services.service_protocols.io_service_protocol import (
@@ -12,24 +12,22 @@ from app.services.service_protocols.io_service_protocol import (
 )
 from app.utils import json_utils
 
-T = TypeVar("T", bound=BaseModel)
 
-
-class JsonDatabaseService(DatabaseServiceProtocol[T], Generic[T], ABC):
+class JsonDatabaseService(DatabaseServiceProtocol[BMT], Generic[BMT], ABC):
     def __init__(
-        self, io_service: IOServiceProtocol, model_type: Type[T]
+        self, io_service: IOServiceProtocol, model_type: Type[BMT]
     ) -> None:
         self.model_type = model_type
         self._io_service = io_service
 
-    def get_all(self) -> list[T]:
+    def get_all(self) -> list[BMT]:
         return asyncio.run(self._get_data())
 
-    def get(self, id: UUID) -> T | None:
+    def get(self, id: UUID) -> BMT | None:
         data = asyncio.run(self._get_data())
         return next((item for item in data if item.id == id), None)
 
-    def create(self, new: T) -> None:
+    def create(self, new: BMT) -> None:
         data = asyncio.run(self._get_data())
 
         data.append(new)
@@ -43,7 +41,7 @@ class JsonDatabaseService(DatabaseServiceProtocol[T], Generic[T], ABC):
 
         asyncio.run(self._save_file(data))
 
-    def put(self, id: UUID, new: T) -> None:
+    def put(self, id: UUID, new: BMT) -> None:
         data = asyncio.run(self._get_data())
 
         for i, item in enumerate(data):
@@ -53,7 +51,7 @@ class JsonDatabaseService(DatabaseServiceProtocol[T], Generic[T], ABC):
 
         asyncio.run(self._save_file(data))
 
-    async def _get_data(self) -> list[T]:
+    async def _get_data(self) -> list[BMT]:
         files_contents = await self._io_service.read()
 
         data = json_utils.loads(files_contents)

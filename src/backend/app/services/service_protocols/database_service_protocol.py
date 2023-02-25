@@ -1,21 +1,23 @@
-from typing import Generic, Protocol, TypeVar
+from typing import Generic, Iterable, Protocol, TypeVar
 from uuid import UUID
 
-T = TypeVar("T")
+from app.models.base_model import BaseModel
+
+BMT = TypeVar("BMT", bound=BaseModel)
 
 
-class DatabaseServiceProtocol(Protocol, Generic[T]):
-    def get_all(self) -> list[T]:
+class DatabaseServiceProtocol(Protocol, Generic[BMT]):
+    def get_all(self) -> Iterable[BMT]:
         ...
 
-    def get(self, id: UUID) -> T | None:
+    def get(self, id: UUID) -> BMT | None:
         ...
 
-    def create(self, new: T) -> None:
+    def create(self, new: BMT) -> None:
         ...
 
     def delete(self, id: UUID) -> None:
         ...
 
-    def put(self, id: UUID, new: T) -> None:
+    def put(self, id: UUID, new: BMT) -> None:
         ...
