@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import TYPE_CHECKING, Generic, Protocol, TypeVar
 
 from app.models.base_model import BaseModel

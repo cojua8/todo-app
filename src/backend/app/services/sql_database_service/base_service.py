@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from abc import ABC
 from collections import namedtuple
 from typing import TYPE_CHECKING, Generic
