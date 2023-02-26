@@ -19,7 +19,6 @@ class AuthenticationService(AuthenticationServiceProtocol):
     def register(
         self, username: str, email: str, password: str, confirm_password: str
     ) -> RegistrationResult:
-
         result = RegistrationResult.SUCCESS
 
         if password != confirm_password:
