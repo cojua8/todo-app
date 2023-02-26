@@ -29,6 +29,7 @@ pytest-mock = "^3.10.0"
 [tool.poetry.group.development.dependencies]
 black = "^23.1.0"
 ruff = "^0.0.252"
+pyright = "^1.1.295"
 
 [build-system]
 requires = ["poetry-core"]
@@ -42,6 +43,9 @@ line-length = 79
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 
+# typing
+[tool.pyright]
+pythonversion = "3.11"
 
 [tool.ruff]
 ignore = [

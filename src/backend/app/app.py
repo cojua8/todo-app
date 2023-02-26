@@ -25,8 +25,7 @@ def app_factory() -> Flask:
     def status() -> str:
         return "<h1>Up and running</h1>"
 
-    container = Container()
-    app.container = container
+    app.container = Container()  # type: ignore[container]
 
     api = Api(app)
 
