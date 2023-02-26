@@ -1,12 +1,42 @@
-# Testing
-[tool.pytest.ini_options]
-testpaths = ["tests"]
+[tool.poetry]
+name = "todo-app-backend"
+version = "0.1.0"
+description = ""
+authors = ["Joaquín Neira <joaquin.neiraj@gmail.com>"]
+readme = "README.md"
+packages = [{ include = "todo_app_backend" }]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+python-dotenv = "^1.0.0"
+aiopath = "^0.6.11"
+dependency-injector = "^4.41.0"
+flask = "^2.2.3"
+flask-restful = "^0.3.9"
+webargs = "^8.2.0"
+flask-cors = "^3.0.10"
+sqlalchemy = "^2.0.4"
+psycopg2 = "^2.9.5"
+
+
+[tool.poetry.group.test.dependencies]
+pytest = "^7.2.1"
+pytest-factoryboy = "^2.5.1"
+freezegun = "^1.2.2"
+pytest-mock = "^3.10.0"
+
+
+[tool.poetry.group.development.dependencies]
+black = "^23.1.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
 
 # Formatting
 [tool.black]
 line-length = 79
 
-
-[tool.isort]
-profile = "black"
-line_length = 79
+# Testing
+[tool.pytest.ini_options]
+testpaths = ["tests"]

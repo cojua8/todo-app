@@ -8,7 +8,7 @@ from app.services.service_protocols.database_service_protocol import (
     BMT,
     DatabaseServiceProtocol,
 )
-from sqlalchemy import Table, delete, insert, select, update
+from sqlalchemy import Row, Table, delete, insert, select, update
 from sqlalchemy.engine import Engine
 
 Mapper = namedtuple("Mapper", ["model_to_entity", "entity_to_model"])
@@ -18,8 +18,8 @@ class Mappers:
     def model_to_entity(self, model: BaseModel) -> dict:
         return model.__dict__
 
-    def entity_to_model(self, entity: dict, model_type: Type[BMT]) -> BMT:
-        return model_type(**entity)
+    def entity_to_model(self, entity: Row, model_type: Type[BMT]) -> BMT:
+        return model_type(**entity._asdict())
 
 
 class BaseService(DatabaseServiceProtocol[BMT], Generic[BMT], ABC):
@@ -50,10 +50,12 @@ class BaseService(DatabaseServiceProtocol[BMT], Generic[BMT], ABC):
         entity = self._mappers.model_to_entity(new)
         with self._engine.connect() as conn:
             conn.execute(insert(self._table).values(**entity))
+            conn.commit()
 
     def delete(self, id: UUID) -> None:
         with self._engine.connect() as conn:
             conn.execute(delete(self._table).where(self._table.c.id == id))
+            conn.commit()
 
     def put(self, id: UUID, new: BMT) -> None:
         entity = self._mappers.model_to_entity(new)
@@ -63,3 +65,4 @@ class BaseService(DatabaseServiceProtocol[BMT], Generic[BMT], ABC):
                 .where(self._table.c.id == id)
                 .values(**entity)
             )
+            conn.commit()
