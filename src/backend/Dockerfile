@@ -1,7 +1,7 @@
-FROM python:3.10 
+FROM python:3.11.2 
 WORKDIR /app/backend
 COPY ./src/backend/app ./app
-COPY ./requirements.txt .
+COPY ./src/backend/requirements.txt .
 #RUN python -m venv venv 
 #RUN . venv/bin/activate
 RUN pip install -r requirements.txt

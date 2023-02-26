@@ -1,17 +1,11 @@
 # Testing
 [tool.pytest.ini_options]
-testpaths = [
-    "src/backend/tests"
-]
+testpaths = ["tests"]
 
 # Formatting
 [tool.black]
 line-length = 79
 
-[tool.flake8]
-exclude = [
-    "venv/"
-]
 
 [tool.isort]
 profile = "black"

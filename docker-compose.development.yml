@@ -5,7 +5,7 @@ services:
     container_name: backend
     build:
       context: .
-      dockerfile: ./src/backend/app/Dockerfile
+      dockerfile: ./src/backend/Dockerfile
     ports:
       - 5000:5000
     working_dir: /app/backend

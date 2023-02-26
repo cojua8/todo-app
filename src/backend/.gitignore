@@ -1,0 +1,10 @@
+__pycache__/
+
+.mypy_cache/
+.pytest_cache/
+
+htmlcov/
+
+.python-version
+.DS_Store
+.coverage
