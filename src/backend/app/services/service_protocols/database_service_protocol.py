@@ -1,7 +1,10 @@
-from typing import Generic, Iterable, Protocol, TypeVar
-from uuid import UUID
+from typing import TYPE_CHECKING, Generic, Protocol, TypeVar
 
 from app.models.base_model import BaseModel
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable
+    from uuid import UUID
 
 BMT = TypeVar("BMT", bound=BaseModel)
 
@@ -10,14 +13,14 @@ class DatabaseServiceProtocol(Protocol, Generic[BMT]):
     def get_all(self) -> Iterable[BMT]:
         ...
 
-    def get(self, id: UUID) -> BMT | None:
+    def get(self, id_: UUID) -> BMT | None:
         ...
 
     def create(self, new: BMT) -> None:
         ...
 
-    def delete(self, id: UUID) -> None:
+    def delete(self, id_: UUID) -> None:
         ...
 
-    def put(self, id: UUID, new: BMT) -> None:
+    def put(self, id_: UUID, new: BMT) -> None:
         ...

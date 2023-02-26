@@ -1,34 +1,38 @@
 import datetime as dt
 import json
 from dataclasses import is_dataclass
+from typing import Any
 from uuid import UUID
 
 
 class _EnhancedJSONEncoder(json.JSONEncoder):
-    def default(self, o):
+    def default(self, o: Any) -> Any:  # noqa: ANN401
+        ret_val = None
         if isinstance(o, dt.date):
-            return dt.date.isoformat(o)
+            ret_val = dt.date.isoformat(o)
         elif isinstance(o, UUID):
-            return o.hex
+            ret_val = o.hex
         elif is_dataclass(o):
-            return o.__dict__
-        return super().default(o)
+            ret_val = o.__dict__
+
+        return ret_val or super().default(o)
 
 
 class _EnhanchedJSONDecoder(json.JSONDecoder):
     def __init__(self, **kwargs):
         super().__init__(object_hook=self.object_hook, **kwargs)
 
-    def object_hook(self, dict_):
+    def object_hook(self, dict_: dict) -> dict:
         for key, value in dict_.items():
             if key == "id" or "_id" in key:
                 dict_[key] = UUID(value)
-            elif isinstance(value, str):
-                if date := (
+            elif isinstance(value, str) and (
+                date := (
                     self.try_convert_date_to_string(value)
                     or self.try_convert_datetime_to_string(value)
-                ):
-                    dict_[key] = date
+                )
+            ):
+                dict_[key] = date
 
         return dict_
 
@@ -45,19 +49,9 @@ class _EnhanchedJSONDecoder(json.JSONDecoder):
             return None
 
 
-# # pass
-# def object_hook(self, dict_):
-#     for key in dict_:
-#         if key == "id" or "_id" in key:
-#             dict_[key] = UUID(dict_[key])
-
-#     return dict_
-
-
-def loads(data: str, **kwargs):
-    # return json.loads(data, object_hook=_id_as_uuid, **kwargs)
+def loads(data: str, **kwargs) -> dict:
     return json.loads(data, cls=_EnhanchedJSONDecoder, **kwargs)
 
 
-def dumps(data, **kwargs):
+def dumps(data: Any, **kwargs) -> str:  # noqa: ANN401
     return json.dumps(data, cls=_EnhancedJSONEncoder, **kwargs)

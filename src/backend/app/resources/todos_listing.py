@@ -1,15 +1,19 @@
 from http import HTTPStatus
-from typing import Any
-from uuid import UUID
+from typing import TYPE_CHECKING, Any
 
-from app.containers import Container
-from app.services.service_protocols.todo_service_protocol import (
-    TodoServiceProtocol,
-)
 from dependency_injector.wiring import Provide, inject
 from flask_restful import Resource
 from webargs import fields
 from webargs.flaskparser import use_kwargs
+
+from app.containers import Container
+
+if TYPE_CHECKING:
+    from uuid import UUID
+
+    from app.services.service_protocols.todo_service_protocol import (
+        TodoServiceProtocol,
+    )
 
 
 class TodoListing(Resource):
@@ -26,7 +30,7 @@ class TodoListing(Resource):
         },
         location="query",
     )
-    def get(self, user_id: UUID):
+    def get(self, user_id: UUID) -> dict[str, Any]:
         response: dict[str, Any] = {}
         try:
             users = self.todo_service.get_all_by_user_id(user_id)

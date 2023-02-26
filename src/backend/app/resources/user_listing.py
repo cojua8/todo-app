@@ -1,12 +1,15 @@
 from http import HTTPStatus
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
-from app.containers import Container
-from app.services.service_protocols.user_service_protocol import (
-    UserServiceProtocol,
-)
 from dependency_injector.wiring import Provide, inject
 from flask_restful import Resource
+
+from app.containers import Container
+
+if TYPE_CHECKING:
+    from app.services.service_protocols.user_service_protocol import (
+        UserServiceProtocol,
+    )
 
 
 class UserListing(Resource):
@@ -17,7 +20,7 @@ class UserListing(Resource):
     ) -> None:
         self.user_service = user_service
 
-    def get(self):
+    def get(self) -> dict[str, Any]:
         response: dict[str, Any] = {}
         try:
             users = self.user_service.get_all()

@@ -1,14 +1,17 @@
 from http import HTTPStatus
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
-from app.containers import Container
-from app.services.service_protocols.authentication_service_protocol import (
-    AuthenticationServiceProtocol,
-)
 from dependency_injector.wiring import Provide, inject
 from flask_restful import Resource
 from webargs import fields
 from webargs.flaskparser import use_kwargs
+
+from app.containers import Container
+
+if TYPE_CHECKING:
+    from app.services.service_protocols.authentication_service_protocol import (  # noqa: E501
+        AuthenticationServiceProtocol,
+    )
 
 
 class Register(Resource):
@@ -31,7 +34,7 @@ class Register(Resource):
         location="json",
     )
     def post(
-        self, username, email, password, confirm_password
+        self, username: str, email: str, password: str, confirm_password: str
     ) -> dict[str, Any]:
         response: dict[str, Any] = {}
         try:

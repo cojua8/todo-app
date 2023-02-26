@@ -1,15 +1,21 @@
 from abc import ABC
 from collections import namedtuple
-from typing import Generic, Iterable, Type
-from uuid import UUID
+from typing import TYPE_CHECKING, Generic
 
-from app.models.base_model import BaseModel
+from sqlalchemy import Row, Table, delete, insert, select, update
+
 from app.services.service_protocols.database_service_protocol import (
     BMT,
     DatabaseServiceProtocol,
 )
-from sqlalchemy import Row, Table, delete, insert, select, update
-from sqlalchemy.engine import Engine
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable
+    from uuid import UUID
+
+    from sqlalchemy.engine import Engine
+
+    from app.models.base_model import BaseModel
 
 Mapper = namedtuple("Mapper", ["model_to_entity", "entity_to_model"])
 
@@ -18,12 +24,12 @@ class Mappers:
     def model_to_entity(self, model: BaseModel) -> dict:
         return model.__dict__
 
-    def entity_to_model(self, entity: Row, model_type: Type[BMT]) -> BMT:
+    def entity_to_model(self, entity: Row, model_type: type[BMT]) -> BMT:
         return model_type(**entity._asdict())
 
 
 class BaseService(DatabaseServiceProtocol[BMT], Generic[BMT], ABC):
-    def __init__(self, engine: Engine, table: Table, model: Type[BMT]) -> None:
+    def __init__(self, engine: Engine, table: Table, model: type[BMT]) -> None:
         self._engine = engine
         self._table = table
         self._model = model
@@ -37,10 +43,10 @@ class BaseService(DatabaseServiceProtocol[BMT], Generic[BMT], ABC):
             for result in results
         ]
 
-    def get(self, id: UUID) -> BMT | None:
+    def get(self, id_: UUID) -> BMT | None:
         with self._engine.connect() as conn:
             bmt = conn.execute(
-                select(self._table).where(self._table.c.id == id).limit(1)
+                select(self._table).where(self._table.c.id == id_).limit(1)
             )
 
         if bmt := next(bmt, None):
@@ -52,17 +58,17 @@ class BaseService(DatabaseServiceProtocol[BMT], Generic[BMT], ABC):
             conn.execute(insert(self._table).values(**entity))
             conn.commit()
 
-    def delete(self, id: UUID) -> None:
+    def delete(self, id_: UUID) -> None:
         with self._engine.connect() as conn:
-            conn.execute(delete(self._table).where(self._table.c.id == id))
+            conn.execute(delete(self._table).where(self._table.c.id == id_))
             conn.commit()
 
-    def put(self, id: UUID, new: BMT) -> None:
+    def put(self, id_: UUID, new: BMT) -> None:
         entity = self._mappers.model_to_entity(new)
         with self._engine.connect() as conn:
             conn.execute(
                 update(self._table)
-                .where(self._table.c.id == id)
+                .where(self._table.c.id == id_)
                 .values(**entity)
             )
             conn.commit()

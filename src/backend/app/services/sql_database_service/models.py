@@ -32,5 +32,10 @@ todo_table = Table(
     Column("description", String, nullable=False),
     Column("due_date", Date),
     Column("completed", Boolean, default=False),
-    Column("date_created", Date, nullable=False, default=dt.date.today()),
+    Column(
+        "date_created",
+        Date,
+        nullable=False,
+        default=dt.datetime.now(tz=dt.UTC).today(),
+    ),
 )

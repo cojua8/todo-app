@@ -1,12 +1,16 @@
-from app.exceptions.login_exception import LoginException
+from typing import TYPE_CHECKING
+
+from app.exceptions.login_exception import LoginError
 from app.models.user import User
 from app.services.service_protocols.authentication_service_protocol import (  # noqa: E501
     AuthenticationServiceProtocol,
     RegistrationResult,
 )
-from app.services.service_protocols.user_service_protocol import (
-    UserServiceProtocol,
-)
+
+if TYPE_CHECKING:
+    from app.services.service_protocols.user_service_protocol import (
+        UserServiceProtocol,
+    )
 
 
 class AuthenticationService(AuthenticationServiceProtocol):
@@ -38,6 +42,6 @@ class AuthenticationService(AuthenticationServiceProtocol):
         user = self.user_service.get_by_username(username)
 
         if not user or password != user.password:
-            raise LoginException()
+            raise LoginError
 
         return user

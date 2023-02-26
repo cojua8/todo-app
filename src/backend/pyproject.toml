@@ -28,6 +28,7 @@ pytest-mock = "^3.10.0"
 
 [tool.poetry.group.development.dependencies]
 black = "^23.1.0"
+ruff = "^0.0.252"
 
 [build-system]
 requires = ["poetry-core"]
@@ -40,3 +41,43 @@ line-length = 79
 # Testing
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+
+
+[tool.ruff]
+ignore = [
+    "ANN003", #Missing type annotation for `**kwargs` 
+    "ANN101", #Missing type annotation for `self` in method
+    "ANN102", #Missing type annotation for `cls` in classmethod
+    "ANN204", #Missing return type annotation for special method `__init__`
+    "BLE001", #Do not catch blind exception: `Exception`
+    "COM812", #Trailing comma missing
+    "D100",   #Missing docstring in public module
+    "D101",   #Missing docstring in public class
+    "D102",   #Missing docstring in public method
+    "D103",   #Missing docstring in public function
+    "D104",   #Missing docstring in public package
+    "D105",   #Missing docstring in magic method
+    "D107",   #Missing docstring in `__init__`
+    "RET503", #Missing explicit `return` at the end of function able to return non-`None` value
+]
+select = ["ALL"]
+line-length = 79
+show-fixes = true
+show-source = true
+target-version = "py311"
+
+[tool.ruff.flake8-import-conventions]
+[tool.ruff.flake8-import-conventions.extend-aliases]
+"datetime" = "dt"
+
+[tool.ruff.flake8-pytest-style]
+fixture-parentheses = false
+
+[tool.ruff.flake8-tidy-imports]
+ban-relative-imports = "all"
+
+[tool.ruff.isort]
+combine-as-imports = true
+
+[tool.ruff.mccabe]
+max-complexity = 5

@@ -1,21 +1,24 @@
 import asyncio
 from abc import ABC
-from typing import Generic, Type
-from uuid import UUID
+from typing import TYPE_CHECKING, Generic
 
 from app.services.service_protocols.database_service_protocol import (
     BMT,
     DatabaseServiceProtocol,
 )
-from app.services.service_protocols.io_service_protocol import (
-    IOServiceProtocol,
-)
 from app.utils import json_utils
+
+if TYPE_CHECKING:
+    from uuid import UUID
+
+    from app.services.service_protocols.io_service_protocol import (
+        IOServiceProtocol,
+    )
 
 
 class JsonDatabaseService(DatabaseServiceProtocol[BMT], Generic[BMT], ABC):
     def __init__(
-        self, io_service: IOServiceProtocol, model_type: Type[BMT]
+        self, io_service: IOServiceProtocol, model_type: type[BMT]
     ) -> None:
         self.model_type = model_type
         self._io_service = io_service
@@ -23,9 +26,9 @@ class JsonDatabaseService(DatabaseServiceProtocol[BMT], Generic[BMT], ABC):
     def get_all(self) -> list[BMT]:
         return asyncio.run(self._get_data())
 
-    def get(self, id: UUID) -> BMT | None:
+    def get(self, id_: UUID) -> BMT | None:
         data = asyncio.run(self._get_data())
-        return next((item for item in data if item.id == id), None)
+        return next((item for item in data if item.id == id_), None)
 
     def create(self, new: BMT) -> None:
         data = asyncio.run(self._get_data())
@@ -34,18 +37,18 @@ class JsonDatabaseService(DatabaseServiceProtocol[BMT], Generic[BMT], ABC):
 
         asyncio.run(self._save_file(data))
 
-    def delete(self, id: UUID) -> None:
+    def delete(self, id_: UUID) -> None:
         data = asyncio.run(self._get_data())
 
-        data = [item for item in data if item.id != id]
+        data = [item for item in data if item.id != id_]
 
         asyncio.run(self._save_file(data))
 
-    def put(self, id: UUID, new: BMT) -> None:
+    def put(self, id_: UUID, new: BMT) -> None:
         data = asyncio.run(self._get_data())
 
         for i, item in enumerate(data):
-            if item.id == id:
+            if item.id == id_:
                 data[i] = new
                 break
 

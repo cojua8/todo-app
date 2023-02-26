@@ -1,0 +1,2 @@
+[tool.ruff]
+extend-ignore = ["S101"]

@@ -1,4 +1,5 @@
 import factory
+
 from app.models.user import User
 from tests.factories.base_factories import BaseModelFactory
 

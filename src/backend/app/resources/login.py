@@ -1,15 +1,18 @@
 from http import HTTPStatus
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
-from app.containers import Container
-from app.exceptions.login_exception import LoginException
-from app.services.service_protocols.authentication_service_protocol import (
-    AuthenticationServiceProtocol,
-)
 from dependency_injector.wiring import Provide, inject
 from flask_restful import Resource
 from webargs import fields
 from webargs.flaskparser import use_kwargs
+
+from app.containers import Container
+from app.exceptions.login_exception import LoginError
+
+if TYPE_CHECKING:
+    from app.services.service_protocols.authentication_service_protocol import (  # noqa: E501
+        AuthenticationServiceProtocol,
+    )
 
 
 class Login(Resource):
@@ -29,7 +32,7 @@ class Login(Resource):
         },
         location="json",
     )
-    def post(self, username, password) -> dict[str, Any]:
+    def post(self, username: str, password: str) -> dict[str, Any]:
         response: dict[str, Any] = {}
         try:
             user = self.authentication_service.login(
@@ -38,7 +41,7 @@ class Login(Resource):
 
             response["status"] = HTTPStatus.OK
             response["response"] = user
-        except LoginException as e:
+        except LoginError as e:
             response["status"] = HTTPStatus.INTERNAL_SERVER_ERROR
             response["response"] = str(e)
 

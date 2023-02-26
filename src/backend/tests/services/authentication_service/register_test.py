@@ -1,4 +1,5 @@
-from app.models.user import User
+from typing import TYPE_CHECKING
+
 from app.services.authentication_service import AuthenticationService
 from app.services.service_protocols.authentication_service_protocol import (  # noqa: E501
     RegistrationResult,
@@ -6,6 +7,9 @@ from app.services.service_protocols.authentication_service_protocol import (  # 
 from app.services.service_protocols.user_service_protocol import (
     UserServiceProtocol,
 )
+
+if TYPE_CHECKING:
+    from app.models.user import User
 
 
 def test_passwords_not_matching(faker, mocker):

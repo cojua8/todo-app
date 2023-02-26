@@ -1,4 +1,5 @@
 import aiopath
+
 from app.services.service_protocols.io_service_protocol import (
     IOServiceProtocol,
 )
@@ -28,6 +29,6 @@ class IOService(IOServiceProtocol):
 
         return str(content)
 
-    async def write(self, content: str):
+    async def write(self, content: str) -> None:
         async with self._file_path.open("w") as file:
             await file.write(content)
