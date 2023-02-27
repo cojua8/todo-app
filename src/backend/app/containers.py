@@ -16,7 +16,9 @@ class Container(containers.DeclarativeContainer):
     @classmethod
     def add_config(cls) -> type["Container"]:
         cls.config = providers.Configuration()
-        cls.config.json_database.directory_path.from_env("DATABASE_PATH")
+        cls.config.json_database.directory_path.from_env(
+            "DATABASE_PATH", "./database/"
+        )
 
         cls.wiring_config = containers.WiringConfiguration(
             packages=["app.resources"]
