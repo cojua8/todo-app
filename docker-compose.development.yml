@@ -4,11 +4,9 @@ services:
   todo-app-backend:
     container_name: backend
     build:
-      context: .
-      dockerfile: ./src/backend/Dockerfile
+      context: ./src/backend
     ports:
       - 5000:5000
-    working_dir: /app/backend
     volumes:
       # this binds the host folder to the container folder
       - ./src/backend/app:/app/backend/app
@@ -19,7 +17,7 @@ services:
       # in the container, saves the database in this path
       - DATABASE_PATH=/database/json_database
       - FLASK_APP=app/app.py
-      - FLASK_ENV=development
+      - FLASK_DEBUG=true
 
   todo-app-frontend:
     container_name: frontend
