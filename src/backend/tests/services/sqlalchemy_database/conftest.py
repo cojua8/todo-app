@@ -5,7 +5,7 @@ from sqlalchemy import engine_from_config
 
 @pytest.fixture(scope="session")
 def sqlalchemy_connect_url():
-    return "postgresql://postgres:postgres@localhost:5432/todo_db"
+    return "postgresql+psycopg://postgres:postgres@localhost:5432/todo_db"
 
 
 @pytest.fixture
