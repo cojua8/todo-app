@@ -16,7 +16,6 @@ services:
     environment:
       # in the container, saves the database in this path
       - DATABASE_PATH=/database/json_database
-      - FLASK_APP=app/app.py
       - FLASK_DEBUG=true
 
   todo-app-frontend:
