@@ -36,6 +36,6 @@ todo_table = Table(
         "date_created",
         Date,
         nullable=False,
-        default=dt.datetime.now(tz=dt.UTC).today(),
+        default=dt.datetime.now(tz=dt.UTC).date(),
     ),
 )
