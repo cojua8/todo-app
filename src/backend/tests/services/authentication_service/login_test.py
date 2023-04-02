@@ -1,4 +1,5 @@
 import pytest
+
 from app.exceptions.login_exception import LoginError
 from app.services.authentication_service import AuthenticationService
 from app.services.service_protocols.user_service_protocol import (
@@ -27,9 +28,9 @@ def test_inexistent_user_raises_login_exception(mocker, faker):
 def test_wrong_password_raises_login_exception(mocker, faker, user_factory):
     # arrange
     login_username = faker.user_name()
-    login_password = "a_password"
+    login_password = "a_password"  # noqa: S105
 
-    user = user_factory(password="another_password")
+    user = user_factory(password="another_password")  # noqa: S106
 
     mock_user_service = mocker.MagicMock(spec=UserServiceProtocol)
     mock_user_service.get_by_username = mocker.MagicMock(return_value=user)
@@ -45,7 +46,7 @@ def test_wrong_password_raises_login_exception(mocker, faker, user_factory):
 def test_login_user_ok(mocker, faker, user_factory):
     # arrange
     login_username = faker.user_name()
-    login_password = "a_password"
+    login_password = "a_password"  # noqa: S105
 
     expected_user = user_factory(password=login_password)
 

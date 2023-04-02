@@ -1,7 +1,8 @@
-from datetime import date
+import datetime as dt
 from uuid import UUID, uuid4
 
 import freezegun
+
 from app.models.todo import Todo
 
 
@@ -9,7 +10,7 @@ from app.models.todo import Todo
     "2022-04-04",
 )
 def test_attributes():
-    due_date = date.today()
+    due_date = dt.datetime.now(tz=dt.UTC).date()
     owner_id = uuid4()
     description = "test"
 
@@ -20,4 +21,4 @@ def test_attributes():
     assert bm.description == description
     assert bm.due_date == due_date
     assert bm.completed is False
-    assert bm.date_created == date.today()
+    assert bm.date_created == dt.datetime.now(tz=dt.UTC).date()

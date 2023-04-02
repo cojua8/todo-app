@@ -1,4 +1,5 @@
 import factory
+
 from app.models.todo import Todo
 from tests.factories.base_factories import BaseModelFactory
 

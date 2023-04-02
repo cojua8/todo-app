@@ -1,6 +1,7 @@
 from uuid import uuid4
 
 import pytest
+
 from app.services.sql_database_service.users_service import UsersService
 
 

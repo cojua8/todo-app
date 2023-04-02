@@ -1,6 +1,7 @@
 import pytest
-from app.services.sql_database_service.models import metadata_obj
 from sqlalchemy import engine_from_config
+
+from app.services.sql_database_service.models import metadata_obj
 
 
 @pytest.fixture(scope="session")

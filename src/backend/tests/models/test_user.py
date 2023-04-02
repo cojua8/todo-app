@@ -4,7 +4,7 @@ from app.models.user import User
 def test_attributes():
     email = "some@email.com"
     username = "some name"
-    password = "some password"
+    password = "some password"  # noqa: S105
 
     bm = User(email=email, username=username, password=password)
 

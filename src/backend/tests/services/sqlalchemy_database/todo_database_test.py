@@ -1,9 +1,10 @@
 from uuid import uuid4
 
 import pytest
+from sqlalchemy.exc import IntegrityError
+
 from app.services.sql_database_service.todos_service import TodosService
 from app.services.sql_database_service.users_service import UsersService
-from sqlalchemy.exc import IntegrityError
 
 
 @pytest.fixture

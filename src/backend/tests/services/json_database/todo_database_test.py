@@ -1,6 +1,8 @@
+from typing import TYPE_CHECKING
 from uuid import uuid4
 
 import pytest
+
 from app.services.json_database_service.todos_json_database_service import (
     TodosJsonDatabaseService,
 )
@@ -8,11 +10,13 @@ from app.services.service_protocols.io_service_protocol import (
     IOServiceProtocol,
 )
 from app.utils import json_utils
-from tests.factories.todo_factory import TodoFactory
+
+if TYPE_CHECKING:
+    from tests.factories.todo_factory import TodoFactory
 
 
 @pytest.fixture
-def setup_todos(request, todo_factory: TodoFactory):
+def setup_todos(request, todo_factory: "TodoFactory"):
     has_params = hasattr(request, "param")
     expected_values = request.param[0] if has_params else {}
     expected_todo = todo_factory.create(**expected_values)
@@ -43,7 +47,6 @@ def setup_service(mocker):
 def test_get_all_ok(setup_todos, setup_service):
     # arrange
     todos, _ = setup_todos
-    # expected_todos = [Todo(**v) for v in json_utils.loads(todos)]
     todo_service, io_service = setup_service
     io_service.read.return_value = json_utils.dumps(todos)
 

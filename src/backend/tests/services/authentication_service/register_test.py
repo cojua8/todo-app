@@ -19,8 +19,8 @@ def test_passwords_not_matching(faker, mocker):
 
     username = faker.user_name()
     email = faker.email()
-    password = "password"
-    confirm_password = "other_password"
+    password = "password"  # noqa: S105
+    confirm_password = "other_password"  # noqa: S105
 
     # act
     result = auth_service.register(username, email, password, confirm_password)
