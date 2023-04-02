@@ -61,7 +61,11 @@ ignore = [
     "D103",   #Missing docstring in public function
     "D104",   #Missing docstring in public package
     "D105",   #Missing docstring in magic method
+    "D106",   #Missing docstring in public nested class
     "D107",   #Missing docstring in `__init__`
+    "D203",   #1 blank line required before class docstring
+    "D204",   #1 blank line required after class docstring
+    "D212",   #Multi-line docstring summary should start at the first line
     "RET503", #Missing explicit `return` at the end of function able to return non-`None` value
 ]
 select = ["ALL"]
@@ -82,6 +86,7 @@ ban-relative-imports = "all"
 
 [tool.ruff.isort]
 combine-as-imports = true
+known-first-party = ["app", "tests"]
 
 [tool.ruff.mccabe]
 max-complexity = 5
