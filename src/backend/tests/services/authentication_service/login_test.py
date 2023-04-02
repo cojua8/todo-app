@@ -50,7 +50,9 @@ def test_login_user_ok(mocker, faker, user_factory):
     expected_user = user_factory(password=login_password)
 
     mock_user_service = mocker.MagicMock(spec=UserServiceProtocol)
-    mock_user_service.get_by_username = mocker.MagicMock(return_value=expected_user)
+    mock_user_service.get_by_username = mocker.MagicMock(
+        return_value=expected_user
+    )
 
     auth_service = AuthenticationService(mock_user_service)
 
