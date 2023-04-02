@@ -16,7 +16,7 @@ flask-restful = "^0.3.9"
 webargs = "^8.2.0"
 flask-cors = "^3.0.10"
 sqlalchemy = "^2.0.4"
-psycopg = {extras = ["binary"], version = "^3.1.8"}
+psycopg = { extras = ["binary"], version = "^3.1.8" }
 
 
 [tool.poetry.group.test.dependencies]
@@ -27,9 +27,9 @@ pytest-mock = "^3.10.0"
 
 
 [tool.poetry.group.development.dependencies]
-black = "^23.1.0"
+black = "^23.3.0"
 ruff = "^0.0.252"
-pyright = "^1.1.295"
+pyright = "^1.1.301"
 
 [build-system]
 requires = ["poetry-core"]
