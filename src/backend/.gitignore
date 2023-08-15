@@ -8,3 +8,5 @@ htmlcov/
 
 .DS_Store
 .coverage
+
+.venv/
