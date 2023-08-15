@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from abc import ABC
-from collections import namedtuple
 from typing import TYPE_CHECKING, Generic
 
 from sqlalchemy import Row, Table, delete, insert, select, update
@@ -18,8 +17,6 @@ if TYPE_CHECKING:
     from sqlalchemy.engine import Engine
 
     from app.models.base_model import BaseModel
-
-Mapper = namedtuple("Mapper", ["model_to_entity", "entity_to_model"])
 
 
 class Mappers:

@@ -28,7 +28,7 @@ pytest-mock = "^3.10.0"
 
 [tool.poetry.group.development.dependencies]
 black = "^23.3.0"
-ruff = "^0.0.252"
+ruff = "^0.0.284"
 pyright = "^1.1.301"
 
 [build-system]
