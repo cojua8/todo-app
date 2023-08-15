@@ -25,12 +25,7 @@ class Users(Resource):
     ) -> None:
         self.user_service = user_service
 
-    @use_kwargs(
-        {
-            "id": fields.UUID(),
-        },
-        location="json",
-    )
+    @use_kwargs({"id": fields.UUID()}, location="json")
     def get(self, **kwargs) -> dict[str, Any]:
         response: dict[str, Any] = {}
         id_ = kwargs["id"]
@@ -65,12 +60,7 @@ class Users(Resource):
 
         return response
 
-    @use_kwargs(
-        {
-            "id": fields.UUID(),
-        },
-        location="json",
-    )
+    @use_kwargs({"id": fields.UUID()}, location="json")
     def delete(self, **kwargs) -> dict[str, Any]:
         response: dict[str, Any] = {}
         id_ = kwargs["id"]

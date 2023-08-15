@@ -30,15 +30,13 @@ class Container(containers.DeclarativeContainer):
     def add_json_database_services(cls) -> type["Container"]:
         cls.users_io_service = asyncio.run(
             IOService.create_service(
-                cls.config.json_database.directory_path(),
-                "users.json",
+                cls.config.json_database.directory_path(), "users.json"
             )
         )
 
         cls.todo_io_service = asyncio.run(
             IOService.create_service(
-                cls.config.json_database.directory_path(),
-                "todos.json",
+                cls.config.json_database.directory_path(), "todos.json"
             )
         )
 
@@ -47,18 +45,15 @@ class Container(containers.DeclarativeContainer):
     @classmethod
     def add_services(cls) -> type["Container"]:
         cls.users_service = providers.Factory(
-            UsersJsonDatabaseService,
-            io_service=cls.users_io_service,
+            UsersJsonDatabaseService, io_service=cls.users_io_service
         )
 
         cls.todos_service = providers.Factory(
-            TodosJsonDatabaseService,
-            io_service=cls.todo_io_service,
+            TodosJsonDatabaseService, io_service=cls.todo_io_service
         )
 
         cls.authentication_service = providers.Factory(
-            AuthenticationService,
-            user_service=cls.users_service,
+            AuthenticationService, user_service=cls.users_service
         )
 
         return cls

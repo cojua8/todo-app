@@ -28,10 +28,7 @@ class Login(Resource):
         self.authentication_service = authentication_service
 
     @use_kwargs(
-        {
-            "username": fields.String(),
-            "password": fields.String(),
-        },
+        {"username": fields.String(), "password": fields.String()},
         location="json",
     )
     def post(self, username: str, password: str) -> dict[str, Any]:

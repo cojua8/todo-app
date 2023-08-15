@@ -16,10 +16,7 @@ if TYPE_CHECKING:
 
 
 class AuthenticationService(AuthenticationServiceProtocol):
-    def __init__(
-        self,
-        user_service: UserServiceProtocol,
-    ) -> None:
+    def __init__(self, user_service: UserServiceProtocol) -> None:
         self.user_service = user_service
 
     def register(

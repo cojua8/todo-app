@@ -38,6 +38,7 @@ build-backend = "poetry.core.masonry.api"
 # Formatting
 [tool.black]
 line-length = 79
+skip-magic-trailing-comma = true
 
 # Testing
 [tool.pytest.ini_options]

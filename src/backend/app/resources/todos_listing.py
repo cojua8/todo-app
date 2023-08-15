@@ -26,12 +26,7 @@ class TodoListing(Resource):
     ) -> None:
         self.todo_service = todo_service
 
-    @use_kwargs(
-        {
-            "user_id": fields.UUID(),
-        },
-        location="query",
-    )
+    @use_kwargs({"user_id": fields.UUID()}, location="query")
     def get(self, user_id: UUID) -> dict[str, Any]:
         response: dict[str, Any] = {}
         try:

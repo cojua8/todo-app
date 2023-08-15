@@ -6,9 +6,7 @@ import freezegun
 from app.models.todo import Todo
 
 
-@freezegun.freeze_time(
-    "2022-04-04",
-)
+@freezegun.freeze_time("2022-04-04")
 def test_attributes():
     due_date = dt.datetime.now(tz=dt.UTC).date()
     owner_id = uuid4()

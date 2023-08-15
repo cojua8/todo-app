@@ -25,12 +25,7 @@ class Todos(Resource):
     ) -> None:
         self.todo_service = todo_service
 
-    @use_kwargs(
-        {
-            "id": fields.UUID(),
-        },
-        location="json",
-    )
+    @use_kwargs({"id": fields.UUID()}, location="json")
     def get(self, **kwargs) -> dict[str, Any]:
         response: dict[str, Any] = {}
         id_ = kwargs["id"]
@@ -66,12 +61,7 @@ class Todos(Resource):
 
         return response
 
-    @use_kwargs(
-        {
-            "id": fields.UUID(),
-        },
-        location="json",
-    )
+    @use_kwargs({"id": fields.UUID()}, location="json")
     def delete(self, **kwargs) -> dict[str, Any]:
         response: dict[str, Any] = {}
         id_ = kwargs["id"]
