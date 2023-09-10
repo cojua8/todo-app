@@ -1,5 +1,3 @@
-import asyncio
-
 from dependency_injector import containers, providers
 
 from app.services.authentication_service import AuthenticationService
@@ -28,16 +26,16 @@ class Container(containers.DeclarativeContainer):
 
     @classmethod
     def add_json_database_services(cls) -> type["Container"]:
-        cls.users_io_service = asyncio.run(
-            IOService.create_service(
-                cls.config.json_database.directory_path(), "users.json"
-            )
+        cls.users_io_service = providers.Resource(
+            IOService.create_service,
+            cls.config.json_database.directory_path(),
+            "users.json",
         )
 
-        cls.todo_io_service = asyncio.run(
-            IOService.create_service(
-                cls.config.json_database.directory_path(), "todos.json"
-            )
+        cls.todo_io_service = providers.Resource(
+            IOService.create_service,
+            cls.config.json_database.directory_path(),
+            "todos.json",
         )
 
         return cls
