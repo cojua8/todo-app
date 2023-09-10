@@ -1,5 +1,7 @@
 from typing import TYPE_CHECKING
 
+import pytest
+
 from app.services.authentication_service import AuthenticationService
 from app.services.service_protocols.authentication_service_protocol import (  # noqa: E501
     RegistrationResult,
@@ -12,7 +14,8 @@ if TYPE_CHECKING:
     from app.models.user import User
 
 
-def test_passwords_not_matching(faker, mocker):
+@pytest.mark.asyncio()
+async def test_passwords_not_matching(faker, mocker):
     # arrange
     mock_user_service = mocker.MagicMock(spec=UserServiceProtocol)
     auth_service = AuthenticationService(mock_user_service)
@@ -23,25 +26,24 @@ def test_passwords_not_matching(faker, mocker):
     confirm_password = "other_password"  # noqa: S105
 
     # act
-    result = auth_service.register(username, email, password, confirm_password)
+    result = await auth_service.register(username, email, password, confirm_password)
 
     # assert
     assert result == RegistrationResult.PASSWORD_NOT_MATCHING
 
 
-def test_username_already_exists(user_factory, mocker):
+@pytest.mark.asyncio()
+async def test_username_already_exists(user_factory, mocker):
     # arrange
     mock_user: User = user_factory()
 
     mock_user_service = mocker.MagicMock(spec=UserServiceProtocol)
-    mock_user_service.get_by_username = mocker.MagicMock(
-        return_value=mock_user
-    )
+    mock_user_service.get_by_username = mocker.AsyncMock(return_value=mock_user)
 
     auth_service = AuthenticationService(mock_user_service)
 
     # act
-    result = auth_service.register(
+    result = await auth_service.register(
         mock_user.username,
         mock_user.email,
         mock_user.password,
@@ -52,18 +54,19 @@ def test_username_already_exists(user_factory, mocker):
     assert result == RegistrationResult.USERNAME_ALREADY_EXISTS
 
 
-def test_email_already_exists(mocker, user_factory):
+@pytest.mark.asyncio()
+async def test_email_already_exists(mocker, user_factory):
     # arrange
     mock_user: User = user_factory()
 
     mock_user_service = mocker.MagicMock(spec=UserServiceProtocol)
-    mock_user_service.get_by_username = mocker.MagicMock(return_value=None)
-    mock_user_service.get_by_email = mocker.MagicMock(return_value=mock_user)
+    mock_user_service.get_by_username = mocker.AsyncMock(return_value=None)
+    mock_user_service.get_by_email = mocker.AsyncMock(return_value=mock_user)
 
     auth_service = AuthenticationService(mock_user_service)
 
     # act
-    result = auth_service.register(
+    result = await auth_service.register(
         mock_user.username,
         mock_user.email,
         mock_user.password,
@@ -74,18 +77,19 @@ def test_email_already_exists(mocker, user_factory):
     assert result == RegistrationResult.EMAIL_ALREADY_EXISTS
 
 
-def test_success_creates_user(mocker, user_factory):
+@pytest.mark.asyncio()
+async def test_success_creates_user(mocker, user_factory):
     # arrange
     user: User = user_factory()
 
     mock_user_service = mocker.MagicMock(spec=UserServiceProtocol)
-    mock_user_service.get_by_username = mocker.MagicMock(return_value=None)
-    mock_user_service.get_by_email = mocker.MagicMock(return_value=None)
+    mock_user_service.get_by_username = mocker.AsyncMock(return_value=None)
+    mock_user_service.get_by_email = mocker.AsyncMock(return_value=None)
 
     auth_service = AuthenticationService(mock_user_service)
 
     # act
-    result = auth_service.register(
+    result = await auth_service.register(
         user.username, user.email, user.password, user.password
     )
 
