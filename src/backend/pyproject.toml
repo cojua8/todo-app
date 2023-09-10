@@ -11,13 +11,13 @@ python = "^3.11"
 python-dotenv = "^1.0.0"
 aiopath = "^0.6.11"
 dependency-injector = "^4.41.0"
-flask = {extras = ["async"], version = "^2.3.3"}
+flask = { extras = ["async"], version = "^2.3.3" }
 webargs = "^8.2.0"
 flask-cors = "^3.0.10"
 sqlalchemy = "^2.0.4"
 psycopg = { extras = ["binary"], version = "^3.1.8" }
 fastapi = "^0.103.1"
-uvicorn = {extras = ["standard"], version = "^0.23.2"}
+uvicorn = { extras = ["standard"], version = "^0.23.2" }
 pytest-asyncio = "^0.21.1"
 
 
