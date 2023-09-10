@@ -4,7 +4,7 @@ from http import HTTPStatus
 from typing import TYPE_CHECKING, Any
 
 from dependency_injector.wiring import Provide, inject
-from flask_restful import Resource
+from flask import Blueprint
 
 from app.containers import Container
 
@@ -13,24 +13,22 @@ if TYPE_CHECKING:
         UserServiceProtocol,
     )
 
+user_listing_blueprint = Blueprint("users", __name__)
 
-class UserListing(Resource):
-    @inject
-    def __init__(
-        self,
-        user_service: UserServiceProtocol = (Provide[Container.users_service]),
-    ) -> None:
-        self.user_service = user_service
 
-    def get(self) -> dict[str, Any]:
-        response: dict[str, Any] = {}
-        try:
-            users = self.user_service.get_all()
+@user_listing_blueprint.get("/users")
+@inject
+async def get(
+    user_service: UserServiceProtocol = Provide[Container.users_service],
+) -> dict[str, Any]:
+    response: dict[str, Any] = {}
+    try:
+        users = await user_service.get_all()
 
-            response["status"] = HTTPStatus.OK
-            response["response"] = users
-        except Exception as e:
-            response["status"] = HTTPStatus.INTERNAL_SERVER_ERROR
-            response["response"] = str(e)
+        response["status"] = HTTPStatus.OK
+        response["response"] = users
+    except Exception as e:
+        response["status"] = HTTPStatus.INTERNAL_SERVER_ERROR
+        response["response"] = str(e)
 
-        return response
+    return response

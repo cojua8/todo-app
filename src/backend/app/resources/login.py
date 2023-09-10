@@ -4,7 +4,7 @@ from http import HTTPStatus
 from typing import TYPE_CHECKING, Any
 
 from dependency_injector.wiring import Provide, inject
-from flask_restful import Resource
+from flask import Blueprint
 from webargs import fields
 from webargs.flaskparser import use_kwargs
 
@@ -16,32 +16,31 @@ if TYPE_CHECKING:
         AuthenticationServiceProtocol,
     )
 
+login_blueprint = Blueprint("login", __name__)
 
-class Login(Resource):
-    @inject
-    def __init__(
-        self,
-        authentication_service: AuthenticationServiceProtocol = Provide[
-            Container.authentication_service
-        ],
-    ) -> None:
-        self.authentication_service = authentication_service
 
-    @use_kwargs(
-        {"username": fields.String(), "password": fields.String()},
-        location="json",
-    )
-    def post(self, username: str, password: str) -> dict[str, Any]:
-        response: dict[str, Any] = {}
-        try:
-            user = self.authentication_service.login(
-                username=username, password=password
-            )
+@login_blueprint.post("/login")
+@inject
+@use_kwargs(
+    {"username": fields.String(), "password": fields.String()}, location="json"
+)
+async def post(
+    username: str,
+    password: str,
+    authentication_service: AuthenticationServiceProtocol = Provide[
+        Container.authentication_service
+    ],
+) -> dict[str, Any]:
+    response: dict[str, Any] = {}
+    try:
+        user = await authentication_service.login(
+            username=username, password=password
+        )
 
-            response["status"] = HTTPStatus.OK
-            response["response"] = user
-        except LoginError as e:
-            response["status"] = HTTPStatus.INTERNAL_SERVER_ERROR
-            response["response"] = str(e)
+        response["status"] = HTTPStatus.OK
+        response["response"] = user
+    except LoginError as e:
+        response["status"] = HTTPStatus.INTERNAL_SERVER_ERROR
+        response["response"] = str(e)
 
-        return response
+    return response

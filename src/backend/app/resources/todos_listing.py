@@ -4,7 +4,7 @@ from http import HTTPStatus
 from typing import TYPE_CHECKING, Any
 
 from dependency_injector.wiring import Provide, inject
-from flask_restful import Resource
+from flask import Blueprint
 from webargs import fields
 from webargs.flaskparser import use_kwargs
 
@@ -17,25 +17,24 @@ if TYPE_CHECKING:
         TodoServiceProtocol,
     )
 
+todo_listing_blueprint = Blueprint("todos", __name__)
 
-class TodoListing(Resource):
-    @inject
-    def __init__(
-        self,
-        todo_service: TodoServiceProtocol = Provide[Container.todos_service],
-    ) -> None:
-        self.todo_service = todo_service
 
-    @use_kwargs({"user_id": fields.UUID()}, location="query")
-    def get(self, user_id: UUID) -> dict[str, Any]:
-        response: dict[str, Any] = {}
-        try:
-            users = self.todo_service.get_all_by_user_id(user_id)
+@todo_listing_blueprint.get("/todos")
+@inject
+@use_kwargs({"user_id": fields.UUID()}, location="query")
+async def get(
+    user_id: UUID,
+    todo_service: TodoServiceProtocol = Provide[Container.todos_service],
+) -> dict[str, Any]:
+    response: dict[str, Any] = {}
+    try:
+        users = await todo_service.get_all_by_user_id(user_id)
 
-            response["status"] = HTTPStatus.OK
-            response["response"] = users
-        except Exception as e:
-            response["status"] = HTTPStatus.INTERNAL_SERVER_ERROR
-            response["response"] = str(e)
+        response["status"] = HTTPStatus.OK
+        response["response"] = users
+    except Exception as e:
+        response["status"] = HTTPStatus.INTERNAL_SERVER_ERROR
+        response["response"] = str(e)
 
-        return response
+    return response
