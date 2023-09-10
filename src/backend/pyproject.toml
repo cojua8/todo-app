@@ -45,6 +45,7 @@ skip-magic-trailing-comma = true
 # Testing
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+asyncio_mode = "auto"
 
 # typing
 [tool.pyright]

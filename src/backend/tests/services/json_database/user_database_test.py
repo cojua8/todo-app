@@ -37,7 +37,6 @@ def setup(request, user_factory: "UserFactory"):
     indirect=True,
     ids=["return_user", "return_first_match"],
 )
-@pytest.mark.asyncio()
 async def test_get_by_email_returns_user(mocker, setup):
     # arrange
     users, expected_user = setup
@@ -52,7 +51,6 @@ async def test_get_by_email_returns_user(mocker, setup):
     assert user.id == expected_user.id
 
 
-@pytest.mark.asyncio()
 async def test_get_by_email_returns_none(mocker, user_factory: "UserFactory"):
     # arrange
     io_service = mocker.MagicMock(spec=IOServiceProtocol)
@@ -75,7 +73,6 @@ async def test_get_by_email_returns_none(mocker, user_factory: "UserFactory"):
     indirect=True,
     ids=["return_user", "return_first_match"],
 )
-@pytest.mark.asyncio()
 async def test_get_by_username_returns_user(mocker, setup):
     # arrange
     users, expected_user = setup
@@ -91,7 +88,6 @@ async def test_get_by_username_returns_user(mocker, setup):
         assert user.id == expected_user.id
 
 
-@pytest.mark.asyncio()
 async def test_get_by_username_returns_none(mocker, user_factory: "UserFactory"):
     # arrange
     username = "username"
@@ -114,7 +110,6 @@ async def test_get_by_username_returns_none(mocker, user_factory: "UserFactory")
     indirect=True,
     ids=["return_users", "return_empty"],
 )
-@pytest.mark.asyncio()
 async def test_get_all_ok(mocker, setup):
     # arrange
     users, _ = setup
@@ -136,7 +131,6 @@ async def test_get_all_ok(mocker, setup):
     indirect=True,
     ids=["return_user", "return_none"],
 )
-@pytest.mark.asyncio()
 async def test_get_returns_user(mocker, setup):
     # arrange
     users, expected_user = setup
@@ -152,7 +146,6 @@ async def test_get_returns_user(mocker, setup):
         assert actual_user.id == expected_user.id
 
 
-@pytest.mark.asyncio()
 async def test_get_returns_none(mocker, user_factory: "UserFactory"):
     # arrange
     id_ = uuid4()
@@ -169,7 +162,6 @@ async def test_get_returns_none(mocker, user_factory: "UserFactory"):
     assert actual_user is None
 
 
-@pytest.mark.asyncio()
 async def test_create_ok(mocker, user_factory: "UserFactory"):
     # arrange
     user = user_factory.create()
@@ -185,7 +177,6 @@ async def test_create_ok(mocker, user_factory: "UserFactory"):
 
 
 @pytest.mark.parametrize("setup", [({}, 4, {})], indirect=True)
-@pytest.mark.asyncio()
 async def test_delete_ok(mocker, setup):
     # arrange
     users, expected_user = setup
@@ -203,7 +194,6 @@ async def test_delete_ok(mocker, setup):
 
 
 @pytest.mark.parametrize("setup", [({}, 4, {})], indirect=True)
-@pytest.mark.asyncio()
 async def test_put_ok(mocker, setup, user_factory: "UserFactory"):
     # arrange
     users, expected_user = setup

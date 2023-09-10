@@ -6,7 +6,7 @@ from app.services.sql_database_service.models import metadata_obj
 
 @pytest.fixture(scope="session")
 def sqlalchemy_connect_url():
-    return "postgresql+psycopg://postgres:postgres@localhost:5432/todo_db"
+    return "postgresql+psycopg://postgres:postgres@localhost:2345/test_todo_db"
 
 
 @pytest.fixture

@@ -7,7 +7,6 @@ from app.services.service_protocols.user_service_protocol import (
 )
 
 
-@pytest.mark.asyncio()
 async def test_inexistent_user_raises_login_exception(mocker, faker):
     # arrange
     login_username = faker.user_name()
@@ -26,7 +25,6 @@ async def test_inexistent_user_raises_login_exception(mocker, faker):
     assert str(exc_info.value) == "Login error wrong user or password."
 
 
-@pytest.mark.asyncio()
 async def test_wrong_password_raises_login_exception(mocker, faker, user_factory):
     # arrange
     login_username = faker.user_name()
@@ -45,7 +43,6 @@ async def test_wrong_password_raises_login_exception(mocker, faker, user_factory
         await auth_service.login(login_username, login_password)
 
 
-@pytest.mark.asyncio()
 async def test_login_user_ok(mocker, faker, user_factory):
     # arrange
     login_username = faker.user_name()

@@ -21,7 +21,7 @@ class TodosService(BaseService[Todo], TodoServiceProtocol):
     def __init__(self, engine: Engine) -> None:
         super().__init__(engine, todo_table, Todo)
 
-    def get_all_by_user_id(self, user_id: UUID) -> list[Todo]:
+    async def get_all_by_user_id(self, user_id: UUID) -> list[Todo]:
         with self._engine.connect() as conn:
             rows = conn.execute(
                 select(self._table).where(self._table.c.owner_id == user_id)

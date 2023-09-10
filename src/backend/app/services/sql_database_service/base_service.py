@@ -34,7 +34,7 @@ class BaseService(DatabaseServiceProtocol[BMT], Generic[BMT], ABC):
         self._model = model
         self._mappers = Mappers()
 
-    def get_all(self) -> Iterable[BMT]:
+    async def get_all(self) -> Iterable[BMT]:
         with self._engine.connect() as conn:
             results = conn.execute(select(self._table))
         return [
@@ -42,7 +42,7 @@ class BaseService(DatabaseServiceProtocol[BMT], Generic[BMT], ABC):
             for result in results
         ]
 
-    def get(self, id_: UUID) -> BMT | None:
+    async def get(self, id_: UUID) -> BMT | None:
         with self._engine.connect() as conn:
             bmt = conn.execute(
                 select(self._table).where(self._table.c.id == id_).limit(1)
@@ -51,18 +51,18 @@ class BaseService(DatabaseServiceProtocol[BMT], Generic[BMT], ABC):
         if bmt := next(bmt, None):
             return self._mappers.entity_to_model(bmt, self._model)
 
-    def create(self, new: BMT) -> None:
+    async def create(self, new: BMT) -> None:
         entity = self._mappers.model_to_entity(new)
         with self._engine.connect() as conn:
             conn.execute(insert(self._table).values(**entity))
             conn.commit()
 
-    def delete(self, id_: UUID) -> None:
+    async def delete(self, id_: UUID) -> None:
         with self._engine.connect() as conn:
             conn.execute(delete(self._table).where(self._table.c.id == id_))
             conn.commit()
 
-    def put(self, id_: UUID, new: BMT) -> None:
+    async def put(self, id_: UUID, new: BMT) -> None:
         entity = self._mappers.model_to_entity(new)
         with self._engine.connect() as conn:
             conn.execute(

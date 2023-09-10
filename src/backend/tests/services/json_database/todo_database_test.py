@@ -42,7 +42,6 @@ def setup_service(mocker):
     indirect=True,
     ids=["return_todo", "return_empty"],
 )
-@pytest.mark.asyncio()
 async def test_get_all_ok(setup_todos, setup_service):
     # arrange
     todos, _ = setup_todos
@@ -57,7 +56,6 @@ async def test_get_all_ok(setup_todos, setup_service):
 
 
 @pytest.mark.parametrize("setup_todos", [({"id": uuid4()}, 4)], indirect=True)
-@pytest.mark.asyncio()
 async def test_get_returns_todo(setup_todos, setup_service):
     # arrange
     todos, expected_todo = setup_todos
@@ -72,7 +70,6 @@ async def test_get_returns_todo(setup_todos, setup_service):
 
 
 @pytest.mark.parametrize("setup_todos", [({}, 1)], indirect=True)
-@pytest.mark.asyncio()
 async def test_get_returns_none(setup_todos, setup_service):
     # arrange
     todos, _ = setup_todos
@@ -87,7 +84,6 @@ async def test_get_returns_none(setup_todos, setup_service):
     assert actual_todo is None
 
 
-@pytest.mark.asyncio()
 async def test_create_ok(setup_service, todo_factory):
     # arrange
     todo = todo_factory.create()
@@ -102,7 +98,6 @@ async def test_create_ok(setup_service, todo_factory):
 
 
 @pytest.mark.parametrize("setup_todos", [({}, 4)], indirect=True)
-@pytest.mark.asyncio()
 async def test_delete_ok(setup_service, setup_todos):
     # arrange
     todos, expected_todo = setup_todos
@@ -117,7 +112,6 @@ async def test_delete_ok(setup_service, setup_todos):
 
 
 @pytest.mark.parametrize("setup_todos", [({}, 4)], indirect=True)
-@pytest.mark.asyncio()
 async def test_put_ok(setup_todos, setup_service, todo_factory):
     # arrange
     todos, expected_todo = setup_todos
@@ -134,7 +128,6 @@ async def test_put_ok(setup_todos, setup_service, todo_factory):
     io_service.write.assert_called_once_with(json_utils.dumps(expected_todos, indent=4))
 
 
-@pytest.mark.asyncio()
 async def test_get_all_by_user_id_ok(setup_service, setup_todos, todo_factory):
     # arrange
     todos, expected_todo = setup_todos

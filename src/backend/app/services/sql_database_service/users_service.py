@@ -19,7 +19,7 @@ class UsersService(BaseService[User], UserServiceProtocol):
     def __init__(self, engine: Engine) -> None:
         super().__init__(engine, user_table, User)
 
-    def get_by_email(self, email: str) -> User | None:
+    async def get_by_email(self, email: str) -> User | None:
         with self._engine.connect() as conn:
             rows = conn.execute(
                 select(self._table)
@@ -29,7 +29,7 @@ class UsersService(BaseService[User], UserServiceProtocol):
         if entity := next(rows, None):
             return self._mappers.entity_to_model(entity, self._model)
 
-    def get_by_username(self, username: str) -> User | None:
+    async def get_by_username(self, username: str) -> User | None:
         with self._engine.connect() as conn:
             rows = conn.execute(
                 select(self._table)
