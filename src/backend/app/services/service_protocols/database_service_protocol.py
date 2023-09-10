@@ -12,17 +12,17 @@ BMT = TypeVar("BMT", bound=BaseModel)
 
 
 class DatabaseServiceProtocol(Protocol, Generic[BMT]):
-    def get_all(self) -> Iterable[BMT]:
+    async def get_all(self) -> Iterable[BMT]:
         ...
 
-    def get(self, id_: UUID) -> BMT | None:
+    async def get(self, id_: UUID) -> BMT | None:
         ...
 
-    def create(self, new: BMT) -> None:
+    async def create(self, new: BMT) -> None:
         ...
 
-    def delete(self, id_: UUID) -> None:
+    async def delete(self, id_: UUID) -> None:
         ...
 
-    def put(self, id_: UUID, new: BMT) -> None:
+    async def put(self, id_: UUID, new: BMT) -> None:
         ...

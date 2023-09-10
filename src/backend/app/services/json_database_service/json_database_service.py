@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import asyncio
 from abc import ABC
 from typing import TYPE_CHECKING, Generic
 
@@ -25,36 +24,36 @@ class JsonDatabaseService(DatabaseServiceProtocol[BMT], Generic[BMT], ABC):
         self.model_type = model_type
         self._io_service = io_service
 
-    def get_all(self) -> list[BMT]:
-        return asyncio.run(self._get_data())
+    async def get_all(self) -> list[BMT]:
+        return await self._get_data()
 
-    def get(self, id_: UUID) -> BMT | None:
-        data = asyncio.run(self._get_data())
+    async def get(self, id_: UUID) -> BMT | None:
+        data = await self._get_data()
         return next((item for item in data if item.id == id_), None)
 
-    def create(self, new: BMT) -> None:
-        data = asyncio.run(self._get_data())
+    async def create(self, new: BMT) -> None:
+        data = await self._get_data()
 
         data.append(new)
 
-        asyncio.run(self._save_file(data))
+        await self._save_file(data)
 
-    def delete(self, id_: UUID) -> None:
-        data = asyncio.run(self._get_data())
+    async def delete(self, id_: UUID) -> None:
+        data = await self._get_data()
 
         data = [item for item in data if item.id != id_]
 
-        asyncio.run(self._save_file(data))
+        await self._save_file(data)
 
-    def put(self, id_: UUID, new: BMT) -> None:
-        data = asyncio.run(self._get_data())
+    async def put(self, id_: UUID, new: BMT) -> None:
+        data = await self._get_data()
 
         for i, item in enumerate(data):
             if item.id == id_:
                 data[i] = new
                 break
 
-        asyncio.run(self._save_file(data))
+        await self._save_file(data)
 
     async def _get_data(self) -> list[BMT]:
         files_contents = await self._io_service.read()

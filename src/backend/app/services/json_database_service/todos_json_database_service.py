@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import asyncio
 from typing import TYPE_CHECKING
 
 from app.models.todo import Todo
@@ -24,7 +23,7 @@ class TodosJsonDatabaseService(JsonDatabaseService[Todo], TodoServiceProtocol):
         model_type = Todo
         super().__init__(io_service, model_type)
 
-    def get_all_by_user_id(self, user_id: UUID) -> list[Todo]:
-        data = asyncio.run(self._get_data())
+    async def get_all_by_user_id(self, user_id: UUID) -> list[Todo]:
+        data = await self._get_data()
 
         return [v for v in data if v.owner_id == user_id]

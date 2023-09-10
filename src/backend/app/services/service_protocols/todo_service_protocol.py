@@ -12,5 +12,5 @@ if TYPE_CHECKING:
 
 
 class TodoServiceProtocol(DatabaseServiceProtocol[Todo], Protocol):
-    def get_all_by_user_id(self, user_id: UUID) -> list[Todo]:
+    async def get_all_by_user_id(self, user_id: UUID) -> list[Todo]:
         ...

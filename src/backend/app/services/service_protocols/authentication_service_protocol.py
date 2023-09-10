@@ -15,10 +15,10 @@ class RegistrationResult(Enum):
 
 
 class AuthenticationServiceProtocol(Protocol):
-    def register(
+    async def register(
         self, username: str, email: str, password: str, confirm_password: str
     ) -> RegistrationResult:
         ...
 
-    def login(self, username: str, password: str) -> User:
+    async def login(self, username: str, password: str) -> User:
         ...

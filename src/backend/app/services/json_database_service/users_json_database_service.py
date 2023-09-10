@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import asyncio
 from typing import TYPE_CHECKING
 
 from app.models.user import User
@@ -22,12 +21,12 @@ class UsersJsonDatabaseService(JsonDatabaseService[User], UserServiceProtocol):
         model_type = User
         super().__init__(io_service, model_type)
 
-    def get_by_email(self, email: str) -> User | None:
-        users = asyncio.run(self._get_data())
+    async def get_by_email(self, email: str) -> User | None:
+        users = await self._get_data()
         return next((user for user in users if user.email == email), None)
 
-    def get_by_username(self, username: str) -> User | None:
-        users = asyncio.run(self._get_data())
+    async def get_by_username(self, username: str) -> User | None:
+        users = await self._get_data()
         return next(
             (user for user in users if user.username == username), None
         )
