@@ -73,7 +73,9 @@ async def test_create_ok(todo_factory, todos_service, user):
     assert actual_todo == todo
 
 
-async def test_create_fails_on_non_existent_owner_id(todo_factory, todos_service):
+async def test_create_fails_on_non_existent_owner_id(
+    todo_factory, todos_service
+):
     # Arrange
     todo = todo_factory.create()
 

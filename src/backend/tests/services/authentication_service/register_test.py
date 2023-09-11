@@ -23,7 +23,9 @@ async def test_passwords_not_matching(faker, mocker):
     confirm_password = "other_password"  # noqa: S105
 
     # act
-    result = await auth_service.register(username, email, password, confirm_password)
+    result = await auth_service.register(
+        username, email, password, confirm_password
+    )
 
     # assert
     assert result == RegistrationResult.PASSWORD_NOT_MATCHING
@@ -34,7 +36,9 @@ async def test_username_already_exists(user_factory, mocker):
     mock_user: User = user_factory()
 
     mock_user_service = mocker.MagicMock(spec=UserServiceProtocol)
-    mock_user_service.get_by_username = mocker.AsyncMock(return_value=mock_user)
+    mock_user_service.get_by_username = mocker.AsyncMock(
+        return_value=mock_user
+    )
 
     auth_service = AuthenticationService(mock_user_service)
 

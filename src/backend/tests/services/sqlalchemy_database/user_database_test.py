@@ -112,7 +112,9 @@ async def test_get_by_email_returns_none(user_factory, users_service):
     assert actual_user is None
 
 
-async def test_get_by_username_returns_first_found(user_factory, users_service):
+async def test_get_by_username_returns_first_found(
+    user_factory, users_service
+):
     # Arrange
     username = "some_username"
     user = user_factory.create(username=username)

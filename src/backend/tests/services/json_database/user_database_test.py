@@ -21,7 +21,9 @@ def setup(request, user_factory: "UserFactory"):
     expected_values = request.param[0]
     expected_user = user_factory.create(**expected_values)
 
-    existing_users = user_factory.create_batch(request.param[1], **request.param[2])
+    existing_users = user_factory.create_batch(
+        request.param[1], **request.param[2]
+    )
 
     db_users = [expected_user, *existing_users]
 
@@ -54,7 +56,9 @@ async def test_get_by_email_returns_user(mocker, setup):
 async def test_get_by_email_returns_none(mocker, user_factory: "UserFactory"):
     # arrange
     io_service = mocker.MagicMock(spec=IOServiceProtocol)
-    io_service.read.return_value = json_utils.dumps(user_factory.create_batch(4))
+    io_service.read.return_value = json_utils.dumps(
+        user_factory.create_batch(4)
+    )
 
     service = UsersJsonDatabaseService(io_service)
     # act
@@ -88,7 +92,9 @@ async def test_get_by_username_returns_user(mocker, setup):
         assert user.id == expected_user.id
 
 
-async def test_get_by_username_returns_none(mocker, user_factory: "UserFactory"):
+async def test_get_by_username_returns_none(
+    mocker, user_factory: "UserFactory"
+):
     # arrange
     username = "username"
     users = user_factory.create_batch(4)
@@ -173,7 +179,9 @@ async def test_create_ok(mocker, user_factory: "UserFactory"):
     await service.create(user)
 
     # assert
-    io_service.write.assert_called_once_with(json_utils.dumps([user], indent=4))
+    io_service.write.assert_called_once_with(
+        json_utils.dumps([user], indent=4)
+    )
 
 
 @pytest.mark.parametrize("setup", [({}, 4, {})], indirect=True)
@@ -208,4 +216,6 @@ async def test_put_ok(mocker, setup, user_factory: "UserFactory"):
     await service.put(expected_user.id, updated_user)
 
     # assert
-    io_service.write.assert_called_once_with(json_utils.dumps(expected_users, indent=4))
+    io_service.write.assert_called_once_with(
+        json_utils.dumps(expected_users, indent=4)
+    )

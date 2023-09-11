@@ -21,7 +21,9 @@ def setup_todos(request, todo_factory: "TodoFactory"):
     expected_values = request.param[0] if has_params else {}
     expected_todo = todo_factory.create(**expected_values)
 
-    existing_todo = todo_factory.create_batch(request.param[1] if has_params else 1)
+    existing_todo = todo_factory.create_batch(
+        request.param[1] if has_params else 1
+    )
 
     db_todos = [expected_todo, *existing_todo]
 
@@ -94,7 +96,9 @@ async def test_create_ok(setup_service, todo_factory):
     await todo_service.create(todo)
 
     # assert
-    io_service.write.assert_called_once_with(json_utils.dumps([todo], indent=4))
+    io_service.write.assert_called_once_with(
+        json_utils.dumps([todo], indent=4)
+    )
 
 
 @pytest.mark.parametrize("setup_todos", [({}, 4)], indirect=True)
@@ -108,7 +112,9 @@ async def test_delete_ok(setup_service, setup_todos):
     await todo_service.delete(expected_todo.id)
 
     # assert
-    io_service.write.assert_called_once_with(json_utils.dumps(todos[1:], indent=4))
+    io_service.write.assert_called_once_with(
+        json_utils.dumps(todos[1:], indent=4)
+    )
 
 
 @pytest.mark.parametrize("setup_todos", [({}, 4)], indirect=True)
@@ -125,7 +131,9 @@ async def test_put_ok(setup_todos, setup_service, todo_factory):
     await todo_service.put(expected_todo.id, updated_todo)
 
     # assert
-    io_service.write.assert_called_once_with(json_utils.dumps(expected_todos, indent=4))
+    io_service.write.assert_called_once_with(
+        json_utils.dumps(expected_todos, indent=4)
+    )
 
 
 async def test_get_all_by_user_id_ok(setup_service, setup_todos, todo_factory):
