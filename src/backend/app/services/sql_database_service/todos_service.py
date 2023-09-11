@@ -14,16 +14,16 @@ from app.services.sql_database_service.models import todo_table
 if TYPE_CHECKING:
     from uuid import UUID
 
-    from sqlalchemy.engine import Engine
+    from sqlalchemy.ext.asyncio import AsyncEngine
 
 
 class TodosService(BaseService[Todo], TodoServiceProtocol):
-    def __init__(self, engine: Engine) -> None:
+    def __init__(self, engine: AsyncEngine) -> None:
         super().__init__(engine, todo_table, Todo)
 
     async def get_all_by_user_id(self, user_id: UUID) -> list[Todo]:
-        with self._engine.connect() as conn:
-            rows = conn.execute(
+        async with self._engine.connect() as conn:
+            rows = await conn.execute(
                 select(self._table).where(self._table.c.owner_id == user_id)
             )
         return [

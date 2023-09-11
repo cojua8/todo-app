@@ -1,7 +1,7 @@
-from sqlalchemy import create_engine
+from sqlalchemy.ext.asyncio import create_async_engine
 
-engine = create_engine(
-    "postgresql+psycopg2://postgres:postgres@localhost:5432/todo_db",
+engine = create_async_engine(
+    "postgresql+asyncpg://postgres:postgres@localhost:5432/todo_db",
     echo=True,
     future=True,
 )

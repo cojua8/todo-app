@@ -14,7 +14,7 @@ if TYPE_CHECKING:
     from collections.abc import Iterable
     from uuid import UUID
 
-    from sqlalchemy.engine import Engine
+    from sqlalchemy.ext.asyncio import AsyncEngine
 
     from app.models.base_model import BaseModel
 
@@ -28,23 +28,25 @@ class Mappers:
 
 
 class BaseService(DatabaseServiceProtocol[BMT], Generic[BMT], ABC):
-    def __init__(self, engine: Engine, table: Table, model: type[BMT]) -> None:
+    def __init__(
+        self, engine: AsyncEngine, table: Table, model: type[BMT]
+    ) -> None:
         self._engine = engine
         self._table = table
         self._model = model
         self._mappers = Mappers()
 
     async def get_all(self) -> Iterable[BMT]:
-        with self._engine.connect() as conn:
-            results = conn.execute(select(self._table))
+        async with self._engine.connect() as conn:
+            results = await conn.execute(select(self._table))
         return [
             self._mappers.entity_to_model(result, self._model)
             for result in results
         ]
 
     async def get(self, id_: UUID) -> BMT | None:
-        with self._engine.connect() as conn:
-            bmt = conn.execute(
+        async with self._engine.connect() as conn:
+            bmt = await conn.execute(
                 select(self._table).where(self._table.c.id == id_).limit(1)
             )
 
@@ -53,21 +55,23 @@ class BaseService(DatabaseServiceProtocol[BMT], Generic[BMT], ABC):
 
     async def create(self, new: BMT) -> None:
         entity = self._mappers.model_to_entity(new)
-        with self._engine.connect() as conn:
-            conn.execute(insert(self._table).values(**entity))
-            conn.commit()
+        async with self._engine.connect() as conn:
+            await conn.execute(insert(self._table).values(**entity))
+            await conn.commit()
 
     async def delete(self, id_: UUID) -> None:
-        with self._engine.connect() as conn:
-            conn.execute(delete(self._table).where(self._table.c.id == id_))
-            conn.commit()
+        async with self._engine.connect() as conn:
+            await conn.execute(
+                delete(self._table).where(self._table.c.id == id_)
+            )
+            await conn.commit()
 
     async def put(self, id_: UUID, new: BMT) -> None:
         entity = self._mappers.model_to_entity(new)
-        with self._engine.connect() as conn:
-            conn.execute(
+        async with self._engine.connect() as conn:
+            await conn.execute(
                 update(self._table)
                 .where(self._table.c.id == id_)
                 .values(**entity)
             )
-            conn.commit()
+            await conn.commit()

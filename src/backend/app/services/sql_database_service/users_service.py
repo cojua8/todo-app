@@ -12,16 +12,16 @@ from app.services.sql_database_service.base_service import BaseService
 from app.services.sql_database_service.models import user_table
 
 if TYPE_CHECKING:
-    from sqlalchemy.engine import Engine
+    from sqlalchemy.ext.asyncio import AsyncEngine
 
 
 class UsersService(BaseService[User], UserServiceProtocol):
-    def __init__(self, engine: Engine) -> None:
+    def __init__(self, engine: AsyncEngine) -> None:
         super().__init__(engine, user_table, User)
 
     async def get_by_email(self, email: str) -> User | None:
-        with self._engine.connect() as conn:
-            rows = conn.execute(
+        async with self._engine.connect() as conn:
+            rows = await conn.execute(
                 select(self._table)
                 .where(self._table.c.email == email)
                 .limit(1)
@@ -30,8 +30,8 @@ class UsersService(BaseService[User], UserServiceProtocol):
             return self._mappers.entity_to_model(entity, self._model)
 
     async def get_by_username(self, username: str) -> User | None:
-        with self._engine.connect() as conn:
-            rows = conn.execute(
+        async with self._engine.connect() as conn:
+            rows = await conn.execute(
                 select(self._table)
                 .where(self._table.c.username == username)
                 .limit(1)

@@ -1,7 +1,6 @@
 from uuid import uuid4
 
 import pytest
-import pytest_asyncio
 from sqlalchemy.exc import IntegrityError
 
 from app.services.sql_database_service.todos_service import TodosService
@@ -18,7 +17,7 @@ def users_service(db_engine):
     return UsersService(db_engine)
 
 
-@pytest_asyncio.fixture
+@pytest.fixture
 async def user(users_service, user_factory):
     user = user_factory.create()
     await users_service.create(user)
