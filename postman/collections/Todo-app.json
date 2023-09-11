@@ -1,0 +1,720 @@
+{
+	"info": {
+		"_postman_id": "f916f75d-c4c3-4dea-8d6c-1d6f6981f3c5",
+		"name": "Todo-app",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_uid": "10516588-f916f75d-c4c3-4dea-8d6c-1d6f6981f3c5"
+	},
+	"item": [
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Get User",
+					"id": "dfa31f97-8a6b-45ef-982d-49d3d45c684f",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"3eb2de05-24b8-4c0c-81e4-a2e79a6f79fe\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/user",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create user",
+					"id": "0321c281-85e3-47df-8a7f-d11442893482",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"a name\",\r\n    \"email\": \"an@email.com\",\r\n    \"password\": \"apassword\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/user",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete user",
+					"id": "774dee31-cb02-4605-a621-a90196ed08b7",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"3eb2de05-24b8-4c0c-81e4-a2e79a6f79fe\"\r\n    \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/user",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Put user",
+					"id": "5f0c41c6-e915-4c06-8370-c674d6b34400",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"d2714f3e-af7a-4a18-a08f-f19b858f4377\",\r\n    \"username\": \"joaco\",\r\n    \"email\": \"joaco@joaco.com\",\r\n    \"password\": \"joaco2\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/user",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all users",
+					"id": "2d502195-8b03-4d8b-8d1d-6e0ea43bb62e",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/users",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"id": "b511fdae-93d3-4e59-9fd9-ca4738a14068"
+		},
+		{
+			"name": "Todos",
+			"item": [
+				{
+					"name": "Get todo",
+					"id": "417d212a-3520-4167-b205-8b531b982f4b",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"57c2756f9bf5498aa9dcf99455da7e1e\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/todo",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"todo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create todo",
+					"id": "b8685d64-ebf4-454c-b0f1-48d13c763670",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"owner_id\": \"d2714f3e-af7a-4a18-a08f-f19b858f4377\",\r\n    \"description\": \"a description\",\r\n    \"due_date\": \"2023-08-15\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/todo",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"todo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete todo",
+					"id": "77fd5e15-d02d-4b3f-a5e3-a28c79bb2276",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"be9d73ef-4c35-44e5-9b34-977e5478bc34\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/todo",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"todo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Put todo",
+					"id": "7f613e52-4132-422d-931a-169ebb49a11c",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"be9d73ef-4c35-44e5-9b34-977e5478bc34\",\r\n    \"owner_id\": \"ce37263c1279492092f94ef18b420a95\",\r\n    \"description\": \"mi nuevo todo\",\r\n    \"due_date\": \"2023-08-17\",\r\n    \"completed\": false,\r\n    \"date_created\": \"2023-08-15\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/todo",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"todo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all by user",
+					"id": "8b415b1c-c7e3-469c-a0e2-52489cc1298f",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/todos?user_id=d2714f3e-af7a-4a18-a08f-f19b858f4377",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"todos"
+							],
+							"query": [
+								{
+									"key": "user_id",
+									"value": "d2714f3e-af7a-4a18-a08f-f19b858f4377"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"id": "b05fbf96-fab4-4508-be4b-de7860f5c3fd"
+		},
+		{
+			"name": "Register user",
+			"id": "22712fdd-e9ea-4898-83ce-8d025359eb57",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"theusername2\",\n    \"email\": \"the@email.com\",\n    \"password\": \"password\",\n    \"confirm_password\": \"password\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/register",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"register"
+					]
+				}
+			},
+			"response": [
+				{
+					"id": "cbbb5d7b-a178-41ec-b620-606a4ad298a2",
+					"name": "password not matching",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"theusername\",\n    \"email\": \"the@email.com\",\n    \"password\": \"password\",\n    \"confirm_password\": \"differentpassword\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/register",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"register"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "date",
+							"value": "Sun, 10 Sep 2023 18:12:54 GMT"
+						},
+						{
+							"key": "server",
+							"value": "uvicorn"
+						},
+						{
+							"key": "content-type",
+							"value": "application/json"
+						},
+						{
+							"key": "content-length",
+							"value": "59"
+						},
+						{
+							"key": "access-control-allow-origin",
+							"value": "http://localhost:3000"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"response\": \"PASSWORD_NOT_MATCHING\",\n    \"status\": 200\n}"
+				},
+				{
+					"id": "fb4f1b4a-c4e3-4f6d-94fa-1c338590260a",
+					"name": "success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"theusername\",\n    \"email\": \"the@email.com\",\n    \"password\": \"password\",\n    \"confirm_password\": \"password\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/register",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"register"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "date",
+							"value": "Sun, 10 Sep 2023 18:13:18 GMT"
+						},
+						{
+							"key": "server",
+							"value": "uvicorn"
+						},
+						{
+							"key": "content-type",
+							"value": "application/json"
+						},
+						{
+							"key": "content-length",
+							"value": "45"
+						},
+						{
+							"key": "access-control-allow-origin",
+							"value": "http://localhost:3000"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"response\": \"SUCCESS\",\n    \"status\": 200\n}"
+				},
+				{
+					"id": "4db8c43b-3cff-41c8-bb20-0b8a27c44162",
+					"name": "already existing username",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"theusername\",\n    \"email\": \"the@email.com\",\n    \"password\": \"password\",\n    \"confirm_password\": \"password\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/register",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"register"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "date",
+							"value": "Sun, 10 Sep 2023 18:13:34 GMT"
+						},
+						{
+							"key": "server",
+							"value": "uvicorn"
+						},
+						{
+							"key": "content-type",
+							"value": "application/json"
+						},
+						{
+							"key": "content-length",
+							"value": "61"
+						},
+						{
+							"key": "access-control-allow-origin",
+							"value": "http://localhost:3000"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"response\": \"USERNAME_ALREADY_EXISTS\",\n    \"status\": 200\n}"
+				},
+				{
+					"id": "a323ca47-6602-4f3e-bb53-34119d6b62bf",
+					"name": "already existing email",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"theusername2\",\n    \"email\": \"the@email.com\",\n    \"password\": \"password\",\n    \"confirm_password\": \"password\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/register",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"register"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "date",
+							"value": "Sun, 10 Sep 2023 18:13:53 GMT"
+						},
+						{
+							"key": "server",
+							"value": "uvicorn"
+						},
+						{
+							"key": "content-type",
+							"value": "application/json"
+						},
+						{
+							"key": "content-length",
+							"value": "58"
+						},
+						{
+							"key": "access-control-allow-origin",
+							"value": "http://localhost:3000"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"response\": \"EMAIL_ALREADY_EXISTS\",\n    \"status\": 200\n}"
+				}
+			]
+		},
+		{
+			"name": "Login user",
+			"id": "fad296c8-a221-4992-9109-ce785f634b18",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\":\"theusername\",\n    \"password\":\"password\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/login",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": [
+				{
+					"id": "ea6a2417-a3f9-4b4f-a40e-2542f22ff5c9",
+					"name": "login failed",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\":\"theusername\",\n    \"password\":\"password1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/login",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "date",
+							"value": "Sun, 10 Sep 2023 18:17:32 GMT"
+						},
+						{
+							"key": "server",
+							"value": "uvicorn"
+						},
+						{
+							"key": "content-type",
+							"value": "application/json"
+						},
+						{
+							"key": "content-length",
+							"value": "73"
+						},
+						{
+							"key": "access-control-allow-origin",
+							"value": "http://localhost:3000"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"response\": \"Login error wrong user or password.\",\n    \"status\": 500\n}"
+				},
+				{
+					"id": "2cbaa23b-eb3e-4967-b14a-a1df8de6ac77",
+					"name": "login succeeded",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\":\"theusername\",\n    \"password\":\"password\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/login",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "date",
+							"value": "Sun, 10 Sep 2023 18:18:02 GMT"
+						},
+						{
+							"key": "server",
+							"value": "uvicorn"
+						},
+						{
+							"key": "content-type",
+							"value": "application/json"
+						},
+						{
+							"key": "content-length",
+							"value": "179"
+						},
+						{
+							"key": "access-control-allow-origin",
+							"value": "http://localhost:3000"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"response\": {\n        \"email\": \"the@email.com\",\n        \"id\": \"07229a53-40df-4a85-9290-01372fc06f07\",\n        \"password\": \"password\",\n        \"username\": \"theusername\"\n    },\n    \"status\": 200\n}"
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "7408f70e-9b8c-4606-8874-c94a76101975",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "bac11145-14d8-48c4-b413-b93a54fd4d67",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "b5051db9-bc54-4e7b-9984-7199afa20870",
+			"key": "URL",
+			"value": "http://localhost:5000",
+			"type": "string"
+		}
+	]
+}

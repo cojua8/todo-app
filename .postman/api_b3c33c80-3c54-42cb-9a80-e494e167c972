@@ -9,6 +9,7 @@ id = b3c33c80-3c54-42cb-9a80-e494e167c972
 
 [config.relations.collections]
 rootDirectory = postman/collections
+files[] = {"id":"10516588-f916f75d-c4c3-4dea-8d6c-1d6f6981f3c5","path":"Todo-app.json","metaData":{}}
 
 [config.relations.collections.metaData]
 
