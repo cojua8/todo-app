@@ -25,7 +25,7 @@ async def db_engine(sqlalchemy_connect_url):
 
 
 @pytest.fixture(autouse=True)
-async def _create(db_engine):  # noqa: ANN202
+async def _create(db_engine):
     async with db_engine.begin() as conn:
         await conn.run_sync(metadata_obj.create_all)
     yield

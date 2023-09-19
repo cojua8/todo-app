@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING
 
 from app.exceptions.login_exception import LoginError
 from app.models.user import User
-from app.services.service_protocols.authentication_service_protocol import (  # noqa: E501
+from app.services.service_protocols.authentication_service_protocol import (
     AuthenticationServiceProtocol,
     RegistrationResult,
 )
