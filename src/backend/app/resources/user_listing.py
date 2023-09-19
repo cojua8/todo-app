@@ -1,25 +1,24 @@
-from __future__ import annotations
-
 from http import HTTPStatus
-from typing import TYPE_CHECKING, Any
+from typing import Any
 
+import fastapi
 from dependency_injector.wiring import Provide, inject
-from flask import Blueprint
+from fastapi import APIRouter
 
 from app.containers import Container
+from app.services.service_protocols.user_service_protocol import (
+    UserServiceProtocol,
+)
 
-if TYPE_CHECKING:
-    from app.services.service_protocols.user_service_protocol import (
-        UserServiceProtocol,
-    )
-
-user_listing_blueprint = Blueprint("users", __name__)
+user_listing_router = APIRouter()
 
 
-@user_listing_blueprint.get("/users")
+@user_listing_router.get("/users")
 @inject
 async def get(
-    user_service: UserServiceProtocol = Provide[Container.users_service],
+    user_service: UserServiceProtocol = fastapi.Depends(
+        Provide[Container.users_service]
+    ),
 ) -> dict[str, Any]:
     response: dict[str, Any] = {}
     try:

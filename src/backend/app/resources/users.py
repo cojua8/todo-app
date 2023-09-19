@@ -1,33 +1,29 @@
-from __future__ import annotations
-
 from http import HTTPStatus
-from typing import TYPE_CHECKING, Any
+from typing import Annotated, Any
+from uuid import UUID
 
+import fastapi
 from dependency_injector.wiring import Provide, inject
-from flask import Blueprint
-from webargs import fields
-from webargs.flaskparser import use_kwargs
+from fastapi import APIRouter, Body
 
 from app.containers import Container
 from app.models.user import User
+from app.services.service_protocols.user_service_protocol import (
+    UserServiceProtocol,
+)
 
-if TYPE_CHECKING:
-    from app.services.service_protocols.user_service_protocol import (
-        UserServiceProtocol,
-    )
-
-users_blueprint = Blueprint("user", __name__)
+users_router = APIRouter()
 
 
-@users_blueprint.get("/user")
+@users_router.get("/user")
 @inject
-@use_kwargs({"id": fields.UUID()}, location="json")
 async def get(
-    user_service: UserServiceProtocol = Provide[Container.users_service],
-    **kwargs,
+    id_: Annotated[UUID, Body(embed=True, alias="id")],
+    user_service: UserServiceProtocol = fastapi.Depends(
+        Provide[Container.users_service]
+    ),
 ) -> dict[str, Any]:
     response: dict[str, Any] = {}
-    id_ = kwargs["id"]
     try:
         user = await user_service.get(id_)
 
@@ -40,22 +36,18 @@ async def get(
     return response
 
 
-@users_blueprint.post("/user")
+@users_router.post("/user")
 @inject
-@use_kwargs(
-    {
-        "username": fields.String(),
-        "email": fields.Email(),
-        "password": fields.String(),
-    },
-    location="json",
-)
 async def post(
-    user_service: UserServiceProtocol = Provide[Container.users_service],
-    **kwargs,
+    username: Annotated[str, Body()],
+    email: Annotated[str, Body()],
+    password: Annotated[str, Body()],
+    user_service: UserServiceProtocol = fastapi.Depends(
+        Provide[Container.users_service]
+    ),
 ) -> dict[str, Any]:
     response: dict[str, Any] = {}
-    user = User(**kwargs)
+    user = User(username=username, email=email, password=password)
     try:
         await user_service.create(user)
         response["status"] = HTTPStatus.OK
@@ -66,15 +58,15 @@ async def post(
     return response
 
 
-@users_blueprint.delete("/user")
+@users_router.delete("/user")
 @inject
-@use_kwargs({"id": fields.UUID()}, location="json")
 async def delete(
-    user_service: UserServiceProtocol = Provide[Container.users_service],
-    **kwargs,
+    id_: Annotated[UUID, Body(embed=True, alias="id")],
+    user_service: UserServiceProtocol = fastapi.Depends(
+        Provide[Container.users_service]
+    ),
 ) -> dict[str, Any]:
     response: dict[str, Any] = {}
-    id_ = kwargs["id"]
     try:
         await user_service.delete(id_)
         response["status"] = HTTPStatus.OK
@@ -85,24 +77,19 @@ async def delete(
     return response
 
 
-@users_blueprint.put("/user")
+@users_router.put("/user")
 @inject
-@use_kwargs(
-    {
-        "id": fields.UUID(),
-        "username": fields.String(),
-        "email": fields.Email(),
-        "password": fields.String(),
-    },
-    location="json",
-)
 async def put(
-    user_service: UserServiceProtocol = Provide[Container.users_service],
-    **kwargs,
+    id_: Annotated[UUID, Body(alias="id")],
+    username: Annotated[str, Body()],
+    email: Annotated[str, Body()],
+    password: Annotated[str, Body()],
+    user_service: UserServiceProtocol = fastapi.Depends(
+        Provide[Container.users_service]
+    ),
 ) -> dict[str, Any]:
     response: dict[str, Any] = {}
-    id_ = kwargs["id"]
-    new = User(**kwargs)
+    new = User(id=id_, username=username, email=email, password=password)
     try:
         await user_service.put(id_, new)
         response["status"] = HTTPStatus.OK

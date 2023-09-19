@@ -1,42 +1,28 @@
-from __future__ import annotations
-
 from http import HTTPStatus
-from typing import TYPE_CHECKING, Any
+from typing import Annotated, Any
 
+import fastapi
 from dependency_injector.wiring import Provide, inject
-from flask import Blueprint
-from webargs import fields
-from webargs.flaskparser import use_kwargs
+from fastapi import APIRouter, Body
 
 from app.containers import Container
-
-if TYPE_CHECKING:
-    from app.services.service_protocols.authentication_service_protocol import (  # noqa: E501
-        AuthenticationServiceProtocol,
-    )
-
-register_blueprint = Blueprint("register", __name__)
-
-
-@register_blueprint.post("/register")
-@inject
-@use_kwargs(
-    {
-        "username": fields.String(),
-        "email": fields.Email(),
-        "password": fields.String(),
-        "confirm_password": fields.String(),
-    },
-    location="json",
+from app.services.service_protocols.authentication_service_protocol import (
+    AuthenticationServiceProtocol,
 )
+
+register_router = APIRouter()
+
+
+@register_router.post("/register")
+@inject
 async def post(
-    username: str,
-    email: str,
-    password: str,
-    confirm_password: str,
-    authentication_service: AuthenticationServiceProtocol = Provide[
-        Container.authentication_service
-    ],
+    username: Annotated[str, Body()],
+    email: Annotated[str, Body()],
+    password: Annotated[str, Body()],
+    confirm_password: Annotated[str, Body()],
+    authentication_service: AuthenticationServiceProtocol = fastapi.Depends(
+        Provide[Container.authentication_service]
+    ),
 ) -> dict[str, Any]:
     response: dict[str, Any] = {}
     try:

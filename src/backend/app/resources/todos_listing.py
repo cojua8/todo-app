@@ -1,31 +1,26 @@
-from __future__ import annotations
-
 from http import HTTPStatus
-from typing import TYPE_CHECKING, Any
+from typing import Annotated, Any
+from uuid import UUID
 
+import fastapi
 from dependency_injector.wiring import Provide, inject
-from flask import Blueprint
-from webargs import fields
-from webargs.flaskparser import use_kwargs
+from fastapi import APIRouter, Query
 
 from app.containers import Container
+from app.services.service_protocols.todo_service_protocol import (
+    TodoServiceProtocol,
+)
 
-if TYPE_CHECKING:
-    from uuid import UUID
-
-    from app.services.service_protocols.todo_service_protocol import (
-        TodoServiceProtocol,
-    )
-
-todo_listing_blueprint = Blueprint("todos", __name__)
+todo_listing_router = APIRouter()
 
 
-@todo_listing_blueprint.get("/todos")
+@todo_listing_router.get("/todos")
 @inject
-@use_kwargs({"user_id": fields.UUID()}, location="query")
 async def get(
-    user_id: UUID,
-    todo_service: TodoServiceProtocol = Provide[Container.todos_service],
+    user_id: Annotated[UUID, Query()],
+    todo_service: TodoServiceProtocol = fastapi.Depends(
+        Provide[Container.todos_service]
+    ),
 ) -> dict[str, Any]:
     response: dict[str, Any] = {}
     try:

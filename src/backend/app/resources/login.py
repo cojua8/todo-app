@@ -1,35 +1,27 @@
-from __future__ import annotations
-
 from http import HTTPStatus
-from typing import TYPE_CHECKING, Any
+from typing import Annotated, Any
 
+import fastapi
 from dependency_injector.wiring import Provide, inject
-from flask import Blueprint
-from webargs import fields
-from webargs.flaskparser import use_kwargs
+from fastapi import APIRouter, Body
 
 from app.containers import Container
 from app.exceptions.login_exception import LoginError
-
-if TYPE_CHECKING:
-    from app.services.service_protocols.authentication_service_protocol import (  # noqa: E501
-        AuthenticationServiceProtocol,
-    )
-
-login_blueprint = Blueprint("login", __name__)
-
-
-@login_blueprint.post("/login")
-@inject
-@use_kwargs(
-    {"username": fields.String(), "password": fields.String()}, location="json"
+from app.services.service_protocols.authentication_service_protocol import (
+    AuthenticationServiceProtocol,
 )
+
+login_router = APIRouter()
+
+
+@login_router.post("/login")
+@inject
 async def post(
-    username: str,
-    password: str,
-    authentication_service: AuthenticationServiceProtocol = Provide[
-        Container.authentication_service
-    ],
+    username: Annotated[str, Body()],
+    password: Annotated[str, Body()],
+    authentication_service: AuthenticationServiceProtocol = fastapi.Depends(
+        Provide[Container.authentication_service]
+    ),
 ) -> dict[str, Any]:
     response: dict[str, Any] = {}
     try:

@@ -1,33 +1,30 @@
-from __future__ import annotations
-
+import datetime as dt
 from http import HTTPStatus
-from typing import TYPE_CHECKING, Any
+from typing import Annotated, Any
+from uuid import UUID
 
+import fastapi
 from dependency_injector.wiring import Provide, inject
-from flask import Blueprint
-from webargs import fields
-from webargs.flaskparser import use_kwargs
+from fastapi import APIRouter, Body
 
 from app.containers import Container
 from app.models.todo import Todo
+from app.services.service_protocols.todo_service_protocol import (
+    TodoServiceProtocol,
+)
 
-if TYPE_CHECKING:
-    from app.services.service_protocols.todo_service_protocol import (
-        TodoServiceProtocol,
-    )
-
-todo_blueprint = Blueprint("todo", __name__)
+todo_router = APIRouter()
 
 
-@todo_blueprint.get("/todo")
+@todo_router.get("/todo")
 @inject
-@use_kwargs({"id": fields.UUID()}, location="json")
 async def get(
-    todo_service: TodoServiceProtocol = Provide[Container.todos_service],
-    **kwargs,
+    id_: Annotated[UUID, Body(embed=True, alias="id")],
+    todo_service: TodoServiceProtocol = fastapi.Depends(
+        Provide[Container.todos_service]
+    ),
 ) -> dict[str, Any]:
     response: dict[str, Any] = {}
-    id_ = kwargs["id"]
     try:
         todo = await todo_service.get(id_)
 
@@ -40,22 +37,18 @@ async def get(
     return response
 
 
-@todo_blueprint.post("/todo")
+@todo_router.post("/todo")
 @inject
-@use_kwargs(
-    {
-        "owner_id": fields.UUID(),
-        "description": fields.Str(),
-        "due_date": fields.Date(),
-    },
-    location="json",
-)
 async def post(
-    todo_service: TodoServiceProtocol = Provide[Container.todos_service],
-    **kwargs,
+    owner_id: Annotated[UUID, Body()],
+    description: Annotated[str, Body()],
+    due_date: Annotated[dt.date, Body()],
+    todo_service: TodoServiceProtocol = fastapi.Depends(
+        Provide[Container.todos_service]
+    ),
 ) -> dict[str, Any]:
     response: dict[str, Any] = {}
-    new = Todo(**kwargs)
+    new = Todo(owner_id=owner_id, description=description, due_date=due_date)
 
     try:
         await todo_service.create(new)
@@ -67,15 +60,15 @@ async def post(
     return response
 
 
-@todo_blueprint.delete("/todo")
+@todo_router.delete("/todo")
 @inject
-@use_kwargs({"id": fields.UUID()}, location="json")
 async def delete(
-    todo_service: TodoServiceProtocol = Provide[Container.todos_service],
-    **kwargs,
+    id_: Annotated[UUID, Body(embed=True, alias="id")],
+    todo_service: TodoServiceProtocol = fastapi.Depends(
+        Provide[Container.todos_service]
+    ),
 ) -> dict[str, Any]:
     response: dict[str, Any] = {}
-    id_ = kwargs["id"]
     try:
         await todo_service.delete(id_)
         response["status"] = HTTPStatus.OK
@@ -86,26 +79,28 @@ async def delete(
     return response
 
 
-@todo_blueprint.put("/todo")
+@todo_router.put("/todo")
 @inject
-@use_kwargs(
-    {
-        "id": fields.UUID(),
-        "owner_id": fields.UUID(),
-        "description": fields.Str(),
-        "date_created": fields.Date(),
-        "due_date": fields.Date(),
-        "completed": fields.Bool(),
-    },
-    location="json",
-)
 async def put(
-    todo_service: TodoServiceProtocol = Provide[Container.todos_service],
-    **kwargs,
+    id_: Annotated[UUID, Body(alias="id")],
+    owner_id: Annotated[UUID, Body()],
+    description: Annotated[str, Body()],
+    date_created: Annotated[dt.date, Body()],
+    due_date: Annotated[dt.date, Body()],
+    completed: Annotated[bool, Body()],
+    todo_service: TodoServiceProtocol = fastapi.Depends(
+        Provide[Container.todos_service]
+    ),
 ) -> dict[str, Any]:
     response: dict[str, Any] = {}
-    id_ = kwargs["id"]
-    new = Todo(**kwargs)
+    new = Todo(
+        id=id_,
+        owner_id=owner_id,
+        description=description,
+        date_created=date_created,
+        due_date=due_date,
+        completed=completed,
+    )
     try:
         await todo_service.put(id_, new)
         response["status"] = HTTPStatus.OK
