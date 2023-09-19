@@ -72,6 +72,8 @@ ignore = [
     "D212",   #Multi-line docstring summary should start at the first line
     "RET503", #Missing explicit `return` at the end of function able to return non-`None` value
 ]
+unfixable = ["ERA001"]
+
 select = ["ALL"]
 line-length = 79
 show-fixes = true
@@ -94,3 +96,6 @@ known-first-party = ["app", "tests"]
 
 [tool.ruff.mccabe]
 max-complexity = 5
+
+[tool.ruff.flake8-bugbear]
+extend-immutable-calls = ["fastapi.Depends"]
