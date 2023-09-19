@@ -1,4 +1,3 @@
-from typing import TYPE_CHECKING
 from uuid import uuid4
 
 import pytest
@@ -10,13 +9,11 @@ from app.services.service_protocols.io_service_protocol import (
     IOServiceProtocol,
 )
 from app.utils import json_utils
-
-if TYPE_CHECKING:
-    from tests.factories.todo_factory import TodoFactory
+from tests.factories.todo_factory import TodoFactory
 
 
 @pytest.fixture
-def setup_todos(request, todo_factory: "TodoFactory"):
+def setup_todos(request, todo_factory: TodoFactory):
     has_params = hasattr(request, "param")
     expected_values = request.param[0] if has_params else {}
     expected_todo = todo_factory.create(**expected_values)

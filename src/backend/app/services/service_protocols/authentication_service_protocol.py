@@ -1,10 +1,7 @@
-from __future__ import annotations
-
 from enum import Enum, auto
-from typing import TYPE_CHECKING, Protocol
+from typing import Protocol
 
-if TYPE_CHECKING:
-    from app.models.user import User
+from app.models.user import User
 
 
 class RegistrationResult(Enum):

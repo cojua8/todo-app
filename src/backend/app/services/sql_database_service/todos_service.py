@@ -1,8 +1,7 @@
-from __future__ import annotations
-
-from typing import TYPE_CHECKING
+from uuid import UUID
 
 from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncEngine
 
 from app.models.todo import Todo
 from app.services.service_protocols.todo_service_protocol import (
@@ -10,11 +9,6 @@ from app.services.service_protocols.todo_service_protocol import (
 )
 from app.services.sql_database_service.base_service import BaseService
 from app.services.sql_database_service.models import todo_table
-
-if TYPE_CHECKING:
-    from uuid import UUID
-
-    from sqlalchemy.ext.asyncio import AsyncEngine
 
 
 class TodosService(BaseService[Todo], TodoServiceProtocol):

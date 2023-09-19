@@ -1,8 +1,5 @@
-from __future__ import annotations
-
-from typing import TYPE_CHECKING
-
 from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncEngine
 
 from app.models.user import User
 from app.services.service_protocols.user_service_protocol import (
@@ -10,9 +7,6 @@ from app.services.service_protocols.user_service_protocol import (
 )
 from app.services.sql_database_service.base_service import BaseService
 from app.services.sql_database_service.models import user_table
-
-if TYPE_CHECKING:
-    from sqlalchemy.ext.asyncio import AsyncEngine
 
 
 class UsersService(BaseService[User], UserServiceProtocol):

@@ -1,14 +1,10 @@
-from __future__ import annotations
-
-from typing import TYPE_CHECKING, Protocol
+from typing import Protocol
+from uuid import UUID
 
 from app.models.todo import Todo
 from app.services.service_protocols.database_service_protocol import (
     DatabaseServiceProtocol,
 )
-
-if TYPE_CHECKING:
-    from uuid import UUID
 
 
 class TodoServiceProtocol(DatabaseServiceProtocol[Todo], Protocol):

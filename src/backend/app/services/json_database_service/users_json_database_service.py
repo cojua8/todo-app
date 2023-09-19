@@ -1,19 +1,13 @@
-from __future__ import annotations
-
-from typing import TYPE_CHECKING
-
 from app.models.user import User
 from app.services.json_database_service.json_database_service import (
     JsonDatabaseService,
 )
+from app.services.service_protocols.io_service_protocol import (
+    IOServiceProtocol,
+)
 from app.services.service_protocols.user_service_protocol import (
     UserServiceProtocol,
 )
-
-if TYPE_CHECKING:
-    from app.services.service_protocols.io_service_protocol import (
-        IOServiceProtocol,
-    )
 
 
 class UsersJsonDatabaseService(JsonDatabaseService[User], UserServiceProtocol):

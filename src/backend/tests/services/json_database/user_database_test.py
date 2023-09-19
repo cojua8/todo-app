@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, cast
+from typing import cast
 from uuid import uuid4
 
 import pytest
@@ -11,13 +11,11 @@ from app.services.service_protocols.io_service_protocol import (
     IOServiceProtocol,
 )
 from app.utils import json_utils
-
-if TYPE_CHECKING:
-    from tests.factories.user_factory import UserFactory
+from tests.factories.user_factory import UserFactory
 
 
 @pytest.fixture
-def setup(request, user_factory: "UserFactory"):
+def setup(request, user_factory: UserFactory):
     expected_values = request.param[0]
     expected_user = user_factory.create(**expected_values)
 
@@ -53,7 +51,7 @@ async def test_get_by_email_returns_user(mocker, setup):
     assert user.id == expected_user.id
 
 
-async def test_get_by_email_returns_none(mocker, user_factory: "UserFactory"):
+async def test_get_by_email_returns_none(mocker, user_factory: UserFactory):
     # arrange
     io_service = mocker.MagicMock(spec=IOServiceProtocol)
     io_service.read.return_value = json_utils.dumps(
@@ -92,9 +90,7 @@ async def test_get_by_username_returns_user(mocker, setup):
         assert user.id == expected_user.id
 
 
-async def test_get_by_username_returns_none(
-    mocker, user_factory: "UserFactory"
-):
+async def test_get_by_username_returns_none(mocker, user_factory: UserFactory):
     # arrange
     username = "username"
     users = user_factory.create_batch(4)
@@ -152,7 +148,7 @@ async def test_get_returns_user(mocker, setup):
         assert actual_user.id == expected_user.id
 
 
-async def test_get_returns_none(mocker, user_factory: "UserFactory"):
+async def test_get_returns_none(mocker, user_factory: UserFactory):
     # arrange
     id_ = uuid4()
     users = user_factory.create_batch(4)
@@ -168,7 +164,7 @@ async def test_get_returns_none(mocker, user_factory: "UserFactory"):
     assert actual_user is None
 
 
-async def test_create_ok(mocker, user_factory: "UserFactory"):
+async def test_create_ok(mocker, user_factory: UserFactory):
     # arrange
     user = user_factory.create()
     io_service = mocker.MagicMock(spec=IOServiceProtocol)
@@ -202,7 +198,7 @@ async def test_delete_ok(mocker, setup):
 
 
 @pytest.mark.parametrize("setup", [({}, 4, {})], indirect=True)
-async def test_put_ok(mocker, setup, user_factory: "UserFactory"):
+async def test_put_ok(mocker, setup, user_factory: UserFactory):
     # arrange
     users, expected_user = setup
     updated_user = user_factory.create(id=expected_user.id)

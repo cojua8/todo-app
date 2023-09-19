@@ -1,22 +1,16 @@
-from __future__ import annotations
-
 from abc import ABC
-from typing import TYPE_CHECKING, Generic
+from collections.abc import Iterable
+from typing import Generic
+from uuid import UUID
 
 from sqlalchemy import Row, Table, delete, insert, select, update
+from sqlalchemy.ext.asyncio import AsyncEngine
 
+from app.models.base_model import BaseModel
 from app.services.service_protocols.database_service_protocol import (
     BMT,
     DatabaseServiceProtocol,
 )
-
-if TYPE_CHECKING:
-    from collections.abc import Iterable
-    from uuid import UUID
-
-    from sqlalchemy.ext.asyncio import AsyncEngine
-
-    from app.models.base_model import BaseModel
 
 
 class Mappers:

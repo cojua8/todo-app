@@ -1,20 +1,15 @@
-from __future__ import annotations
-
 from abc import ABC
-from typing import TYPE_CHECKING, Generic
+from typing import Generic
+from uuid import UUID
 
 from app.services.service_protocols.database_service_protocol import (
     BMT,
     DatabaseServiceProtocol,
 )
+from app.services.service_protocols.io_service_protocol import (
+    IOServiceProtocol,
+)
 from app.utils import json_utils
-
-if TYPE_CHECKING:
-    from uuid import UUID
-
-    from app.services.service_protocols.io_service_protocol import (
-        IOServiceProtocol,
-    )
 
 
 class JsonDatabaseService(DatabaseServiceProtocol[BMT], Generic[BMT], ABC):

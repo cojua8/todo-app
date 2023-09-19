@@ -1,12 +1,8 @@
-from __future__ import annotations
-
-from typing import TYPE_CHECKING, Generic, Protocol, TypeVar
+from collections.abc import Iterable
+from typing import Generic, Protocol, TypeVar
+from uuid import UUID
 
 from app.models.base_model import BaseModel
-
-if TYPE_CHECKING:
-    from collections.abc import Iterable
-    from uuid import UUID
 
 BMT = TypeVar("BMT", bound=BaseModel)
 

@@ -1,18 +1,12 @@
-from __future__ import annotations
-
-from typing import TYPE_CHECKING
-
 from app.exceptions.login_exception import LoginError
 from app.models.user import User
 from app.services.service_protocols.authentication_service_protocol import (
     AuthenticationServiceProtocol,
     RegistrationResult,
 )
-
-if TYPE_CHECKING:
-    from app.services.service_protocols.user_service_protocol import (
-        UserServiceProtocol,
-    )
+from app.services.service_protocols.user_service_protocol import (
+    UserServiceProtocol,
+)
 
 
 class AuthenticationService(AuthenticationServiceProtocol):
