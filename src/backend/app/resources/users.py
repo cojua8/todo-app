@@ -5,6 +5,7 @@ from uuid import UUID
 import fastapi
 from dependency_injector.wiring import Provide, inject
 from fastapi import APIRouter, Body
+from pydantic import EmailStr
 
 from app.containers import Container
 from app.models.user import User
@@ -40,7 +41,7 @@ async def get(
 @inject
 async def post(
     username: Annotated[str, Body()],
-    email: Annotated[str, Body()],
+    email: Annotated[EmailStr, Body()],
     password: Annotated[str, Body()],
     user_service: UserServiceProtocol = fastapi.Depends(
         Provide[Container.users_service]

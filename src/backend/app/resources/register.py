@@ -4,6 +4,7 @@ from typing import Annotated, Any
 import fastapi
 from dependency_injector.wiring import Provide, inject
 from fastapi import APIRouter, Body
+from pydantic import EmailStr
 
 from app.containers import Container
 from app.services.service_protocols.authentication_service_protocol import (
@@ -17,7 +18,7 @@ register_router = APIRouter()
 @inject
 async def post(
     username: Annotated[str, Body()],
-    email: Annotated[str, Body()],
+    email: Annotated[EmailStr, Body()],
     password: Annotated[str, Body()],
     confirm_password: Annotated[str, Body()],
     authentication_service: AuthenticationServiceProtocol = fastapi.Depends(
