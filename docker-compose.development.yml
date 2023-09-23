@@ -3,6 +3,8 @@ version: '3.8'
 services:
   todo-app-backend:
     container_name: backend
+    depends_on:
+      - todo_app_postgres
     build:
       context: ./src/backend
     ports:
@@ -16,7 +18,7 @@ services:
     environment:
       # in the container, saves the database in this path
       - DATABASE_PATH=/database/json_database
-      - FLASK_DEBUG=true
+      - DATABASE=json
 
   todo-app-frontend:
     container_name: frontend
@@ -38,13 +40,12 @@ services:
     container_name: postgres_db
     image: postgres:15.1-alpine
     restart: always
-    ports:
-      - 5432:5432
     volumes:
       - postgres_db:/database/postgres
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=todo_db
 # the path of data won't be erased on rebuild
 volumes:
   data:
