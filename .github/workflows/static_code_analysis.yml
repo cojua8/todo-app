@@ -1,4 +1,5 @@
 name: Static Code Analysis
+run-name: ${{ github.workflow}}
 on: [push]
 jobs:
   Setup-repo:
