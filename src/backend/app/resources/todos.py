@@ -81,7 +81,7 @@ async def delete(
 
 @todo_router.put("/todo/{id_}")
 @inject
-async def put(
+async def put(  # noqa: PLR0913
     id_: UUID,
     owner_id: Annotated[UUID, Body()],
     description: Annotated[str, Body()],
