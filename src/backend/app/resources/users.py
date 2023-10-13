@@ -59,10 +59,10 @@ async def post(
     return response
 
 
-@users_router.delete("/user")
+@users_router.delete("/user/{id_}")
 @inject
 async def delete(
-    id_: Annotated[UUID, Body(embed=True, alias="id")],
+    id_: UUID,
     user_service: UserServiceProtocol = fastapi.Depends(
         Provide[Container.users_service]
     ),
@@ -78,10 +78,10 @@ async def delete(
     return response
 
 
-@users_router.put("/user")
+@users_router.put("/user/{id_}")
 @inject
 async def put(
-    id_: Annotated[UUID, Body(alias="id")],
+    id_: UUID,
     username: Annotated[str, Body()],
     email: Annotated[str, Body()],
     password: Annotated[str, Body()],

@@ -60,10 +60,10 @@ async def post(
     return response
 
 
-@todo_router.delete("/todo")
+@todo_router.delete("/todo/{id_}")
 @inject
 async def delete(
-    id_: Annotated[UUID, Body(embed=True, alias="id")],
+    id_: UUID,
     todo_service: TodoServiceProtocol = fastapi.Depends(
         Provide[Container.todos_service]
     ),
@@ -79,10 +79,10 @@ async def delete(
     return response
 
 
-@todo_router.put("/todo")
+@todo_router.put("/todo/{id_}")
 @inject
 async def put(
-    id_: Annotated[UUID, Body(alias="id")],
+    id_: UUID,
     owner_id: Annotated[UUID, Body()],
     description: Annotated[str, Body()],
     date_created: Annotated[dt.date, Body()],
