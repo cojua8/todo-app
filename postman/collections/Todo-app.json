@@ -18,22 +18,14 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"id\":\"6d4c40d1-63e2-4969-9133-5b285970fca6\"\r\n}\r\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
 						"url": {
-							"raw": "{{URL}}/user",
+							"raw": "{{URL}}/user/d2714f3e-af7a-4a18-a08f-f19b858f4377",
 							"host": [
 								"{{URL}}"
 							],
 							"path": [
-								"user"
+								"user",
+								"d2714f3e-af7a-4a18-a08f-f19b858f4377"
 							]
 						}
 					},
@@ -78,22 +70,14 @@
 					"request": {
 						"method": "DELETE",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"id\":\"af733552-cfe9-4e96-b258-9675194b7f86\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
 						"url": {
-							"raw": "{{URL}}/user",
+							"raw": "{{URL}}/user/d2714f3e-af7a-4a18-a08f-f19b858f4377",
 							"host": [
 								"{{URL}}"
 							],
 							"path": [
-								"user"
+								"user",
+								"d2714f3e-af7a-4a18-a08f-f19b858f4377"
 							]
 						}
 					},
@@ -110,7 +94,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id\": \"d2714f3e-af7a-4a18-a08f-f19b858f4377\",\r\n    \"username\": \"joaco\",\r\n    \"email\": \"joaco@joaco.com\",\r\n    \"password\": \"joaco2\"\r\n}",
+							"raw": "{\r\n    \"username\": \"joaco\",\r\n    \"email\": \"joaco@joaco.com\",\r\n    \"password\": \"joaco2\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -118,12 +102,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{URL}}/user",
+							"raw": "{{URL}}/user/d2714f3e-af7a-4a18-a08f-f19b858f4377",
 							"host": [
 								"{{URL}}"
 							],
 							"path": [
-								"user"
+								"user",
+								"d2714f3e-af7a-4a18-a08f-f19b858f4377"
 							]
 						}
 					},
@@ -165,22 +150,14 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"id\": \"57c2756f9bf5498aa9dcf99455da7e1e\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
 						"url": {
-							"raw": "{{URL}}/todo",
+							"raw": "{{URL}}/todo/16ccc675-111e-4d8f-815a-8f538a8606c9",
 							"host": [
 								"{{URL}}"
 							],
 							"path": [
-								"todo"
+								"todo",
+								"16ccc675-111e-4d8f-815a-8f538a8606c9"
 							]
 						}
 					},
@@ -227,7 +204,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id\": \"be9d73ef-4c35-44e5-9b34-977e5478bc34\"\r\n}",
+							"raw": "",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -235,12 +212,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{URL}}/todo",
+							"raw": "{{URL}}/todo/be9d73ef-4c35-44e5-9b34-977e5478bc34",
 							"host": [
 								"{{URL}}"
 							],
 							"path": [
-								"todo"
+								"todo",
+								"be9d73ef-4c35-44e5-9b34-977e5478bc34"
 							]
 						}
 					},
@@ -257,7 +235,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id\": \"be9d73ef-4c35-44e5-9b34-977e5478bc34\",\r\n    \"owner_id\": \"ce37263c1279492092f94ef18b420a95\",\r\n    \"description\": \"mi nuevo todo\",\r\n    \"due_date\": \"2023-08-17\",\r\n    \"completed\": false,\r\n    \"date_created\": \"2023-08-15\"\r\n}",
+							"raw": "{\r\n    \"owner_id\": \"ce37263c1279492092f94ef18b420a95\",\r\n    \"description\": \"mi nuevo todo\",\r\n    \"due_date\": \"2023-08-17\",\r\n    \"completed\": false,\r\n    \"date_created\": \"2023-08-15\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -265,12 +243,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{URL}}/todo",
+							"raw": "{{URL}}/todo/be9d73ef-4c35-44e5-9b34-977e5478bc34",
 							"host": [
 								"{{URL}}"
 							],
 							"path": [
-								"todo"
+								"todo",
+								"be9d73ef-4c35-44e5-9b34-977e5478bc34"
 							]
 						}
 					},
