@@ -16,10 +16,10 @@ from app.services.service_protocols.user_service_protocol import (
 users_router = APIRouter()
 
 
-@users_router.get("/user")
+@users_router.get("/user/{id_}")
 @inject
 async def get(
-    id_: Annotated[UUID, Body(embed=True, alias="id")],
+    id_: UUID,
     user_service: UserServiceProtocol = fastapi.Depends(
         Provide[Container.users_service]
     ),

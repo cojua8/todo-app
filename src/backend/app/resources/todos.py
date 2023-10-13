@@ -16,10 +16,10 @@ from app.services.service_protocols.todo_service_protocol import (
 todo_router = APIRouter()
 
 
-@todo_router.get("/todo")
+@todo_router.get("/todo/{id_}")
 @inject
 async def get(
-    id_: Annotated[UUID, Body(embed=True, alias="id")],
+    id_: UUID,
     todo_service: TodoServiceProtocol = fastapi.Depends(
         Provide[Container.todos_service]
     ),
