@@ -4,6 +4,9 @@ from dependency_injector import containers, providers
 
 from app.services.authentication_service import AuthenticationService
 from app.services.io_service import IOService
+from app.services.json_database_service.todos_json_database_service import (
+    TodosJsonDatabaseService,
+)
 from app.services.json_database_service.users_json_database_service import (
     UsersJsonDatabaseService,
 )
@@ -47,7 +50,7 @@ class Container(containers.DeclarativeContainer):
         )
 
         cls.todos_service = providers.Factory(
-            UsersJsonDatabaseService, io_service=cls.todo_io_service
+            TodosJsonDatabaseService, io_service=cls.todo_io_service
         )
 
         return cls
