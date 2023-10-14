@@ -1,7 +1,7 @@
 name: Backend Static Code Analysis
 run-name: Backend SCA
 on:
-  [push]:
+  push:
     paths:
       - src/backend/**
 jobs:
