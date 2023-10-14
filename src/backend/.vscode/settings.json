@@ -1,32 +1,19 @@
 {
     "[python]": {
         "editor.codeActionsOnSave": {
-            "source.organizeImports": true
+            "source.fixAll": true
         },
         "editor.rulers": [
             79
         ],
     },
-    "python.formatting.provider": "black",
+    "editor.defaultFormatter": "ms-python.black-formatter",
     "editor.formatOnSave": true,
-    "python.linting.enabled": true,
-    "python.linting.lintOnSave": true,
-    "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true,
-    "svelte.plugin.css.diagnostics.enable": false,
     "python.analysis.diagnosticMode": "workspace",
     "python.analysis.typeCheckingMode": "basic",
     "python.analysis.autoImportCompletions": true,
-    "python.analysis.autoImportUserSymbols": true,
     "python.analysis.indexing": true,
-    "python.envFile": "${workspaceFolder}/src/backend/.env",
-    "python.testing.pytestArgs": [
-        "."
-    ],
     "ruff.importStrategy": "fromEnvironment",
     "black-formatter.importStrategy": "fromEnvironment",
-    "black-formatter.args": [
-        "--config",
-        "src\\backend\\pyproject.toml"
-    ],
 }
