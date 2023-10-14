@@ -2,8 +2,8 @@ name: Backend Static Code Analysis
 run-name: Backend SCA
 on:
   push:
-    paths-ignore:
-      - src/frontend/**
+    paths:
+      - src/backend/**
 jobs:
   Setup-repo:
     defaults:
