@@ -1,6 +1,9 @@
 name: Static Code Analysis
-run-name: ${{ github.workflow}}
-on: [push]
+run-name: Backend SCA
+on:
+  [push]:
+    paths:
+      - src/backend/**
 jobs:
   Setup-repo:
     defaults:
