@@ -18,7 +18,6 @@ jobs:
       - name: Install node
         uses: actions/setup-node@v3
         with:
-          python-version-file: src/backend/.python-version
           cache: npm
 
       - name: Install dependencies
