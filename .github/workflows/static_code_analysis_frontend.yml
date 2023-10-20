@@ -1,0 +1,31 @@
+name: Frontend Static Code Analysis
+run-name: Frontend SCA
+on:
+  push:
+    paths:
+      - src/frontend/**
+      - .github/workflows/*_frontend.yml
+jobs:
+  Setup-repo:
+    defaults:
+      run:
+        working-directory: src/frontend
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+
+      - name: Install node
+        uses: actions/setup-node@v3
+        with:
+          python-version-file: src/backend/.python-version
+          cache: npm
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Check prettier
+        run: npx prettier --check .
+
+      - name: Check eslint
+        run: npx eslint .
