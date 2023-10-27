@@ -1,3 +1,6 @@
+[![Backend Static Code Analysis](https://github.com/cojua8/todo-app/actions/workflows/static_code_analysis_backend.yml/badge.svg)](https://github.com/cojua8/todo-app/actions/workflows/static_code_analysis_backend.yml)
+[![Frontend Static Code Analysis](https://github.com/cojua8/todo-app/actions/workflows/static_code_analysis_frontend.yml/badge.svg)](https://github.com/cojua8/todo-app/actions/workflows/static_code_analysis_frontend.yml)
+
 # TODO APP
 This is a Todo app. A basic one. But it has been used for learning ways of abstraction in python, such as Generics and Protocols. Also, I have tried to use best practices of format and such.
 
