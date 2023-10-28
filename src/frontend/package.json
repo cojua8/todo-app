@@ -22,6 +22,7 @@
   },
   "type": "module",
   "dependencies": {
-    "axios": "^0.27.2"
+    "axios": "^0.27.2",
+    "page": "^1.11.6"
   }
 }
