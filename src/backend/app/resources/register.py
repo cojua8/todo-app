@@ -20,7 +20,7 @@ async def post(
     username: Annotated[str, Body()],
     email: Annotated[EmailStr, Body()],
     password: Annotated[str, Body()],
-    confirm_password: Annotated[str, Body()],
+    confirm_password: Annotated[str, Body(alias="confirmPassword")],
     authentication_service: AuthenticationServiceProtocol = fastapi.Depends(
         Provide[Container.authentication_service]
     ),

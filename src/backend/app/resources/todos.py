@@ -40,9 +40,9 @@ async def get(
 @todo_router.post("/todo")
 @inject
 async def post(
-    owner_id: Annotated[UUID, Body()],
+    owner_id: Annotated[UUID, Body(alias="ownerId")],
     description: Annotated[str, Body()],
-    due_date: Annotated[dt.date, Body()],
+    due_date: Annotated[dt.date, Body(alias="dueDate")],
     todo_service: TodoServiceProtocol = fastapi.Depends(
         Provide[Container.todos_service]
     ),
@@ -83,10 +83,10 @@ async def delete(
 @inject
 async def put(  # noqa: PLR0913
     id_: UUID,
-    owner_id: Annotated[UUID, Body()],
+    owner_id: Annotated[UUID, Body(alias="ownerId")],
     description: Annotated[str, Body()],
-    date_created: Annotated[dt.date, Body()],
-    due_date: Annotated[dt.date, Body()],
+    date_created: Annotated[dt.date, Body(alias="dateCreated")],
+    due_date: Annotated[dt.date, Body(alias="dueDate")],
     completed: Annotated[bool, Body()],
     todo_service: TodoServiceProtocol = fastapi.Depends(
         Provide[Container.todos_service]
