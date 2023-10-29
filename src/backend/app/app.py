@@ -16,7 +16,11 @@ dotenv.load_dotenv()
 def app_factory() -> FastAPI:
     fastapi = FastAPI()
     fastapi.add_middleware(
-        CORSMiddleware, allow_origins=["http://localhost:3000"]
+        CORSMiddleware,
+        allow_origins=["http://localhost:3000"],
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
     )
     fastapi.container = Container()  # type: ignore[container]
 
