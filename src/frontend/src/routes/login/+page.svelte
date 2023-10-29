@@ -3,7 +3,6 @@
   import { loginUser } from "#services/TodoApi.js";
   import FormItem from "#components/FormItem.svelte";
   import StatusMessage from "#components/StatusMessage.svelte";
-  import { goto } from "$app/navigation";
 
   let form = { username: "Joaco92", password: "1234" };
   let errors = {};

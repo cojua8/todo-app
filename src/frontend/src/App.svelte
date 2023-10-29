@@ -4,12 +4,14 @@
   import Home from "./pages/Home.svelte";
   import Login from "./pages/Login.svelte";
   import Signup from "./pages/Signup.svelte";
-  import NavBar from "./components/NavBar.svelte";
+  import NavBar from "./lib/NavBar.svelte";
+  import Dashboard from "./pages/Dashboard.svelte";
 
   let currentPage = Home;
   page("/", () => (currentPage = Home));
   page("/login", () => (currentPage = Login));
   page("/signup", () => (currentPage = Signup));
+  page("/dashboard", () => (currentPage = Dashboard));
   page();
 
   let year = new Date().getFullYear();
