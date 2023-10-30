@@ -1,44 +1,51 @@
 <script>
   import page from "page";
-  import { createForm } from "svelte-forms-lib";
+  import { createForm } from "felte";
+  import { validator } from "@felte/validator-yup";
   import * as yup from "yup";
+  import { loginUser } from "../services/TodoApi";
 
-  const { form, errors, handleChange, handleSubmit } = createForm({
+  const { form, errors } = createForm({
     initialValues: {
-      username: "xfvxfgd",
-      password: "dfgdfgdf",
+      username: "theusername3",
+      password: "password",
     },
-    onSubmit: (values) => {
-      console.log(values);
+    extend: validator({
+      schema: yup.object().shape({
+        username: yup.string().required("Username is required"),
+        password: yup.string().required("Password is required"),
+      }),
+    }),
+    onSubmit: async (values) => {
+      let response = await loginUser(values);
+      switch (response.status) {
+        case 200:
+          return await response.json();
+        case 400:
+          throw await response.json();
+        default:
+          console.log("Unknown error");
+      }
+    },
+    onSuccess: (response, context) => {
+      console.log(response, context);
       page.redirect("/dashboard");
     },
-    validationSchema: yup.object().shape({
-      username: yup.string().required("Username is required"),
-      password: yup.string().required("Password is required"),
-    }),
+    onError: async ({ result }) => {
+      alert(result);
+    },
   });
 </script>
 
-<form on:submit={handleSubmit}>
+<form use:form>
   <label for="username">username</label>
-  <input
-    id="username"
-    name="username"
-    on:change={handleChange}
-    bind:value={$form.username}
-  />
+  <input name="username" />
   {#if $errors.username}
     <p>{$errors.username}</p>
   {/if}
 
   <label for="password">password</label>
-  <input
-    id="password"
-    name="password"
-    type="password"
-    on:change={handleChange}
-    bind:value={$form.password}
-  />
+  <input name="password" type="password" />
   {#if $errors.password}
     <p>{$errors.password}</p>
   {/if}

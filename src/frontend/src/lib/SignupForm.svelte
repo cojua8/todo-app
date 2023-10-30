@@ -1,81 +1,86 @@
 <script>
   import page from "page";
-  import { createForm } from "svelte-forms-lib";
+  import { createForm } from "felte";
+  import { validator } from "@felte/validator-yup";
   import * as yup from "yup";
+  import { createUser } from "../services/TodoApi";
+  import { faker } from "@faker-js/faker";
 
-  const { form, errors, handleChange, handleSubmit } = createForm({
+  const { form, setErrors, errors } = createForm({
     initialValues: {
-      email: "xfvxfgd",
-      username: "xfvxfgd",
-      password: "dfgdfgdf",
-      confirmPassword: "dfgdfgfdfddf",
+      email: faker.internet.email(),
+      username: faker.internet.userName(),
+      password: "1234",
+      confirmPassword: "1234",
     },
-    onSubmit: (values) => {
-      console.log(values);
+    extend: validator({
+      schema: yup.object().shape({
+        email: yup.string().email().required("Email is required"),
+        username: yup.string().required("Username is required"),
+        password: yup.string().required("Password is required"),
+        confirmPassword: yup
+          .string()
+          .required("Password confirmation is required")
+          .equals([yup.ref("password")], "Passwords must match"),
+      }),
+    }),
+    onSubmit: async (values) => {
+      let response = await createUser(values);
+      switch (response.status) {
+        case 201:
+          return await response.json();
+        case 400:
+          throw await response.json();
+        default:
+          console.log("Unknown error");
+          break;
+      }
+    },
+    onSuccess: async ({ result, user }) => {
+      console.log(result, user);
       page.redirect("/dashboard");
     },
-    validationSchema: yup.object().shape({
-      email: yup.string().email().required("Email is required"),
-      username: yup.string().required("Username is required"),
-      password: yup.string().required("Password is required"),
-      confirmPassword: yup.string().required("Password is required"),
-    }),
-    validate: (values) => {
-      let errors = {};
-
-      if (values.password != values.confirmPassword) {
-        errors.confirmPassword = "Passwords do not match";
+    onError: async ({ result, user }) => {
+      console.log(result, user);
+      switch (result) {
+        case "USERNAME_ALREADY_EXISTS":
+          setErrors({ username: "Username already exists" });
+          break;
+        case "EMAIL_ALREADY_EXISTS":
+          setErrors({ email: "Email already exists" });
+          break;
+        case "PASSWORD_NOT_MATCHING":
+          setErrors({ confirmPassword: "Passwords do not match" });
+          break;
+        default:
+          console.log("Unknown error");
+          break;
       }
-
-      return errors;
     },
   });
 </script>
 
-<form on:submit={handleSubmit}>
+<form use:form>
   <label for="email">email</label>
-  <input
-    id="email"
-    name="email"
-    type="email"
-    on:change={handleChange}
-    bind:value={$form.email}
-  />
+  <input name="email" type="email" />
   {#if $errors.email}
     <p>{$errors.email}</p>
   {/if}
 
   <label for="username">username</label>
-  <input
-    id="username"
-    name="username"
-    on:change={handleChange}
-    bind:value={$form.username}
-  />
+  <input name="username" />
   {#if $errors.username}
     <p>{$errors.username}</p>
   {/if}
 
   <label for="password">password</label>
-  <input
-    id="password"
-    name="password"
-    type="password"
-    on:change={handleChange}
-    bind:value={$form.password}
-  />
+  <input name="password" type="password" />
   {#if $errors.password}
     <p>{$errors.password}</p>
   {/if}
 
-  <label for="confirmPassword">confirmPassword</label>
-  <input
-    id="confirmPassword"
-    name="confirmPassword"
-    type="password"
-    on:change={handleChange}
-    bind:value={$form.confirmPassword}
-  />
+  <label for="confirmPassword">confirm password</label>
+  <input name="confirmPassword" type="password" />
   {#if $errors.confirmPassword}
     <p>{$errors.confirmPassword}</p>
   {/if}
