@@ -15,21 +15,22 @@ class AuthenticationService(AuthenticationServiceProtocol):
 
     async def register(
         self, username: str, email: str, password: str, confirm_password: str
-    ) -> RegistrationResult:
-        result = RegistrationResult.SUCCESS
+    ) -> tuple[RegistrationResult, User | None]:
+        registration_result = RegistrationResult.SUCCESS
+        new_user = None
 
         if password != confirm_password:
-            result = RegistrationResult.PASSWORD_NOT_MATCHING
+            registration_result = RegistrationResult.PASSWORD_NOT_MATCHING
         elif await self.user_service.get_by_username(username):
-            result = RegistrationResult.USERNAME_ALREADY_EXISTS
+            registration_result = RegistrationResult.USERNAME_ALREADY_EXISTS
         elif await self.user_service.get_by_email(email):
-            result = RegistrationResult.EMAIL_ALREADY_EXISTS
+            registration_result = RegistrationResult.EMAIL_ALREADY_EXISTS
 
-        if result == RegistrationResult.SUCCESS:
-            new = User(username=username, email=email, password=password)
-            await self.user_service.create(new)
+        if registration_result == RegistrationResult.SUCCESS:
+            new_user = User(username=username, email=email, password=password)
+            await self.user_service.create(new_user)
 
-        return result
+        return registration_result, new_user
 
     async def login(self, username: str, password: str) -> User:
         user = await self.user_service.get_by_username(username)

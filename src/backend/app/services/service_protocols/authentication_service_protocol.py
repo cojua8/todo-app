@@ -14,7 +14,7 @@ class RegistrationResult(Enum):
 class AuthenticationServiceProtocol(Protocol):
     async def register(
         self, username: str, email: str, password: str, confirm_password: str
-    ) -> RegistrationResult:
+    ) -> tuple[RegistrationResult, User | None]:
         ...
 
     async def login(self, username: str, password: str) -> User:
