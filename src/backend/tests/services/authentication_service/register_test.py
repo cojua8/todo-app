@@ -1,5 +1,4 @@
-from typing import TYPE_CHECKING
-
+from app.models.user import User
 from app.services.authentication_service import AuthenticationService
 from app.services.service_protocols.authentication_service_protocol import (
     RegistrationResult,
@@ -7,9 +6,6 @@ from app.services.service_protocols.authentication_service_protocol import (
 from app.services.service_protocols.user_service_protocol import (
     UserServiceProtocol,
 )
-
-if TYPE_CHECKING:
-    from app.models.user import User
 
 
 async def test_passwords_not_matching(faker, mocker):
@@ -23,12 +19,10 @@ async def test_passwords_not_matching(faker, mocker):
     confirm_password = "other_password"  # noqa: S105
 
     # act
-    result = await auth_service.register(
-        username, email, password, confirm_password
-    )
+    result = await auth_service.register(username, email, password, confirm_password)
 
     # assert
-    assert result == RegistrationResult.PASSWORD_NOT_MATCHING
+    assert result == (RegistrationResult.PASSWORD_NOT_MATCHING, None)
 
 
 async def test_username_already_exists(user_factory, mocker):
@@ -36,9 +30,7 @@ async def test_username_already_exists(user_factory, mocker):
     mock_user: User = user_factory()
 
     mock_user_service = mocker.MagicMock(spec=UserServiceProtocol)
-    mock_user_service.get_by_username = mocker.AsyncMock(
-        return_value=mock_user
-    )
+    mock_user_service.get_by_username = mocker.AsyncMock(return_value=mock_user)
 
     auth_service = AuthenticationService(mock_user_service)
 
@@ -51,7 +43,7 @@ async def test_username_already_exists(user_factory, mocker):
     )
 
     # assert
-    assert result == RegistrationResult.USERNAME_ALREADY_EXISTS
+    assert result == (RegistrationResult.USERNAME_ALREADY_EXISTS, None)
 
 
 async def test_email_already_exists(mocker, user_factory):
@@ -73,7 +65,7 @@ async def test_email_already_exists(mocker, user_factory):
     )
 
     # assert
-    assert result == RegistrationResult.EMAIL_ALREADY_EXISTS
+    assert result == (RegistrationResult.EMAIL_ALREADY_EXISTS, None)
 
 
 async def test_success_creates_user(mocker, user_factory):
@@ -92,6 +84,10 @@ async def test_success_creates_user(mocker, user_factory):
     )
 
     # assert
-    assert result == RegistrationResult.SUCCESS
+    assert result[0] == RegistrationResult.SUCCESS
+    assert isinstance(result[1], User)
+    assert result[1].username == user.username
+    assert result[1].email == user.email
+    assert result[1].password == user.password
 
     mock_user_service.create.assert_called_once()
