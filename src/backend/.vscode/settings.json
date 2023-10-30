@@ -1,7 +1,7 @@
 {
     "[python]": {
         "editor.codeActionsOnSave": {
-            "source.fixAll": true
+            "source.fixAll": true,
         },
         "editor.rulers": [
             79
@@ -16,4 +16,5 @@
     "python.analysis.indexing": true,
     "ruff.importStrategy": "fromEnvironment",
     "black-formatter.importStrategy": "fromEnvironment",
+    "black-formatter.args": ["--config", "pyproject.toml"]
 }
