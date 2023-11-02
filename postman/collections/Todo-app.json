@@ -42,7 +42,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"a name\",\r\n    \"email\": \"an@email.com\",\r\n    \"password\": \"apassword\"\r\n}",
+							"raw": "{\r\n    \"username\": \"{{$randomUserName}}\",\r\n    \"email\": \"{{$randomEmail}}\",\r\n    \"password\": \"{{$randomPassword}}\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -287,6 +287,27 @@
 		},
 		{
 			"name": "Register user",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "0dbc776a-ac76-45e5-a907-19dd7fad12cd",
+						"exec": [
+							"body = JSON.parse(pm.request.body.raw)",
+							"if (!body.confirmPassword) {",
+							"    newPassword = pm.variables.replaceIn(\"{{$randomPassword}}\")",
+							"    ",
+							"    body.password = newPassword",
+							"    body.confirmPassword = newPassword ",
+							"",
+							"    pm.request.body.raw = JSON.stringify(body)",
+							"}",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"id": "22712fdd-e9ea-4898-83ce-8d025359eb57",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
@@ -296,7 +317,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"username\": \"theusername2\",\n    \"email\": \"the@email.com\",\n    \"password\": \"password\",\n    \"confirm_password\": \"password\"\n}",
+					"raw": "{\n    \"username\": \"{{$randomUserName}}\",\n    \"email\": \"{{$randomEmail}}\",\n    \"password\": \"{{$randomPassword}}\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
