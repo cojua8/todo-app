@@ -1,4 +1,3 @@
-from dataclasses import asdict
 from http import HTTPStatus
 from typing import Annotated, Any
 
@@ -8,6 +7,7 @@ from fastapi import APIRouter, Body, Response
 
 from app.containers import Container
 from app.exceptions.login_exception import LoginError
+from app.models.user import User
 from app.services.service_protocols.authentication_service_protocol import (
     AuthenticationServiceProtocol,
 )
@@ -24,7 +24,7 @@ async def post(
     authentication_service: AuthenticationServiceProtocol = fastapi.Depends(
         Provide[Container.authentication_service]
     ),
-) -> dict[str, Any]:
+) -> User | dict[str, Any]:
     try:
         user = await authentication_service.login(
             username=username, password=password
@@ -33,4 +33,4 @@ async def post(
         response.status_code = HTTPStatus.BAD_REQUEST
         return {"result": str(e)}
     else:
-        return asdict(user)
+        return user

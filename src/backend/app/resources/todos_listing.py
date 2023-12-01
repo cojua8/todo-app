@@ -1,5 +1,4 @@
-from http import HTTPStatus
-from typing import Annotated, Any
+from typing import Annotated
 from uuid import UUID
 
 import fastapi
@@ -7,6 +6,7 @@ from dependency_injector.wiring import Provide, inject
 from fastapi import APIRouter, Query
 
 from app.containers import Container
+from app.models.todo import Todo
 from app.services.service_protocols.todo_service_protocol import (
     TodoServiceProtocol,
 )
@@ -21,15 +21,5 @@ async def get(
     todo_service: TodoServiceProtocol = fastapi.Depends(
         Provide[Container.todos_service]
     ),
-) -> dict[str, Any]:
-    response: dict[str, Any] = {}
-    try:
-        users = await todo_service.get_all_by_user_id(user_id)
-
-        response["status"] = HTTPStatus.OK
-        response["response"] = users
-    except Exception as e:
-        response["status"] = HTTPStatus.INTERNAL_SERVER_ERROR
-        response["response"] = str(e)
-
-    return response
+) -> list[Todo]:
+    return await todo_service.get_all_by_user_id(user_id)
