@@ -19,7 +19,7 @@
 
 <main>
   <NavBar />
-  <body class="mt-20">
+  <body class="mt-20 flex flex-col items-center">
     <svelte:component this={currentPage} />
   </body>
   <footer>
