@@ -6,6 +6,9 @@
   import { createUser } from "../services/TodoApi";
   import { faker } from "@faker-js/faker";
   import { loggedUser } from "../stores/UserStore";
+  import FormItem from "./formBase/FormItem.svelte";
+  import FormButton from "./formBase/FormButton.svelte";
+  import Form from "./formBase/Form.svelte";
 
   const { form, setErrors, errors } = createForm({
     initialValues: {
@@ -61,30 +64,31 @@
   });
 </script>
 
-<form use:form>
-  <label for="email">email</label>
-  <input name="email" type="email" />
-  {#if $errors.email}
-    <p>{$errors.email}</p>
-  {/if}
-
-  <label for="username">username</label>
-  <input name="username" />
-  {#if $errors.username}
-    <p>{$errors.username}</p>
-  {/if}
-
-  <label for="password">password</label>
-  <input name="password" type="password" />
-  {#if $errors.password}
-    <p>{$errors.password}</p>
-  {/if}
-
-  <label for="confirmPassword">confirm password</label>
-  <input name="confirmPassword" type="password" />
-  {#if $errors.confirmPassword}
-    <p>{$errors.confirmPassword}</p>
-  {/if}
-
-  <button type="submit">Submit</button>
-</form>
+<Form {form}>
+  <FormItem
+    name="email"
+    labelText="Email"
+    type="email"
+    errors={$errors.email}
+  />
+  <FormItem
+    name="username"
+    labelText="Username"
+    type="text"
+    errors={$errors.username}
+  />
+  <FormItem
+    name="password"
+    labelText="Password"
+    type="password"
+    errors={$errors.password}
+  />
+  <FormItem
+    name="confirmPassword"
+    labelText="Confirm Password"
+    type="password"
+    errors={$errors.confirmPassword}
+  />
+  <br />
+  <FormButton>Signup</FormButton>
+</Form>

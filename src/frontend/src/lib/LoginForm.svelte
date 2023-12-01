@@ -5,6 +5,9 @@
   import * as yup from "yup";
   import { loginUser } from "../services/TodoApi";
   import { loggedUser } from "../stores/UserStore";
+  import FormItem from "./formBase/FormItem.svelte";
+  import Form from "./formBase/Form.svelte";
+  import FormButton from "./formBase/FormButton.svelte";
 
   const { form, errors } = createForm({
     initialValues: {
@@ -38,18 +41,19 @@
   });
 </script>
 
-<form use:form>
-  <label for="username">username</label>
-  <input name="username" />
-  {#if $errors.username}
-    <p>{$errors.username}</p>
-  {/if}
-
-  <label for="password">password</label>
-  <input name="password" type="password" />
-  {#if $errors.password}
-    <p>{$errors.password}</p>
-  {/if}
-
-  <button type="submit">Submit</button>
-</form>
+<Form {form}>
+  <FormItem
+    name="username"
+    labelText="Username"
+    type="text"
+    errors={$errors.username}
+  />
+  <FormItem
+    name="password"
+    labelText="Password"
+    type="password"
+    errors={$errors.password}
+  />
+  <br />
+  <FormButton>Login</FormButton>
+</Form>
