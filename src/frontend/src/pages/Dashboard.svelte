@@ -4,7 +4,7 @@
   import { loggedUser } from "../stores/UserStore";
   import { onMount } from "svelte";
   import { getUserTodos } from "../services/TodoApi";
-  import TodoItem from "../lib/TodoItem.svelte";
+  import TodoItem from "../lib/TodoListItem.svelte";
   import Button from "../lib/basics/Button.svelte";
 
   let todos = [];
