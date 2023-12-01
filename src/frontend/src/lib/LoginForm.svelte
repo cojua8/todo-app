@@ -4,6 +4,7 @@
   import { validator } from "@felte/validator-yup";
   import * as yup from "yup";
   import { loginUser } from "../services/TodoApi";
+  import { loggedUser } from "../stores/UserStore";
 
   const { form, errors } = createForm({
     initialValues: {
@@ -20,15 +21,15 @@
       let response = await loginUser(values);
       switch (response.status) {
         case 200:
-          return await response.json();
+          loggedUser.set(await response.json());
+          return;
         case 400:
           throw await response.json();
         default:
           console.log("Unknown error");
       }
     },
-    onSuccess: (response, context) => {
-      console.log(response, context);
+    onSuccess: () => {
       page.redirect("/dashboard");
     },
     onError: async ({ result }) => {

@@ -5,6 +5,7 @@
   import * as yup from "yup";
   import { createUser } from "../services/TodoApi";
   import { faker } from "@faker-js/faker";
+  import { loggedUser } from "../stores/UserStore";
 
   const { form, setErrors, errors } = createForm({
     initialValues: {
@@ -28,7 +29,8 @@
       let response = await createUser(values);
       switch (response.status) {
         case 201:
-          return await response.json();
+          loggedUser.set(await response.json());
+          return;
         case 400:
           throw await response.json();
         default:
@@ -36,8 +38,7 @@
           break;
       }
     },
-    onSuccess: async ({ result, user }) => {
-      console.log(result, user);
+    onSuccess: async () => {
       page.redirect("/dashboard");
     },
     onError: async ({ result, user }) => {
