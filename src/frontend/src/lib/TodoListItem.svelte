@@ -1,6 +1,4 @@
 <script>
-  export let id;
-  export let owner_id;
   export let description;
   export let due_date;
   export let completed;
