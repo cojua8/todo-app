@@ -7,18 +7,15 @@
   import TodoItem from "../lib/TodoItem.svelte";
 
   let todos = [];
-  let user;
-  loggedUser.subscribe((value) => {
-    user = value;
-  });
 
   onMount(async () => {
-    if (!user) {
+    if (!$loggedUser) {
       page.redirect("/");
       console.log("no logged user");
+      return;
     }
 
-    todos = await (await getUserTodos(user.id)).json();
+    todos = await (await getUserTodos($loggedUser.id)).json();
   });
 
   const logout = () => {

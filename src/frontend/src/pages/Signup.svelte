@@ -3,12 +3,7 @@
   import SignupForm from "../lib/SignupForm.svelte";
   import { loggedUser } from "../stores/UserStore";
 
-  let user;
-  loggedUser.subscribe((value) => {
-    user = value;
-  });
-
-  if (user) {
+  if ($loggedUser) {
     page.redirect("/dashboard");
   }
 </script>
