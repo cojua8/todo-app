@@ -1,4 +1,3 @@
-from dataclasses import asdict
 from http import HTTPStatus
 from typing import Annotated, Any, cast
 
@@ -28,7 +27,7 @@ async def post(  # noqa: PLR0913
     authentication_service: AuthenticationServiceProtocol = fastapi.Depends(
         Provide[Container.authentication_service]
     ),
-) -> dict[str, Any]:
+) -> User | dict[str, Any]:
     result, user = await authentication_service.register(
         username=username,
         email=email,
@@ -40,4 +39,4 @@ async def post(  # noqa: PLR0913
         response.status_code = HTTPStatus.BAD_REQUEST
         return {"result": result.name}
 
-    return asdict(cast(User, user))
+    return cast(User, user)

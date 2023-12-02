@@ -1,8 +1,9 @@
 import datetime as dt
 import json
-from dataclasses import is_dataclass
 from typing import Any
 from uuid import UUID
+
+from pydantic import BaseModel
 
 
 class _EnhancedJSONEncoder(json.JSONEncoder):
@@ -12,8 +13,8 @@ class _EnhancedJSONEncoder(json.JSONEncoder):
             ret_val = dt.date.isoformat(o)
         elif isinstance(o, UUID):
             ret_val = o.hex
-        elif is_dataclass(o):
-            ret_val = o.__dict__
+        elif isinstance(o, BaseModel):
+            ret_val = o.model_dump()
 
         return ret_val or super().default(o)
 

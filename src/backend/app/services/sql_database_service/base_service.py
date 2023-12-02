@@ -15,7 +15,7 @@ from app.services.service_protocols.database_service_protocol import (
 
 class Mappers:
     def model_to_entity(self, model: BaseModel) -> dict:
-        return model.__dict__
+        return model.model_dump()
 
     def entity_to_model(self, entity: Row, model_type: type[BMT]) -> BMT:
         return model_type(**entity._asdict())
