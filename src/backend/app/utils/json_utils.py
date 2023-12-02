@@ -8,13 +8,14 @@ from pydantic import BaseModel
 
 class _EnhancedJSONEncoder(json.JSONEncoder):
     def default(self, o: Any) -> Any:  # noqa: ANN401
-        ret_val = None
         if isinstance(o, dt.date):
             ret_val = dt.date.isoformat(o)
         elif isinstance(o, UUID):
             ret_val = o.hex
         elif isinstance(o, BaseModel):
             ret_val = o.model_dump()
+        else:
+            ret_val = None
 
         return ret_val or super().default(o)
 
