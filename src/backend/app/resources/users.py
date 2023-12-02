@@ -4,7 +4,7 @@ from uuid import UUID
 
 import fastapi
 from dependency_injector.wiring import Provide, inject
-from fastapi import APIRouter, Body
+from fastapi import APIRouter, Body, Response
 from pydantic import EmailStr
 
 from app.containers import Container
@@ -80,22 +80,19 @@ async def delete(
 
 @users_router.put("/user/{id_}")
 @inject
-async def put(
+async def put(  # noqa: PLR0913
     id_: UUID,
     username: Annotated[str, Body()],
     email: Annotated[str, Body()],
     password: Annotated[str, Body()],
+    response: Response,
     user_service: UserServiceProtocol = fastapi.Depends(
         Provide[Container.users_service]
     ),
-) -> dict[str, Any]:
-    response: dict[str, Any] = {}
+) -> User | dict:
     new = User(id=id_, username=username, email=email, password=password)
-    try:
-        await user_service.put(id_, new)
-        response["status"] = HTTPStatus.OK
-    except Exception as e:
-        response["status"] = HTTPStatus.INTERNAL_SERVER_ERROR
-        response["response"] = str(e)
+    user = await user_service.put(id_, new)
+    if not user:
+        response.status_code = HTTPStatus.BAD_REQUEST
 
-    return response
+    return user or {}

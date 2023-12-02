@@ -33,6 +33,7 @@ class BaseService(DatabaseServiceProtocol[BMT], Generic[BMT], ABC):
     async def get_all(self) -> Iterable[BMT]:
         async with self._engine.connect() as conn:
             results = await conn.execute(select(self._table))
+            await conn.commit()
         return [
             self._mappers.entity_to_model(result, self._model)
             for result in results
@@ -40,12 +41,12 @@ class BaseService(DatabaseServiceProtocol[BMT], Generic[BMT], ABC):
 
     async def get(self, id_: UUID) -> BMT | None:
         async with self._engine.connect() as conn:
-            bmt = await conn.execute(
+            result = await conn.execute(
                 select(self._table).where(self._table.c.id == id_).limit(1)
             )
 
-        if bmt := next(bmt, None):
-            return self._mappers.entity_to_model(bmt, self._model)
+        if entity := result.fetchone():
+            return self._mappers.entity_to_model(entity, self._model)
 
     async def create(self, new: BMT) -> None:
         entity = self._mappers.model_to_entity(new)
@@ -60,12 +61,16 @@ class BaseService(DatabaseServiceProtocol[BMT], Generic[BMT], ABC):
             )
             await conn.commit()
 
-    async def put(self, id_: UUID, new: BMT) -> None:
+    async def put(self, id_: UUID, new: BMT) -> BMT | None:
         entity = self._mappers.model_to_entity(new)
         async with self._engine.connect() as conn:
-            await conn.execute(
+            result = await conn.execute(
                 update(self._table)
                 .where(self._table.c.id == id_)
                 .values(**entity)
+                .returning(self._table.c)
             )
             await conn.commit()
+
+        if updated_entity := result.fetchone():
+            return self._mappers.entity_to_model(updated_entity, self._model)

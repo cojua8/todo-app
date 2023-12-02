@@ -5,7 +5,7 @@ from uuid import UUID
 
 import fastapi
 from dependency_injector.wiring import Provide, inject
-from fastapi import APIRouter, Body
+from fastapi import APIRouter, Body, Response
 
 from app.containers import Container
 from app.models.todo import Todo
@@ -88,11 +88,11 @@ async def put(  # noqa: PLR0913
     date_created: Annotated[dt.date, Body(alias="dateCreated")],
     due_date: Annotated[dt.date, Body(alias="dueDate")],
     completed: Annotated[bool, Body()],
+    response: Response,
     todo_service: TodoServiceProtocol = fastapi.Depends(
         Provide[Container.todos_service]
     ),
-) -> dict[str, Any]:
-    response: dict[str, Any] = {}
+) -> Todo | dict:
     new = Todo(
         id=id_,
         owner_id=owner_id,
@@ -101,11 +101,9 @@ async def put(  # noqa: PLR0913
         due_date=due_date,
         completed=completed,
     )
-    try:
-        await todo_service.put(id_, new)
-        response["status"] = HTTPStatus.OK
-    except Exception as e:
-        response["status"] = HTTPStatus.INTERNAL_SERVER_ERROR
-        response["response"] = str(e)
 
-    return response
+    todo = await todo_service.put(id_, new)
+    if not todo:
+        response.status_code = HTTPStatus.NOT_FOUND
+
+    return todo or {}

@@ -49,12 +49,13 @@ async def test_get_returns_todo(todo_factory, todos_service, user):
     assert actual_todos == expected_todo
 
 
-async def test_get_returns_none(todos_service):
+async def test_get_returns_none(todo_factory, todos_service, user):
     # Arrange
-    id_ = uuid4()
+    existing_todo = todo_factory(owner_id=user.id)
+    await todos_service.create(existing_todo)
 
     # Act
-    actual_todo = await todos_service.get(id_)
+    actual_todo = await todos_service.get(uuid4())
 
     # Assert
     assert actual_todo is None
@@ -95,7 +96,7 @@ async def test_delete(todo_factory, todos_service, user):
     assert await todos_service.get_all() == []
 
 
-async def test_put(todo_factory, todos_service, user):
+async def test_put_updates_record(todo_factory, todos_service, user):
     # Arrange
     id_ = uuid4()
     original_todo = todo_factory.create(id=id_, owner_id=user.id)
@@ -104,10 +105,26 @@ async def test_put(todo_factory, todos_service, user):
     # modified the created user
     modified_todo = todo_factory.create(id=id_, owner_id=user.id)
     # Act
-    await todos_service.put(id_, modified_todo)
+    updated_todo = await todos_service.put(id_, modified_todo)
 
     # Assert
-    assert await todos_service.get_all() == [modified_todo]
+    assert await todos_service.get_all() == [updated_todo]
+
+
+async def test_put_does_nothing(todo_factory, todos_service, user):
+    # Arrange
+    existing_todo = todo_factory.create(owner_id=user.id)
+    await todos_service.create(existing_todo)
+
+    # modified the created user
+    modified_todo = todo_factory.create(owner_id=user.id)
+    # Act
+    # uses a random uuid which doesnt exist in db
+    updated_todo = await todos_service.put(uuid4(), modified_todo)
+
+    # Assert
+    assert updated_todo is None
+    assert await todos_service.get_all() == [existing_todo]
 
 
 async def test_get_all_by_user_id(

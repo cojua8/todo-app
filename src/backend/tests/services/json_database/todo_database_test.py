@@ -115,22 +115,41 @@ async def test_delete_ok(setup_service, setup_todos):
 
 
 @pytest.mark.parametrize("setup_todos", [({}, 4)], indirect=True)
-async def test_put_ok(setup_todos, setup_service, todo_factory):
+async def test_put_updates_record(setup_todos, setup_service, todo_factory):
     # arrange
     todos, expected_todo = setup_todos
-    updated_todo = todo_factory.create(id=expected_todo.id)
-    expected_todos = [updated_todo, *todos[1:]]
+    expected_updated_todo = todo_factory.create(id=expected_todo.id)
+    expected_todos = [expected_updated_todo, *todos[1:]]
 
     todo_service, io_service = setup_service
     io_service.read.return_value = json_utils.dumps(todos)
 
     # act
-    await todo_service.put(expected_todo.id, updated_todo)
+    updated_todo = await todo_service.put(
+        expected_todo.id, expected_updated_todo
+    )
 
     # assert
     io_service.write.assert_called_once_with(
         json_utils.dumps(expected_todos, indent=4)
     )
+    assert updated_todo in expected_todos
+
+
+@pytest.mark.parametrize("setup_todos", [({}, 4)], indirect=True)
+async def test_put_returns_none(setup_todos, setup_service, todo_factory):
+    # arrange
+    todos, expected_todo = setup_todos
+    expected_updated_todo = todo_factory.create(id=expected_todo.id)
+
+    todo_service, io_service = setup_service
+    io_service.read.return_value = json_utils.dumps(todos)
+
+    # act
+    updated_todo = await todo_service.put(uuid4(), expected_updated_todo)
+
+    # assert
+    assert updated_todo is None
 
 
 async def test_get_all_by_user_id_ok(setup_service, setup_todos, todo_factory):

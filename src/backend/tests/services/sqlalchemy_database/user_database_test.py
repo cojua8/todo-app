@@ -71,7 +71,7 @@ async def test_delete(user_factory, users_service):
     assert await users_service.get_all() == []
 
 
-async def test_put(user_factory, users_service):
+async def test_put_updates_record(user_factory, users_service):
     # Arrange
     id_ = uuid4()
     original_user = user_factory.create(id=id_)
@@ -84,6 +84,21 @@ async def test_put(user_factory, users_service):
 
     # Assert
     assert await users_service.get_all() == [modified_user]
+
+
+async def test_put_returns_none(user_factory, users_service):
+    # Arrange
+    original_user = user_factory.create()
+    await users_service.create(original_user)
+
+    # modified the created user
+    modified_user = user_factory.create()
+    # Act
+    modified_user = await users_service.put(uuid4(), modified_user)
+
+    # Assert
+    assert modified_user is None
+    assert await users_service.get_all() == [original_user]
 
 
 async def test_get_by_email_returns_first_found(user_factory, users_service):

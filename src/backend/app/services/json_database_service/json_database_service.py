@@ -40,15 +40,19 @@ class JsonDatabaseService(DatabaseServiceProtocol[BMT], Generic[BMT], ABC):
 
         await self._save_file(data)
 
-    async def put(self, id_: UUID, new: BMT) -> None:
+    async def put(self, id_: UUID, new: BMT) -> BMT | None:
         data = await self._get_data()
+        updated = False
 
         for i, item in enumerate(data):
             if item.id == id_:
                 data[i] = new
+                updated = True
                 break
 
-        await self._save_file(data)
+        if updated:
+            await self._save_file(data)
+            return new
 
     async def _get_data(self) -> list[BMT]:
         files_contents = await self._io_service.read()

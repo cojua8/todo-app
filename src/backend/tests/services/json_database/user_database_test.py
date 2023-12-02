@@ -198,7 +198,9 @@ async def test_delete_ok(mocker, setup):
 
 
 @pytest.mark.parametrize("setup", [({}, 4, {})], indirect=True)
-async def test_put_ok(mocker, setup, user_factory: UserFactory):
+async def test_put_updates_existing_record(
+    mocker, setup, user_factory: UserFactory
+):
     # arrange
     users, expected_user = setup
     updated_user = user_factory.create(id=expected_user.id)
@@ -215,3 +217,20 @@ async def test_put_ok(mocker, setup, user_factory: UserFactory):
     io_service.write.assert_called_once_with(
         json_utils.dumps(expected_users, indent=4)
     )
+
+
+@pytest.mark.parametrize("setup", [({}, 4, {})], indirect=True)
+async def test_put_returns_none(mocker, setup, user_factory: UserFactory):
+    # arrange
+    users, expected_user = setup
+    expected_updated_user = user_factory.create(id=expected_user.id)
+
+    io_service = mocker.MagicMock(spec=IOServiceProtocol)
+    io_service.read.return_value = users
+
+    service = UsersJsonDatabaseService(io_service)
+    # act
+    updated_user = await service.put(uuid4(), expected_updated_user)
+
+    # assert
+    assert updated_user is None
