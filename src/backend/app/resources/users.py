@@ -34,7 +34,7 @@ async def get(
     return user
 
 
-@users_router.post("/user")
+@users_router.post("/user", status_code=HTTPStatus.CREATED)
 @inject
 async def post(
     username: Annotated[str, Body()],

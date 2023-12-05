@@ -33,7 +33,7 @@ async def get(
     return todo
 
 
-@todo_router.post("/todo")
+@todo_router.post("/todo", status_code=HTTPStatus.CREATED)
 @inject
 async def post(
     owner_id: Annotated[UUID, Body(alias="ownerId")],
