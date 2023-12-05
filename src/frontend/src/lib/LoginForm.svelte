@@ -41,7 +41,7 @@
   });
 </script>
 
-<Form {form}>
+<Form {form} class="w-2/5">
   <FormItem
     name="username"
     labelText="Username"
