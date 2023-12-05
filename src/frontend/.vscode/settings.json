@@ -2,5 +2,8 @@
     "svelte.plugin.css.diagnostics.enable": false,
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.indentSize": "tabSize",
-    "editor.tabSize": 2
+    "editor.tabSize": 2,
+    "editor.rulers": [
+        100
+    ]
 }
