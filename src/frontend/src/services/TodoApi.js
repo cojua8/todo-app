@@ -24,3 +24,7 @@ export const getUserTodos = async (user_id) => {
 export const createTodo = async (body) => {
   return await fetchFromApi("POST", "/todo", body);
 };
+
+export const updateTodoItem = async ({ id, ...todo }) => {
+  return await fetchFromApi("PUT", `/todo/${id}`, todo);
+};
