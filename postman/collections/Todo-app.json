@@ -19,13 +19,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{URL}}/user/d2714f3e-af7a-4a18-a08f-f19b858f4377",
+							"raw": "{{URL}}/user/84737df6-07c0-49aa-bda3-427bd4b2eaec",
 							"host": [
 								"{{URL}}"
 							],
 							"path": [
 								"user",
-								"d2714f3e-af7a-4a18-a08f-f19b858f4377"
+								"84737df6-07c0-49aa-bda3-427bd4b2eaec"
 							]
 						}
 					},
@@ -42,7 +42,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"{{$randomUserName}}\",\r\n    \"email\": \"{{$randomEmail}}\",\r\n    \"password\": \"{{$randomPassword}}\"\r\n}",
+							"raw": "{\r\n    \"username\": \"theusername3\",\r\n    \"email\": \"the@username.com\",\r\n    \"password\": \"password\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -151,13 +151,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{URL}}/todo/16ccc675-111e-4d8f-815a-8f538a8606c9",
+							"raw": "{{URL}}/todo/d0e82dcb-17cb-471f-b371-cba4d63558e7",
 							"host": [
 								"{{URL}}"
 							],
 							"path": [
 								"todo",
-								"16ccc675-111e-4d8f-815a-8f538a8606c9"
+								"d0e82dcb-17cb-471f-b371-cba4d63558e7"
 							]
 						}
 					},
@@ -174,7 +174,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"owner_id\": \"d2714f3e-af7a-4a18-a08f-f19b858f4377\",\r\n    \"description\": \"a description\",\r\n    \"due_date\": \"2023-08-15\"\r\n}",
+							"raw": "{\r\n    \"ownerId\": \"d0e82dcb-17cb-471f-b371-cba4d63558e7\",\r\n    \"description\": \"a description\",\r\n    \"dueDate\": \"2024-08-15\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -235,7 +235,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"owner_id\": \"ce37263c1279492092f94ef18b420a95\",\r\n    \"description\": \"mi nuevo todo\",\r\n    \"due_date\": \"2023-08-17\",\r\n    \"completed\": false,\r\n    \"date_created\": \"2023-08-15\"\r\n}",
+							"raw": "{\r\n    \"ownerId\": \"84737df6-07c0-49aa-bda3-427bd4b2eaec\",\r\n    \"description\": \"mi nuevo todo\",\r\n    \"dueDate\": \"2023-08-17\",\r\n    \"completed\": false,\r\n    \"dateCreated\": \"2023-08-15\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -243,13 +243,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{URL}}/todo/be9d73ef-4c35-44e5-9b34-977e5478bc34",
+							"raw": "{{URL}}/todo/a1dae0cd-80cd-4baa-a450-5d116b9bf89a",
 							"host": [
 								"{{URL}}"
 							],
 							"path": [
 								"todo",
-								"be9d73ef-4c35-44e5-9b34-977e5478bc34"
+								"a1dae0cd-80cd-4baa-a450-5d116b9bf89a"
 							]
 						}
 					},
@@ -265,7 +265,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{URL}}/todos?user_id=d2714f3e-af7a-4a18-a08f-f19b858f4377",
+							"raw": "{{URL}}/todos?user_id=d0e82dcb-17cb-471f-b371-cba4d63558e7",
 							"host": [
 								"{{URL}}"
 							],
@@ -275,7 +275,7 @@
 							"query": [
 								{
 									"key": "user_id",
-									"value": "d2714f3e-af7a-4a18-a08f-f19b858f4377"
+									"value": "d0e82dcb-17cb-471f-b371-cba4d63558e7"
 								}
 							]
 						}
@@ -317,7 +317,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"username\": \"{{$randomUserName}}\",\n    \"email\": \"{{$randomEmail}}\",\n    \"password\": \"{{$randomPassword}}\"\n}",
+					"raw": "{\n    \"username\": \"some_user2\",\n    \"email\": \"some@user.com\",\n    \"password\": \"1233\",\n    \"confirmPassword\": \"1234\" \n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -336,67 +336,14 @@
 			},
 			"response": [
 				{
-					"id": "cbbb5d7b-a178-41ec-b620-606a4ad298a2",
-					"name": "password not matching",
-					"originalRequest": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"username\": \"theusername\",\n    \"email\": \"the@email.com\",\n    \"password\": \"password\",\n    \"confirm_password\": \"differentpassword\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{URL}}/register",
-							"host": [
-								"{{URL}}"
-							],
-							"path": [
-								"register"
-							]
-						}
-					},
-					"status": "OK",
-					"code": 200,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "date",
-							"value": "Sun, 10 Sep 2023 18:12:54 GMT"
-						},
-						{
-							"key": "server",
-							"value": "uvicorn"
-						},
-						{
-							"key": "content-type",
-							"value": "application/json"
-						},
-						{
-							"key": "content-length",
-							"value": "59"
-						},
-						{
-							"key": "access-control-allow-origin",
-							"value": "http://localhost:3000"
-						}
-					],
-					"cookie": [],
-					"body": "{\n    \"response\": \"PASSWORD_NOT_MATCHING\",\n    \"status\": 200\n}"
-				},
-				{
-					"id": "fb4f1b4a-c4e3-4f6d-94fa-1c338590260a",
+					"id": "081b46eb-cb4e-4e4b-9353-e9931fe9e47c",
 					"name": "success",
 					"originalRequest": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"username\": \"theusername\",\n    \"email\": \"the@email.com\",\n    \"password\": \"password\",\n    \"confirm_password\": \"password\"\n}",
+							"raw": "{\n    \"username\": \"some_user\",\n    \"email\": \"some@user.com\",\n    \"password\": \"1234\",\n    \"confirmPassword\": \"1234\" \n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -413,43 +360,39 @@
 							]
 						}
 					},
-					"status": "OK",
-					"code": 200,
+					"status": "Created",
+					"code": 201,
 					"_postman_previewlanguage": "json",
 					"header": [
 						{
 							"key": "date",
-							"value": "Sun, 10 Sep 2023 18:13:18 GMT"
+							"value": "Tue, 05 Dec 2023 16:14:55 GMT"
 						},
 						{
 							"key": "server",
 							"value": "uvicorn"
 						},
 						{
+							"key": "content-length",
+							"value": "110"
+						},
+						{
 							"key": "content-type",
 							"value": "application/json"
-						},
-						{
-							"key": "content-length",
-							"value": "45"
-						},
-						{
-							"key": "access-control-allow-origin",
-							"value": "http://localhost:3000"
 						}
 					],
 					"cookie": [],
-					"body": "{\n    \"response\": \"SUCCESS\",\n    \"status\": 200\n}"
+					"body": "{\n    \"id\": \"169703d4-a1b9-4e1e-9407-0c9993597367\",\n    \"username\": \"some_user\",\n    \"email\": \"some@user.com\",\n    \"password\": \"1234\"\n}"
 				},
 				{
-					"id": "4db8c43b-3cff-41c8-bb20-0b8a27c44162",
+					"id": "6bd20854-4216-436e-88e7-763f329fad2f",
 					"name": "already existing username",
 					"originalRequest": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"username\": \"theusername\",\n    \"email\": \"the@email.com\",\n    \"password\": \"password\",\n    \"confirm_password\": \"password\"\n}",
+							"raw": "{\n    \"username\": \"some_user\",\n    \"email\": \"some@user.com\",\n    \"password\": \"1234\",\n    \"confirmPassword\": \"1234\" \n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -466,43 +409,39 @@
 							]
 						}
 					},
-					"status": "OK",
-					"code": 200,
+					"status": "Bad Request",
+					"code": 400,
 					"_postman_previewlanguage": "json",
 					"header": [
 						{
 							"key": "date",
-							"value": "Sun, 10 Sep 2023 18:13:34 GMT"
+							"value": "Tue, 05 Dec 2023 16:15:25 GMT"
 						},
 						{
 							"key": "server",
 							"value": "uvicorn"
 						},
 						{
+							"key": "content-length",
+							"value": "36"
+						},
+						{
 							"key": "content-type",
 							"value": "application/json"
-						},
-						{
-							"key": "content-length",
-							"value": "61"
-						},
-						{
-							"key": "access-control-allow-origin",
-							"value": "http://localhost:3000"
 						}
 					],
 					"cookie": [],
-					"body": "{\n    \"response\": \"USERNAME_ALREADY_EXISTS\",\n    \"status\": 200\n}"
+					"body": "{\n    \"result\": \"USERNAME_ALREADY_EXISTS\"\n}"
 				},
 				{
-					"id": "a323ca47-6602-4f3e-bb53-34119d6b62bf",
+					"id": "e42281ef-2332-4133-9511-cb1dcb8062ac",
 					"name": "already existing email",
 					"originalRequest": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"username\": \"theusername2\",\n    \"email\": \"the@email.com\",\n    \"password\": \"password\",\n    \"confirm_password\": \"password\"\n}",
+							"raw": "{\n    \"username\": \"some_user2\",\n    \"email\": \"some@user.com\",\n    \"password\": \"1234\",\n    \"confirmPassword\": \"1234\" \n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -519,33 +458,78 @@
 							]
 						}
 					},
-					"status": "OK",
-					"code": 200,
+					"status": "Bad Request",
+					"code": 400,
 					"_postman_previewlanguage": "json",
 					"header": [
 						{
 							"key": "date",
-							"value": "Sun, 10 Sep 2023 18:13:53 GMT"
+							"value": "Tue, 05 Dec 2023 16:15:57 GMT"
 						},
 						{
 							"key": "server",
 							"value": "uvicorn"
 						},
 						{
+							"key": "content-length",
+							"value": "33"
+						},
+						{
 							"key": "content-type",
 							"value": "application/json"
-						},
-						{
-							"key": "content-length",
-							"value": "58"
-						},
-						{
-							"key": "access-control-allow-origin",
-							"value": "http://localhost:3000"
 						}
 					],
 					"cookie": [],
-					"body": "{\n    \"response\": \"EMAIL_ALREADY_EXISTS\",\n    \"status\": 200\n}"
+					"body": "{\n    \"result\": \"EMAIL_ALREADY_EXISTS\"\n}"
+				},
+				{
+					"id": "6979f5fe-add4-458c-afec-862682801f63",
+					"name": "password not matching",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"some_user2\",\n    \"email\": \"some@user.com\",\n    \"password\": \"1233\",\n    \"confirmPassword\": \"1234\" \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/register",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"register"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "date",
+							"value": "Tue, 05 Dec 2023 16:16:25 GMT"
+						},
+						{
+							"key": "server",
+							"value": "uvicorn"
+						},
+						{
+							"key": "content-length",
+							"value": "34"
+						},
+						{
+							"key": "content-type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"result\": \"PASSWORD_NOT_MATCHING\"\n}"
 				}
 			]
 		},
@@ -560,7 +544,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"username\":\"theusername\",\n    \"password\":\"password\"\n}",
+					"raw": "{\n    \"username\":\"theusername3\",\n    \"password\":\"password1\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -579,67 +563,14 @@
 			},
 			"response": [
 				{
-					"id": "ea6a2417-a3f9-4b4f-a40e-2542f22ff5c9",
-					"name": "login failed",
-					"originalRequest": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"username\":\"theusername\",\n    \"password\":\"password1\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{URL}}/login",
-							"host": [
-								"{{URL}}"
-							],
-							"path": [
-								"login"
-							]
-						}
-					},
-					"status": "OK",
-					"code": 200,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "date",
-							"value": "Sun, 10 Sep 2023 18:17:32 GMT"
-						},
-						{
-							"key": "server",
-							"value": "uvicorn"
-						},
-						{
-							"key": "content-type",
-							"value": "application/json"
-						},
-						{
-							"key": "content-length",
-							"value": "73"
-						},
-						{
-							"key": "access-control-allow-origin",
-							"value": "http://localhost:3000"
-						}
-					],
-					"cookie": [],
-					"body": "{\n    \"response\": \"Login error wrong user or password.\",\n    \"status\": 500\n}"
-				},
-				{
-					"id": "2cbaa23b-eb3e-4967-b14a-a1df8de6ac77",
+					"id": "7f93d96b-f9f4-4e39-963e-49c3aabd3278",
 					"name": "login succeeded",
 					"originalRequest": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"username\":\"theusername\",\n    \"password\":\"password\"\n}",
+							"raw": "{\n    \"username\":\"theusername3\",\n    \"password\":\"password\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -662,27 +593,72 @@
 					"header": [
 						{
 							"key": "date",
-							"value": "Sun, 10 Sep 2023 18:18:02 GMT"
+							"value": "Tue, 05 Dec 2023 16:17:03 GMT"
 						},
 						{
 							"key": "server",
 							"value": "uvicorn"
 						},
 						{
+							"key": "content-length",
+							"value": "121"
+						},
+						{
 							"key": "content-type",
 							"value": "application/json"
-						},
-						{
-							"key": "content-length",
-							"value": "179"
-						},
-						{
-							"key": "access-control-allow-origin",
-							"value": "http://localhost:3000"
 						}
 					],
 					"cookie": [],
-					"body": "{\n    \"response\": {\n        \"email\": \"the@email.com\",\n        \"id\": \"07229a53-40df-4a85-9290-01372fc06f07\",\n        \"password\": \"password\",\n        \"username\": \"theusername\"\n    },\n    \"status\": 200\n}"
+					"body": "{\n    \"id\": \"d0e82dcb-17cb-471f-b371-cba4d63558e7\",\n    \"username\": \"theusername3\",\n    \"email\": \"the@username3.com\",\n    \"password\": \"password\"\n}"
+				},
+				{
+					"id": "448bc1e3-e9d8-43ac-9d31-c2a3a41df7e3",
+					"name": "login failed",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\":\"theusername3\",\n    \"password\":\"password1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/login",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "date",
+							"value": "Tue, 05 Dec 2023 16:17:27 GMT"
+						},
+						{
+							"key": "server",
+							"value": "uvicorn"
+						},
+						{
+							"key": "content-length",
+							"value": "48"
+						},
+						{
+							"key": "content-type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"result\": \"Login error wrong user or password.\"\n}"
 				}
 			]
 		}
