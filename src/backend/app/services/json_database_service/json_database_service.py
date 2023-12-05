@@ -26,19 +26,26 @@ class JsonDatabaseService(DatabaseServiceProtocol[BMT], Generic[BMT], ABC):
         data = await self._get_data()
         return next((item for item in data if item.id == id_), None)
 
-    async def create(self, new: BMT) -> None:
+    async def create(self, new: BMT) -> BMT:
         data = await self._get_data()
 
         data.append(new)
 
-        await self._save_file(data)
+        await self._save_data(data)
 
-    async def delete(self, id_: UUID) -> None:
+        return new
+
+    async def delete(self, id_: UUID) -> bool:
         data = await self._get_data()
 
-        data = [item for item in data if item.id != id_]
+        new_data = [item for item in data if item.id != id_]
 
-        await self._save_file(data)
+        if len(new_data) == len(data):
+            return False
+
+        await self._save_data(new_data)
+
+        return True
 
     async def put(self, id_: UUID, new: BMT) -> BMT | None:
         data = await self._get_data()
@@ -51,7 +58,7 @@ class JsonDatabaseService(DatabaseServiceProtocol[BMT], Generic[BMT], ABC):
                 break
 
         if updated:
-            await self._save_file(data)
+            await self._save_data(data)
             return new
 
     async def _get_data(self) -> list[BMT]:
@@ -61,7 +68,7 @@ class JsonDatabaseService(DatabaseServiceProtocol[BMT], Generic[BMT], ABC):
 
         return [self.model_type(**item) for item in data]
 
-    async def _save_file(self, data: list) -> None:
+    async def _save_data(self, data: list) -> None:
         file_contents = json_utils.dumps(data, indent=4)
 
         await self._io_service.write(file_contents)

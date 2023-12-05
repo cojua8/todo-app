@@ -1,6 +1,6 @@
 from abc import ABC
 from collections.abc import Iterable
-from typing import Generic
+from typing import Generic, cast
 from uuid import UUID
 
 from sqlalchemy import Row, Table, delete, insert, select, update
@@ -48,18 +48,26 @@ class BaseService(DatabaseServiceProtocol[BMT], Generic[BMT], ABC):
         if entity := result.fetchone():
             return self._mappers.entity_to_model(entity, self._model)
 
-    async def create(self, new: BMT) -> None:
+    async def create(self, new: BMT) -> BMT:
         entity = self._mappers.model_to_entity(new)
         async with self._engine.connect() as conn:
-            await conn.execute(insert(self._table).values(**entity))
+            result = await conn.execute(
+                insert(self._table).values(**entity).returning(self._table.c)
+            )
             await conn.commit()
 
-    async def delete(self, id_: UUID) -> None:
+        return self._mappers.entity_to_model(
+            cast(Row, result.fetchone()), self._model
+        )
+
+    async def delete(self, id_: UUID) -> bool:
         async with self._engine.connect() as conn:
-            await conn.execute(
+            result = await conn.execute(
                 delete(self._table).where(self._table.c.id == id_)
             )
             await conn.commit()
+
+        return result.rowcount > 0
 
     async def put(self, id_: UUID, new: BMT) -> BMT | None:
         entity = self._mappers.model_to_entity(new)

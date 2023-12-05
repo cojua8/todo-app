@@ -14,10 +14,10 @@ class DatabaseServiceProtocol(Protocol, Generic[BMT]):
     async def get(self, id_: UUID) -> BMT | None:
         ...
 
-    async def create(self, new: BMT) -> None:
+    async def create(self, new: BMT) -> BMT:
         ...
 
-    async def delete(self, id_: UUID) -> None:
+    async def delete(self, id_: UUID) -> bool:
         ...
 
     async def put(self, id_: UUID, new: BMT) -> BMT | None:
