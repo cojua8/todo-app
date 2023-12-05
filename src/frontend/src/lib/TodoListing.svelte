@@ -6,7 +6,7 @@
 </script>
 
 <ul class="w-3/5">
-  {#each todos as todo}
+  {#each todos.toSorted( (a, b) => a.dateCreated.localeCompare(b.dateCreated) ) as todo}
     <li>
       <TodoListItem on:click={() => selectedTodo.set(todo)} {...todo} />
     </li>
