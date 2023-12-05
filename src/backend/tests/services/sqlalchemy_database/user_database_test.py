@@ -52,23 +52,30 @@ async def test_create(user_factory, db_engine):
     user = user_factory.create()
 
     # Act
-    await user_service.create(user)
-    actual_user = await user_service.get(user.id)
+    created_user = await user_service.create(user)
 
     # Assert
-    assert actual_user == user
+    assert created_user == user
 
 
-async def test_delete(user_factory, users_service):
+async def test_delete_returns_true(user_factory, users_service):
     # Arrange
     user = user_factory.create()
     await users_service.create(user)
 
     # Act
-    await users_service.delete(user.id)
+    deleted = await users_service.delete(user.id)
 
     # Assert
-    assert await users_service.get_all() == []
+    assert deleted is True
+
+
+async def test_delete_returns_false(users_service):
+    # Act
+    deleted = await users_service.delete(uuid4())
+
+    # Assert
+    assert deleted is False
 
 
 async def test_put_updates_record(user_factory, users_service):

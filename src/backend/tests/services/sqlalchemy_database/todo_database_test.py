@@ -61,16 +61,15 @@ async def test_get_returns_none(todo_factory, todos_service, user):
     assert actual_todo is None
 
 
-async def test_create_ok(todo_factory, todos_service, user):
+async def test_create_returns_todo(todo_factory, todos_service, user):
     # Arrange
     todo = todo_factory.create(owner_id=user.id)
 
     # Act
-    await todos_service.create(todo)
+    created_todo = await todos_service.create(todo)
 
     # Assert
-    actual_todo = await todos_service.get(todo.id)
-    assert actual_todo == todo
+    assert created_todo == todo
 
 
 async def test_create_fails_on_non_existent_owner_id(
@@ -84,16 +83,24 @@ async def test_create_fails_on_non_existent_owner_id(
         await todos_service.create(todo)
 
 
-async def test_delete(todo_factory, todos_service, user):
+async def test_delete_returns_true(todo_factory, todos_service, user):
     # Arrange
     todo = todo_factory.create(owner_id=user.id)
     await todos_service.create(todo)
 
     # Act
-    await todos_service.delete(todo.id)
+    result = await todos_service.delete(todo.id)
 
     # Assert
-    assert await todos_service.get_all() == []
+    assert result is True
+
+
+async def test_delete_returns_false(todos_service):
+    # Act
+    result = await todos_service.delete(uuid4())
+
+    # Assert
+    assert result is False
 
 
 async def test_put_updates_record(todo_factory, todos_service, user):
