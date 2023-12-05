@@ -1,6 +1,6 @@
 import datetime as dt
 from http import HTTPStatus
-from typing import Annotated, Any
+from typing import Annotated
 from uuid import UUID
 
 import fastapi
@@ -20,21 +20,17 @@ todo_router = APIRouter()
 @inject
 async def get(
     id_: UUID,
+    response: Response,
     todo_service: TodoServiceProtocol = fastapi.Depends(
         Provide[Container.todos_service]
     ),
-) -> dict[str, Any]:
-    response: dict[str, Any] = {}
-    try:
-        todo = await todo_service.get(id_)
+) -> Todo | None:
+    todo = await todo_service.get(id_)
 
-        response["status"] = HTTPStatus.OK
-        response["response"] = todo
-    except Exception as e:
-        response["status"] = HTTPStatus.INTERNAL_SERVER_ERROR
-        response["response"] = str(e)
+    if not todo:
+        response.status_code = HTTPStatus.NOT_FOUND
 
-    return response
+    return todo
 
 
 @todo_router.post("/todo")
@@ -46,37 +42,26 @@ async def post(
     todo_service: TodoServiceProtocol = fastapi.Depends(
         Provide[Container.todos_service]
     ),
-) -> dict[str, Any]:
-    response: dict[str, Any] = {}
-    new = Todo(owner_id=owner_id, description=description, due_date=due_date)
-
-    try:
-        await todo_service.create(new)
-        response["status"] = HTTPStatus.OK
-    except Exception as e:
-        response["status"] = HTTPStatus.INTERNAL_SERVER_ERROR
-        response["response"] = str(e)
-
-    return response
+) -> Todo:
+    new_todo = Todo(
+        owner_id=owner_id, description=description, due_date=due_date
+    )
+    return await todo_service.create(new_todo)
 
 
-@todo_router.delete("/todo/{id_}")
+@todo_router.delete("/todo/{id_}", status_code=HTTPStatus.NO_CONTENT)
 @inject
 async def delete(
     id_: UUID,
+    response: Response,
     todo_service: TodoServiceProtocol = fastapi.Depends(
         Provide[Container.todos_service]
     ),
-) -> dict[str, Any]:
-    response: dict[str, Any] = {}
-    try:
-        await todo_service.delete(id_)
-        response["status"] = HTTPStatus.OK
-    except Exception as e:
-        response["status"] = HTTPStatus.INTERNAL_SERVER_ERROR
-        response["response"] = str(e)
+) -> None:
+    result = await todo_service.delete(id_)
 
-    return response
+    if not result:
+        response.status_code = HTTPStatus.NOT_FOUND
 
 
 @todo_router.put("/todo/{id_}")
@@ -92,7 +77,7 @@ async def put(  # noqa: PLR0913
     todo_service: TodoServiceProtocol = fastapi.Depends(
         Provide[Container.todos_service]
     ),
-) -> Todo | dict:
+) -> Todo | None:
     new = Todo(
         id=id_,
         owner_id=owner_id,
@@ -106,4 +91,4 @@ async def put(  # noqa: PLR0913
     if not todo:
         response.status_code = HTTPStatus.NOT_FOUND
 
-    return todo or {}
+    return todo

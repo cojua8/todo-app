@@ -1,5 +1,5 @@
 from http import HTTPStatus
-from typing import Annotated, Any
+from typing import Annotated
 from uuid import UUID
 
 import fastapi
@@ -20,21 +20,18 @@ users_router = APIRouter()
 @inject
 async def get(
     id_: UUID,
+    response: Response,
     user_service: UserServiceProtocol = fastapi.Depends(
         Provide[Container.users_service]
     ),
-) -> dict[str, Any]:
-    response: dict[str, Any] = {}
-    try:
-        user = await user_service.get(id_)
+) -> User | None:
+    user = await user_service.get(id_)
 
-        response["status"] = HTTPStatus.OK
-        response["response"] = user
-    except Exception as e:
-        response["status"] = HTTPStatus.INTERNAL_SERVER_ERROR
-        response["response"] = str(e)
+    if not user:
+        response.status_code = HTTPStatus.NOT_FOUND
+        return None
 
-    return response
+    return user
 
 
 @users_router.post("/user")
@@ -46,36 +43,24 @@ async def post(
     user_service: UserServiceProtocol = fastapi.Depends(
         Provide[Container.users_service]
     ),
-) -> dict[str, Any]:
-    response: dict[str, Any] = {}
-    user = User(username=username, email=email, password=password)
-    try:
-        await user_service.create(user)
-        response["status"] = HTTPStatus.OK
-    except Exception as e:
-        response["status"] = HTTPStatus.INTERNAL_SERVER_ERROR
-        response["response"] = str(e)
-
-    return response
+) -> User:
+    new_user = User(username=username, email=email, password=password)
+    return await user_service.create(new_user)
 
 
-@users_router.delete("/user/{id_}")
+@users_router.delete("/user/{id_}", status_code=HTTPStatus.NO_CONTENT)
 @inject
 async def delete(
     id_: UUID,
+    response: Response,
     user_service: UserServiceProtocol = fastapi.Depends(
         Provide[Container.users_service]
     ),
-) -> dict[str, Any]:
-    response: dict[str, Any] = {}
-    try:
-        await user_service.delete(id_)
-        response["status"] = HTTPStatus.OK
-    except Exception as e:
-        response["status"] = HTTPStatus.INTERNAL_SERVER_ERROR
-        response["response"] = str(e)
+) -> None:
+    result = await user_service.delete(id_)
 
-    return response
+    if not result:
+        response.status_code = HTTPStatus.NOT_FOUND
 
 
 @users_router.put("/user/{id_}")
@@ -89,10 +74,11 @@ async def put(  # noqa: PLR0913
     user_service: UserServiceProtocol = fastapi.Depends(
         Provide[Container.users_service]
     ),
-) -> User | dict:
+) -> User | None:
     new = User(id=id_, username=username, email=email, password=password)
     user = await user_service.put(id_, new)
+
     if not user:
         response.status_code = HTTPStatus.BAD_REQUEST
 
-    return user or {}
+    return user
