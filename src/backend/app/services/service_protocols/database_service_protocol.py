@@ -1,4 +1,3 @@
-from collections.abc import Iterable
 from typing import Generic, Protocol, TypeVar
 from uuid import UUID
 
@@ -8,7 +7,7 @@ BMT = TypeVar("BMT", bound=BaseModel)
 
 
 class DatabaseServiceProtocol(Protocol, Generic[BMT]):
-    async def get_all(self) -> Iterable[BMT]:
+    async def get_all(self) -> list[BMT]:
         ...
 
     async def get(self, id_: UUID) -> BMT | None:

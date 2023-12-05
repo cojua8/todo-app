@@ -1,5 +1,4 @@
 from abc import ABC
-from collections.abc import Iterable
 from typing import Generic, cast
 from uuid import UUID
 
@@ -30,7 +29,7 @@ class BaseService(DatabaseServiceProtocol[BMT], Generic[BMT], ABC):
         self._model = model
         self._mappers = Mappers()
 
-    async def get_all(self) -> Iterable[BMT]:
+    async def get_all(self) -> list[BMT]:
         async with self._engine.connect() as conn:
             results = await conn.execute(select(self._table))
             await conn.commit()
