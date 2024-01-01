@@ -7,7 +7,7 @@
   import { getUserTodos } from "../services/TodoApi";
   import Button from "../lib/basics/Button.svelte";
   import TodoListing from "../lib/TodoListing.svelte";
-  import TodoModal from "../lib/TodoModal.svelte";
+  import EditTodoModal from "../lib/EditTodoModal.svelte";
 
   let todos = [];
 
@@ -38,5 +38,5 @@
 <Button on:click={logout}>Logout</Button>
 
 {#if $selectedTodo}
-  <TodoModal />
+  <EditTodoModal />
 {/if}

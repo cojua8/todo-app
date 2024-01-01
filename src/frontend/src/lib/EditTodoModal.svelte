@@ -1,6 +1,6 @@
 <script>
   import { selectedTodo } from "../stores/TodoStore";
-  import TodoForm from "./TodoForm.svelte";
+  import EditTodoForm from "./EditTodoForm.svelte";
   import Modal from "./basics/Modal.svelte";
 </script>
 
@@ -9,5 +9,5 @@
   on:keydown={(event) => event.key === "Escape" && selectedTodo.set(null)}
   class="w-3/5"
 >
-  <TodoForm todo={$selectedTodo} />
+  <EditTodoForm todo={$selectedTodo} />
 </Modal>
