@@ -8,6 +8,7 @@
   import Button from "../lib/basics/Button.svelte";
   import TodoListing from "../lib/TodoListing.svelte";
   import EditTodoModal from "../lib/EditTodoModal.svelte";
+  import CreateTodoModal from "../lib/CreateTodoModal.svelte";
 
   let todos = [];
 
@@ -31,11 +32,19 @@
     let response = await getUserTodos($loggedUser.id);
     todos = await response.json();
   });
+
+  let createTodo = false;
 </script>
+
+<Button on:click={() => (createTodo = true)}>Create new</Button>
 
 <TodoListing {todos} />
 <br />
 <Button on:click={logout}>Logout</Button>
+
+{#if createTodo}
+  <CreateTodoModal />
+{/if}
 
 {#if $selectedTodo}
   <EditTodoModal />
