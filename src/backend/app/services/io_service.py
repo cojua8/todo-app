@@ -1,3 +1,5 @@
+import asyncio
+
 import aiopath
 
 from app.services.service_protocols.io_service_protocol import (
@@ -8,6 +10,7 @@ from app.services.service_protocols.io_service_protocol import (
 class IOService(IOServiceProtocol):
     def __init__(self, file_path: aiopath.AsyncPath) -> None:
         self._file_path = file_path
+        self.lock = asyncio.Lock()
 
     @classmethod
     async def create_service(
@@ -24,11 +27,11 @@ class IOService(IOServiceProtocol):
         return cls(file_path)
 
     async def read(self) -> str:
-        async with self._file_path.open("r") as file:
+        async with self.lock, self._file_path.open("r") as file:
             content = await file.read()
 
         return str(content)
 
     async def write(self, content: str) -> None:
-        async with self._file_path.open("w") as file:
+        async with self.lock, self._file_path.open("w") as file:
             await file.write(content)
