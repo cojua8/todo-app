@@ -1,6 +1,7 @@
 import dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from prometheus_client import make_asgi_app as prometheus_asgi_app
 
 from app.containers import Container
 from app.resources.login import login_router
@@ -22,6 +23,8 @@ def app_factory() -> FastAPI:
         allow_methods=["*"],
         allow_headers=["*"],
     )
+    fastapi.mount("/metrics", prometheus_asgi_app())
+
     fastapi.container = Container()  # type: ignore[container]
 
     fastapi.get("/")(lambda: "Up and running")
