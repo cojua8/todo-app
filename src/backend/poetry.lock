@@ -641,6 +641,21 @@ files = [
 twisted = ["twisted"]
 
 [[package]]
+name = "prometheus-fastapi-instrumentator"
+version = "6.1.0"
+description = "Instrument your FastAPI with Prometheus metrics."
+optional = false
+python-versions = ">=3.7.0,<4.0.0"
+files = [
+    {file = "prometheus_fastapi_instrumentator-6.1.0-py3-none-any.whl", hash = "sha256:2279ac1cf5b9566a4c3a07f78c9c5ee19648ed90976ab87d73d672abc1bfa017"},
+    {file = "prometheus_fastapi_instrumentator-6.1.0.tar.gz", hash = "sha256:1820d7a90389ce100f7d1285495ead388818ae0882e761c1f3e6e62a410bdf13"},
+]
+
+[package.dependencies]
+fastapi = ">=0.38.1,<1.0.0"
+prometheus-client = ">=0.8.0,<1.0.0"
+
+[[package]]
 name = "pydantic"
 version = "2.3.0"
 description = "Data validation using Python type hints"
@@ -1310,4 +1325,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "2cd403f3dc22c4ac87cea3863cad016143e6d351b3a7e00c1b5af253019f441f"
+content-hash = "114c17e9f3437e4d923045671ea5512f1a98c122c169c3ccc228a350f2831055"
