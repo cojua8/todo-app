@@ -1,21 +1,28 @@
 version: '3.8'
 
 services:
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - 7000:3000
+    restart: unless-stopped
   prometheus:
     image: prom/prometheus
     container_name: prometheus
-    command: 
+    command:
       - '--config.file=/etc/prometheus/prometheus.yml'
     ports:
       - 9090:9090
     restart: unless-stopped
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
-    
+
   todo-app-backend:
     container_name: backend
     depends_on:
       - todo_app_postgres
+      - prometheus
     build:
       context: ./src/backend
     ports:
@@ -33,6 +40,8 @@ services:
 
   todo-app-frontend:
     container_name: frontend
+    depends_on:
+      - prometheus
     build:
       context: .
       dockerfile: ./src/frontend/Dockerfile
