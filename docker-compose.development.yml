@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   grafana:
@@ -14,7 +14,7 @@ services:
     image: prom/prometheus
     container_name: prometheus
     command:
-      - '--config.file=/etc/prometheus/prometheus.yml'
+      - "--config.file=/etc/prometheus/prometheus.yml"
     ports:
       - 9090:9090
     restart: unless-stopped
@@ -70,6 +70,16 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=todo_db
+
+  postgres_metrics:
+    container_name: postgres_metrics
+    image: quay.io/prometheuscommunity/postgres-exporter
+    restart: always
+    environment:
+      - DATA_SOURCE_NAME=postgresql://postgres:postgres@postgres_db:5432/todo_db
+    ports:
+      - 9187:9187
+
 # the path of data won't be erased on rebuild
 volumes:
   data:
