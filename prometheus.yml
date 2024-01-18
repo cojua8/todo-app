@@ -14,3 +14,7 @@ scrape_configs:
     scrape_interval: 5s
     static_configs:
       - targets: ["postgres_metrics:9187"]
+  - job_name: "node"
+    scrape_interval: 15s
+    static_configs:
+      - targets: ["node-exporter:9100"]
