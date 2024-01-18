@@ -38,8 +38,9 @@ services:
       - data:/database/json_database
     environment:
       # in the container, saves the database in this path
-      - DATABASE_PATH=/database/json_database
-      - DATABASE=json
+      # - DATABASE_PATH=/database/json_database
+      # - DATABASE=json
+      - DATABASE=postgresql
 
   todo-app-frontend:
     container_name: frontend
