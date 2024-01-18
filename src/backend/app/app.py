@@ -27,9 +27,9 @@ def app_factory() -> FastAPI:
     instrumentator = Instrumentator().instrument(fastapi)
 
     @fastapi.on_event("startup")
-    async def _startup():
+    async def _startup() -> None:
         instrumentator.expose(fastapi)
-    
+
     fastapi.mount("/metrics", prometheus_asgi_app())
 
     fastapi.container = Container()  # type: ignore[container]
