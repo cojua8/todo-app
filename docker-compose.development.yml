@@ -9,6 +9,7 @@ services:
     restart: unless-stopped
     volumes:
       - ./grafana/datasources:/etc/grafana/provisioning/datasources
+      - ./grafana/dashboards:/etc/grafana/provisioning/dashboards
 
   prometheus:
     image: prom/prometheus
