@@ -16,6 +16,6 @@
   <label for={name} class="pl-1">{labelText}</label>
   <input {name} class="border rounded p-1" bind:this={inputElement} />
   {#if errors}
-    <p>{errors}</p>
+    <p class="text-red-500">{errors}</p>
   {/if}
 </div>
