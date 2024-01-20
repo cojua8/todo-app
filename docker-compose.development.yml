@@ -25,11 +25,11 @@ services:
     container_name: backend
     depends_on:
       - todo_app_postgres
-      - prometheus
     build:
       context: ./src/backend
     ports:
       - 5000:5000
+    restart: unless-stopped
     volumes:
       # this binds the host folder to the container folder
       - ./src/backend/app:/app/backend/app
@@ -44,13 +44,12 @@ services:
 
   todo-app-frontend:
     container_name: frontend
-    depends_on:
-      - prometheus
     build:
       context: .
       dockerfile: ./src/frontend/Dockerfile
     ports:
       - 3000:3000
+    restart: unless-stopped
     working_dir: /app/frontend/
     volumes:
       - ./src/frontend/:/app/frontend/
@@ -63,7 +62,7 @@ services:
   todo_app_postgres:
     container_name: postgres_db
     image: postgres:15.1-alpine
-    restart: always
+    restart: unless-stopped
     volumes:
       - postgres_db:/database/postgres
     environment:
@@ -74,7 +73,7 @@ services:
   postgres_metrics:
     container_name: postgres_metrics
     image: quay.io/prometheuscommunity/postgres-exporter
-    restart: always
+    restart: unless-stopped
     environment:
       - DATA_SOURCE_NAME=postgresql://postgres:postgres@postgres_db:5432/todo_db?sslmode=disable
     ports:
