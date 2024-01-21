@@ -1,4 +1,3 @@
-import dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from prometheus_client import make_asgi_app as prometheus_asgi_app
@@ -11,8 +10,6 @@ from app.resources.todos import todo_router
 from app.resources.todos_listing import todo_listing_router
 from app.resources.user_listing import user_listing_router
 from app.resources.users import users_router
-
-dotenv.load_dotenv()
 
 
 def app_factory() -> FastAPI:

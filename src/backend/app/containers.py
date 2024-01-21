@@ -13,13 +13,13 @@ from app.services.json_database_service.users_json_database_service import (
 from app.services.sql_database_service.engine import engine
 from app.services.sql_database_service.todos_service import TodosService
 from app.services.sql_database_service.users_service import UsersService
+from app.settings import JsonDBSettings, Settings, SqlDBSettings
 
 
 class Container(containers.DeclarativeContainer):
     @classmethod
     def add_config(cls) -> type[Container]:
-        cls.config = providers.Configuration()
-        cls.config.database.from_env("DATABASE")
+        cls.config = Settings()  # type: ignore reportGeneralTypeIssues
 
         cls.wiring_config = containers.WiringConfiguration(
             packages=["app.resources"]
@@ -28,15 +28,10 @@ class Container(containers.DeclarativeContainer):
         return cls
 
     @classmethod
-    def add_json_database_services(cls) -> type[Container]:
-        cls.config.json_database.directory_path.from_env(
-            "DATABASE_PATH", "./database/"
-        )
-
+    def _add_json_database_services(cls) -> type[Container]:
+        settings = JsonDBSettings()  # type: ignore reportGeneralTypeIssues
         cls.users_io_service = providers.Resource(
-            IOService.create_service,
-            cls.config.json_database.directory_path(),
-            "users.json",
+            IOService.create_service, settings.database_path, "users.json"
         )
 
         cls.users_service = providers.Factory(
@@ -44,9 +39,7 @@ class Container(containers.DeclarativeContainer):
         )
 
         cls.todo_io_service = providers.Resource(
-            IOService.create_service,
-            cls.config.json_database.directory_path(),
-            "todos.json",
+            IOService.create_service, settings.database_path, "todos.json"
         )
 
         cls.todos_service = providers.Factory(
@@ -56,8 +49,10 @@ class Container(containers.DeclarativeContainer):
         return cls
 
     @classmethod
-    def add_postgresql_services(cls) -> type[Container]:
-        cls.engine = providers.Singleton(engine)
+    def _add_postgresql_services(cls) -> type[Container]:
+        cls.engine = providers.Singleton(
+            engine, SqlDBSettings()  # type: ignore reportGeneralTypeIssues
+        )
 
         cls.users_service = providers.Factory(UsersService, engine=cls.engine)
 
@@ -67,10 +62,10 @@ class Container(containers.DeclarativeContainer):
 
     @classmethod
     def add_database_services(cls) -> type[Container]:
-        if cls.config.database() == "json":
-            cls.add_json_database_services()
-        elif cls.config.database() == "postgresql":
-            cls.add_postgresql_services()
+        if cls.config.database == "json":
+            cls._add_json_database_services()
+        elif cls.config.database == "postgresql":
+            cls._add_postgresql_services()
 
         return cls
 

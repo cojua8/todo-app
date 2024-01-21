@@ -1,14 +1,22 @@
 import asyncio
 
 import pytest
-from sqlalchemy.ext.asyncio import async_engine_from_config
+from sqlalchemy import URL
+from sqlalchemy.ext.asyncio import create_async_engine
 
 from app.services.sql_database_service.models import metadata_obj
 
 
 @pytest.fixture(scope="session")
 def sqlalchemy_connect_url():
-    return "postgresql+asyncpg://postgres:postgres@localhost:2345/test_todo_db"
+    return URL.create(
+        drivername="postgresql+asyncpg",
+        username="postgres",
+        password="postgres",  # noqa: S106
+        host="localhost",
+        port=2345,
+        database="test_todo_db",
+    )
 
 
 @pytest.fixture(scope="session")
@@ -21,7 +29,7 @@ def event_loop():  # used by pytest-asyncio
 
 @pytest.fixture(scope="session")
 async def db_engine(sqlalchemy_connect_url):
-    yield async_engine_from_config({"sqlalchemy.url": sqlalchemy_connect_url})
+    yield create_async_engine(sqlalchemy_connect_url)
 
 
 @pytest.fixture(autouse=True)

@@ -1,14 +1,20 @@
+from sqlalchemy import URL
 from sqlalchemy.ext.asyncio import AsyncEngine, create_async_engine
 
 from app.services.sql_database_service.models import metadata_obj
+from app.settings import SqlDBSettings
 
 
-async def engine() -> AsyncEngine:
-    engine = create_async_engine(
-        "postgresql+asyncpg://postgres:postgres@postgres_db:5432/todo_db",
-        echo=True,
-        future=True,
+async def engine(config: SqlDBSettings) -> AsyncEngine:
+    db_url = URL.create(
+        f"{config.db_dialect}+asyncpg",
+        username=config.db_username,
+        password=config.db_password,
+        host=config.db_host,
+        port=config.db_port,
+        database=config.db_name,
     )
+    engine = create_async_engine(db_url, echo=True)
 
     async with engine.begin() as conn:
         await conn.run_sync(metadata_obj.create_all)
