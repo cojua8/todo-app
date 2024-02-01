@@ -2,13 +2,13 @@
   import page from "page";
   import { selectedTodo } from "../stores/TodoStore";
 
-  import { loggedUser } from "../stores/UserStore";
   import { onMount } from "svelte";
-  import { getUserTodos } from "../services/TodoApi";
-  import Button from "../lib/basics/Button.svelte";
-  import TodoListing from "../lib/TodoListing.svelte";
-  import EditTodoModal from "../lib/EditTodoModal.svelte";
   import CreateTodoModal from "../lib/CreateTodoModal.svelte";
+  import EditTodoModal from "../lib/EditTodoModal.svelte";
+  import TodoListing from "../lib/TodoListing.svelte";
+  import Button from "../lib/basics/Button.svelte";
+  import { getUserTodos } from "../services/TodoApi";
+  import { loggedUser } from "../stores/UserStore";
 
   let todos = [];
 
