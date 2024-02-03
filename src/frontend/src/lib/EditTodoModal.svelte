@@ -1,13 +1,24 @@
 <script>
-  import { selectedTodo } from "../stores/TodoStore";
+  import { bind } from "svelte-simple-modal";
+  import { getUserTodos } from "../services/TodoApi";
+  import { editTodoModal } from "../stores/ModalStores";
+  import { selectedTodo, todos } from "../stores/TodoStores";
+  import { loggedUser } from "../stores/UserStores";
   import EditTodoForm from "./EditTodoForm.svelte";
   import Modal from "./basics/Modal.svelte";
+
+  const handleSubmit = async () => {
+    editTodoModal.set(null);
+    todos.set(await (await getUserTodos($loggedUser.id)).json());
+  };
+
+  selectedTodo.subscribe((value) => {
+    if (value) {
+      editTodoModal.set(
+        bind(EditTodoForm, { handleSubmit: handleSubmit, todo: value })
+      );
+    }
+  });
 </script>
 
-<Modal
-  on:click={() => selectedTodo.set(null)}
-  on:keydown={(event) => event.key === "Escape" && selectedTodo.set(null)}
-  class="w-3/5"
->
-  <EditTodoForm todo={$selectedTodo} />
-</Modal>
+<Modal modal={$editTodoModal}></Modal>

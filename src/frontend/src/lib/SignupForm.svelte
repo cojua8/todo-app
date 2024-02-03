@@ -1,14 +1,14 @@
 <script>
-  import page from "page";
-  import { createForm } from "felte";
+  import { faker } from "@faker-js/faker";
   import { validator } from "@felte/validator-yup";
+  import { createForm } from "felte";
+  import page from "page";
   import * as yup from "yup";
   import { createUser } from "../services/TodoApi";
-  import { faker } from "@faker-js/faker";
-  import { loggedUser } from "../stores/UserStore";
-  import FormItem from "./formBase/FormItem.svelte";
-  import FormButton from "./formBase/FormButton.svelte";
+  import { loggedUser } from "../stores/UserStores";
   import Form from "./formBase/Form.svelte";
+  import FormButton from "./formBase/FormButton.svelte";
+  import FormItem from "./formBase/FormItem.svelte";
 
   const { form, setErrors, errors } = createForm({
     initialValues: {

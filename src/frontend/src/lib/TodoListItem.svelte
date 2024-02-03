@@ -1,5 +1,7 @@
 <script>
-  import { updateTodoItem } from "../services/TodoApi";
+  import { getUserTodos, updateTodoItem } from "../services/TodoApi";
+  import { selectedTodo, todos } from "../stores/TodoStores";
+  import { loggedUser } from "../stores/UserStores";
 
   export let todo;
 
@@ -7,9 +9,8 @@
     let updatedTodo = { ...todo, completed: !todo.completed };
 
     await updateTodoItem(updatedTodo);
-    // how to tell dashboard to reload the todos?
-    //this is a workaround (loses coupling with real data)
-    todo.completed = !todo.completed;
+
+    todos.set(await (await getUserTodos($loggedUser.id)).json());
   };
 </script>
 
@@ -22,5 +23,5 @@
       {todo.completed ? "✅" : "❌"}
     </button>
   </div>
-  <button on:click>edit</button>
+  <button on:click={() => selectedTodo.set(todo)}>edit</button>
 </div>

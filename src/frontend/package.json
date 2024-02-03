@@ -29,6 +29,7 @@
     "axios": "~1.6",
     "felte": "^1.2.12",
     "page": "^1.11.6",
+    "svelte-simple-modal": "^1.6.2",
     "yup": "~1.3"
   }
 }

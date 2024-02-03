@@ -4,7 +4,7 @@
   import page from "page";
   import * as yup from "yup";
   import { loginUser } from "../services/TodoApi";
-  import { loggedUser } from "../stores/UserStore";
+  import { loggedUser } from "../stores/UserStores";
   import Form from "./formBase/Form.svelte";
   import FormButton from "./formBase/FormButton.svelte";
   import FormItem from "./formBase/FormItem.svelte";

@@ -1,14 +1,15 @@
 <script>
-  import { createForm } from "felte";
   import { validator } from "@felte/validator-yup";
+  import { createForm } from "felte";
   import * as yup from "yup";
-  import Form from "./formBase/Form.svelte";
-  import FormItem from "./formBase/FormItem.svelte";
-  import FormButton from "./formBase/FormButton.svelte";
   import { updateTodoItem } from "../services/TodoApi";
-  import { selectedTodo } from "../stores/TodoStore";
+  import Form from "./formBase/Form.svelte";
+  import FormButton from "./formBase/FormButton.svelte";
+  import FormItem from "./formBase/FormItem.svelte";
 
+  export let handleSubmit;
   export let todo;
+
   const { form, errors } = createForm({
     initialValues: {
       description: todo.description,
@@ -29,15 +30,14 @@
         case 404:
           throw await response.json();
         default:
-          console.log("Unknown error");
-          break;
+          throw response;
       }
     },
     onSuccess: () => {
-      selectedTodo.set(null);
+      handleSubmit();
     },
     onError: async (values) => {
-      console.log(values);
+      alert(JSON.stringify(values));
     },
   });
 </script>

@@ -1,8 +1,8 @@
 <script>
-  import LoginForm from "../lib/LoginForm.svelte";
   import page from "page";
-  import { loggedUser } from "../stores/UserStore";
+  import LoginForm from "../lib/LoginForm.svelte";
   import Button from "../lib/basics/Button.svelte";
+  import { loggedUser } from "../stores/UserStores";
 
   if ($loggedUser) {
     page.redirect("/dashboard");
