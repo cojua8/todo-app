@@ -14,7 +14,7 @@ postgres = PostgresContainer("postgres:16.2-alpine")
 def sqlalchemy_settings(request):
     postgres.start()
 
-    request.addfinalizer(postgres.stop)
+    request.addfinalizer(postgres.stop)  # noqa: PT021
 
     return SqlDBSettings.model_construct(
         db_dialect="postgresql",
