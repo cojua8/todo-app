@@ -15,7 +15,7 @@
   selectedTodo.subscribe((value) => {
     if (value) {
       editTodoModal.set(
-        bind(EditTodoForm, { handleSubmit: handleSubmit, todo: value })
+        bind(EditTodoForm, { handleSubmit: handleSubmit, todo: value }),
       );
     }
   });
