@@ -21,4 +21,4 @@
   });
 </script>
 
-<Modal modal={$editTodoModal}></Modal>
+<Modal modal={$editTodoModal} />
