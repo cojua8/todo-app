@@ -1,21 +1,28 @@
 import asyncio
 
 import pytest
-from sqlalchemy import URL
-from sqlalchemy.ext.asyncio import create_async_engine
+from testcontainers.postgres import PostgresContainer
 
+from app.services.sql_database_service.engine import engine
 from app.services.sql_database_service.models import metadata_obj
+from app.settings import SqlDBSettings
+
+postgres = PostgresContainer("postgres:16.2-alpine")
 
 
 @pytest.fixture(scope="session")
-def sqlalchemy_connect_url():
-    return URL.create(
-        drivername="postgresql+asyncpg",
-        username="postgres",
-        password="postgres",  # noqa: S106
-        host="localhost",
-        port=2345,
-        database="test_todo_db",
+def sqlalchemy_settings(request):
+    postgres.start()
+
+    request.addfinalizer(postgres.stop)
+
+    return SqlDBSettings.model_construct(
+        db_dialect="postgresql",
+        db_username=postgres.POSTGRES_USER,
+        db_password=postgres.POSTGRES_PASSWORD,
+        db_host=postgres.get_container_host_ip(),
+        db_port=int(postgres.get_exposed_port(5432)),
+        db_name=postgres.POSTGRES_DB,
     )
 
 
@@ -27,15 +34,9 @@ def event_loop():  # used by pytest-asyncio
     loop.close()
 
 
-@pytest.fixture(scope="session")
-async def db_engine(sqlalchemy_connect_url):
-    yield create_async_engine(sqlalchemy_connect_url)
-
-
-@pytest.fixture(autouse=True)
-async def _create(db_engine):
-    async with db_engine.begin() as conn:
-        await conn.run_sync(metadata_obj.create_all)
-    yield
+@pytest.fixture
+async def db_engine(sqlalchemy_settings):
+    db_engine = await engine(sqlalchemy_settings)
+    yield db_engine
     async with db_engine.begin() as conn:
         await conn.run_sync(metadata_obj.drop_all)

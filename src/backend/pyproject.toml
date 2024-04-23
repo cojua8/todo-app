@@ -26,6 +26,7 @@ pytest-asyncio = "^0.21.1"
 pytest-factoryboy = "^2.5.1"
 freezegun = "^1.2.2"
 pytest-mock = "^3.10.0"
+testcontainers-postgres = "^0.0.1rc1"
 
 
 [tool.poetry.group.development.dependencies]
