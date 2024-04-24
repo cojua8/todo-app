@@ -7,23 +7,19 @@ from app.services.sql_database_service.engine import engine
 from app.services.sql_database_service.models import metadata_obj
 from app.settings import SqlDBSettings
 
-postgres = PostgresContainer("postgres:16.2-alpine")
-
 
 @pytest.fixture(scope="session")
-def sqlalchemy_settings(request):
-    postgres.start()
-
-    request.addfinalizer(postgres.stop)  # noqa: PT021
-
-    return SqlDBSettings.model_construct(
-        db_dialect="postgresql",
-        db_username=postgres.POSTGRES_USER,
-        db_password=postgres.POSTGRES_PASSWORD,
-        db_host=postgres.get_container_host_ip(),
-        db_port=int(postgres.get_exposed_port(5432)),
-        db_name=postgres.POSTGRES_DB,
-    )
+def sqlalchemy_settings():
+    with PostgresContainer("postgres:16.2-alpine") as postgres:
+        print("ready")
+        yield SqlDBSettings.model_construct(
+            db_dialect="postgresql",
+            db_username=postgres.POSTGRES_USER,
+            db_password=postgres.POSTGRES_PASSWORD,
+            db_host=postgres.get_container_host_ip(),
+            db_port=int(postgres.get_exposed_port(5432)),
+            db_name=postgres.POSTGRES_DB,
+        )
 
 
 @pytest.fixture(scope="session")
