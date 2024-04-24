@@ -10,7 +10,7 @@ jobs:
     defaults:
       run:
         working-directory: src/backend
-    runs-on: ubuntu-latest    
+    runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
@@ -19,7 +19,7 @@ jobs:
         run: pipx install poetry
 
       - name: Install python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version-file: src/backend/.python-version
           cache: poetry
