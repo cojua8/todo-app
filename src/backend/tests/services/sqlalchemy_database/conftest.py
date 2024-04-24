@@ -11,7 +11,6 @@ from app.settings import SqlDBSettings
 @pytest.fixture(scope="session")
 def sqlalchemy_settings():
     with PostgresContainer("postgres:16.2-alpine") as postgres:
-        print("ready")
         yield SqlDBSettings.model_construct(
             db_dialect="postgresql",
             db_username=postgres.POSTGRES_USER,
