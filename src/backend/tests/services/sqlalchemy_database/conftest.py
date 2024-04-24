@@ -1,4 +1,5 @@
 import asyncio
+import os
 
 import pytest
 from testcontainers.postgres import PostgresContainer
@@ -10,6 +11,10 @@ from app.settings import SqlDBSettings
 
 @pytest.fixture(scope="session")
 def sqlalchemy_settings():
+    # this makes testcontainers work in windows
+    # https://github.com/testcontainers/testcontainers-python/issues/108#issuecomment-1540584987
+    os.environ["TC_HOST"] = "localhost"
+
     with PostgresContainer("postgres:16.2-alpine") as postgres:
         yield SqlDBSettings.model_construct(
             db_dialect="postgresql",
