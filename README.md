@@ -24,9 +24,7 @@ This will get you:
 - Prometheus running in [port 9090](http://localhost:9090/)
 - Grafana running in [port 7000](http://localhost:7000/)
 
-> To stop the app, you can run:
-
-    `docker compose -f docker-compose.development.yml down`
+> To stop the app, you can run: `docker compose -f docker-compose.development.yml down`
 
 ## Frontend development:
 
