@@ -2,6 +2,7 @@
 
 [![Backend Static Code Analysis](https://github.com/cojua8/todo-app/actions/workflows/static_code_analysis_backend.yml/badge.svg)](https://github.com/cojua8/todo-app/actions/workflows/static_code_analysis_backend.yml)
 [![Frontend Static Code Analysis](https://github.com/cojua8/todo-app/actions/workflows/static_code_analysis_frontend.yml/badge.svg)](https://github.com/cojua8/todo-app/actions/workflows/static_code_analysis_frontend.yml)
+
 ![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi)
 ![Svelte](https://img.shields.io/badge/svelte-%23f1413d.svg?style=for-the-badge&logo=svelte&logoColor=white)
 ![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
