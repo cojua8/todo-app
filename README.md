@@ -53,17 +53,9 @@ Tests require Docker to be running. To run them, just do:
 
     poetry run pytest
 
-## Installation
-
-Requires Poetry to be installed. To install the dependencies, run:
-
-    poetry install
-
-Nothing else should be needed.
-
 ## On Python
 
-### On Generics and Protocols.
+### Generics and Protocols.
 
 These are two concepts that I have been using in my code. Though they help the type checker tell if something is wrong in code (static analysis), they really have no influence in runtime.
 
