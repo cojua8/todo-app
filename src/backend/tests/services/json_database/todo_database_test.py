@@ -4,7 +4,7 @@ from uuid import uuid4
 import pytest
 
 from app.infrastructure.io_service import IOServiceProtocol
-from app.infrastructure.json_database_service.todos_json_database_service import (
+from app.infrastructure.json_database_service.todos_json_database_service import (  # noqa: E501
     TodosJsonDatabaseService,
 )
 from app.utils import json_utils

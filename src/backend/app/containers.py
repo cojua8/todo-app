@@ -4,10 +4,10 @@ from dependency_injector import containers, providers
 
 from app.infrastructure.authentication_service import AuthenticationService
 from app.infrastructure.io_service import FileIOService
-from app.infrastructure.json_database_service.todos_json_database_service import (
+from app.infrastructure.json_database_service.todos_json_database_service import (  # noqa: E501
     TodosJsonDatabaseService,
 )
-from app.infrastructure.json_database_service.users_json_database_service import (
+from app.infrastructure.json_database_service.users_json_database_service import (  # noqa: E501
     UsersJsonDatabaseService,
 )
 from app.infrastructure.sql_database_service.engine import engine

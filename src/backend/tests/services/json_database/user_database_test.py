@@ -5,7 +5,7 @@ import pytest
 
 from app.domain.models.user import User
 from app.infrastructure.io_service import IOServiceProtocol
-from app.infrastructure.json_database_service.users_json_database_service import (
+from app.infrastructure.json_database_service.users_json_database_service import (  # noqa: E501
     UsersJsonDatabaseService,
 )
 from app.utils import json_utils
