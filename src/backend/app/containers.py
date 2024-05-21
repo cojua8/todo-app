@@ -3,7 +3,7 @@ from __future__ import annotations
 from dependency_injector import containers, providers
 
 from app.infrastructure.authentication_service import AuthenticationService
-from app.infrastructure.io_service import IOService
+from app.infrastructure.io_service import FileIOService
 from app.infrastructure.json_database_service.todos_json_database_service import (
     TodosJsonDatabaseService,
 )
@@ -31,7 +31,7 @@ class Container(containers.DeclarativeContainer):
     def _add_json_database_services(cls) -> type[Container]:
         settings = JsonDBSettings()  # type: ignore reportGeneralTypeIssues
         cls.users_io_service = providers.Resource(
-            IOService.create_service, settings.database_path, "users.json"
+            FileIOService.create_service, settings.database_path, "users.json"
         )
 
         cls.users_service = providers.Factory(
@@ -39,7 +39,7 @@ class Container(containers.DeclarativeContainer):
         )
 
         cls.todo_io_service = providers.Resource(
-            IOService.create_service, settings.database_path, "todos.json"
+            FileIOService.create_service, settings.database_path, "todos.json"
         )
 
         cls.todos_service = providers.Factory(

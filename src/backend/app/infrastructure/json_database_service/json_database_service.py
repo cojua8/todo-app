@@ -6,9 +6,7 @@ from app.domain.services.database_service_protocol import (
     BMT,
     DatabaseServiceProtocol,
 )
-from app.services.service_protocols.io_service_protocol import (
-    IOServiceProtocol,
-)
+from app.infrastructure.io_service import IOServiceProtocol
 from app.utils import json_utils
 
 

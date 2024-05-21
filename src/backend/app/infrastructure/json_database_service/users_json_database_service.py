@@ -1,10 +1,8 @@
 from app.domain.models.user import User
 from app.domain.services.user_service_protocol import UserServiceProtocol
+from app.infrastructure.io_service import IOServiceProtocol
 from app.infrastructure.json_database_service.json_database_service import (
     JsonDatabaseService,
-)
-from app.services.service_protocols.io_service_protocol import (
-    IOServiceProtocol,
 )
 
 
