@@ -3,7 +3,7 @@ from uuid import uuid4
 
 import pytest
 
-from app.services.json_database_service.todos_json_database_service import (
+from app.infrastructure.json_database_service.todos_json_database_service import (
     TodosJsonDatabaseService,
 )
 from app.services.service_protocols.io_service_protocol import (

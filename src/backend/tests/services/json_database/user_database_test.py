@@ -4,7 +4,7 @@ from uuid import uuid4
 import pytest
 
 from app.domain.models.user import User
-from app.services.json_database_service.users_json_database_service import (
+from app.infrastructure.json_database_service.users_json_database_service import (
     UsersJsonDatabaseService,
 )
 from app.services.service_protocols.io_service_protocol import (

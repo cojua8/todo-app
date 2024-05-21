@@ -2,7 +2,7 @@ from uuid import UUID
 
 from app.domain.models.todo import Todo
 from app.domain.services.todo_service_protocol import TodoServiceProtocol
-from app.services.json_database_service.json_database_service import (
+from app.infrastructure.json_database_service.json_database_service import (
     JsonDatabaseService,
 )
 from app.services.service_protocols.io_service_protocol import (
