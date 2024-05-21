@@ -1,5 +1,5 @@
+from app.domain.models.user import User
 from app.exceptions.login_exception import LoginError
-from app.models.user import User
 from app.services.service_protocols.authentication_service_protocol import (
     AuthenticationServiceProtocol,
     RegistrationResult,

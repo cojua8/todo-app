@@ -3,7 +3,7 @@ from uuid import UUID, uuid4
 
 import freezegun
 
-from app.models.todo import Todo
+from app.domain.models.todo import Todo
 
 
 @freezegun.freeze_time("2022-04-04")

@@ -1,4 +1,4 @@
-from app.models.base_model import BaseModel
+from app.domain.models.base_model import BaseModel
 
 
 def test_attributes():

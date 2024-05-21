@@ -1,7 +1,7 @@
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncEngine
 
-from app.models.user import User
+from app.domain.models.user import User
 from app.services.service_protocols.user_service_protocol import (
     UserServiceProtocol,
 )

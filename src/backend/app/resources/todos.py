@@ -8,7 +8,7 @@ from dependency_injector.wiring import Provide, inject
 from fastapi import APIRouter, Body, Response
 
 from app.containers import Container
-from app.models.todo import Todo
+from app.domain.models.todo import Todo
 from app.services.service_protocols.todo_service_protocol import (
     TodoServiceProtocol,
 )

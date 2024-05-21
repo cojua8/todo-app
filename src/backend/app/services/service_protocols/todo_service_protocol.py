@@ -1,7 +1,7 @@
 from typing import Protocol
 from uuid import UUID
 
-from app.models.todo import Todo
+from app.domain.models.todo import Todo
 from app.services.service_protocols.database_service_protocol import (
     DatabaseServiceProtocol,
 )

@@ -3,7 +3,7 @@ from uuid import UUID
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncEngine
 
-from app.models.todo import Todo
+from app.domain.models.todo import Todo
 from app.services.service_protocols.todo_service_protocol import (
     TodoServiceProtocol,
 )

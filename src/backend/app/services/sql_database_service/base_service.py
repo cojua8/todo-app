@@ -5,7 +5,7 @@ from uuid import UUID
 from sqlalchemy import Row, Table, delete, insert, select, update
 from sqlalchemy.ext.asyncio import AsyncEngine
 
-from app.models.base_model import BaseModel
+from app.domain.models.base_model import BaseModel
 from app.services.service_protocols.database_service_protocol import (
     BMT,
     DatabaseServiceProtocol,

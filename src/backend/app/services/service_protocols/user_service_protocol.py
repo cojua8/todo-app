@@ -1,6 +1,6 @@
 from typing import Protocol
 
-from app.models.user import User
+from app.domain.models.user import User
 from app.services.service_protocols.database_service_protocol import (
     DatabaseServiceProtocol,
 )

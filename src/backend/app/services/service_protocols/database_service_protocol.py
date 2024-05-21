@@ -1,7 +1,7 @@
 from typing import Generic, Protocol, TypeVar
 from uuid import UUID
 
-from app.models.base_model import BaseModel
+from app.domain.models.base_model import BaseModel
 
 BMT = TypeVar("BMT", bound=BaseModel)
 

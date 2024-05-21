@@ -3,7 +3,7 @@ from dependency_injector.wiring import Provide, inject
 from fastapi import APIRouter
 
 from app.containers import Container
-from app.models.user import User
+from app.domain.models.user import User
 from app.services.service_protocols.user_service_protocol import (
     UserServiceProtocol,
 )

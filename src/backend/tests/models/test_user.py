@@ -1,4 +1,4 @@
-from app.models.user import User
+from app.domain.models.user import User
 
 
 def test_attributes():

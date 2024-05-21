@@ -3,7 +3,7 @@ from uuid import uuid4
 
 import pytest
 
-from app.models.user import User
+from app.domain.models.user import User
 from app.services.json_database_service.users_json_database_service import (
     UsersJsonDatabaseService,
 )
