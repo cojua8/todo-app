@@ -2,6 +2,9 @@ from __future__ import annotations
 
 from dependency_injector import containers, providers
 
+from app.infrastructure.sql_database_service.engine import engine
+from app.infrastructure.sql_database_service.todos_service import TodosService
+from app.infrastructure.sql_database_service.users_service import UsersService
 from app.services.authentication_service import AuthenticationService
 from app.services.io_service import IOService
 from app.services.json_database_service.todos_json_database_service import (
@@ -10,9 +13,6 @@ from app.services.json_database_service.todos_json_database_service import (
 from app.services.json_database_service.users_json_database_service import (
     UsersJsonDatabaseService,
 )
-from app.services.sql_database_service.engine import engine
-from app.services.sql_database_service.todos_service import TodosService
-from app.services.sql_database_service.users_service import UsersService
 from app.settings import JsonDBSettings, Settings, SqlDBSettings
 
 

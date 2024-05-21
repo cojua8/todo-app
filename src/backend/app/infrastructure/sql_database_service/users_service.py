@@ -3,8 +3,8 @@ from sqlalchemy.ext.asyncio import AsyncEngine
 
 from app.domain.models.user import User
 from app.domain.services.user_service_protocol import UserServiceProtocol
-from app.services.sql_database_service.base_service import BaseService
-from app.services.sql_database_service.models import user_table
+from app.infrastructure.sql_database_service.base_service import BaseService
+from app.infrastructure.sql_database_service.models import user_table
 
 
 class UsersService(BaseService[User], UserServiceProtocol):

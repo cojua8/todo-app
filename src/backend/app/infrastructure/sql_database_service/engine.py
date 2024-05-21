@@ -1,7 +1,7 @@
 from sqlalchemy import URL
 from sqlalchemy.ext.asyncio import AsyncEngine, create_async_engine
 
-from app.services.sql_database_service.models import metadata_obj
+from app.infrastructure.sql_database_service.models import metadata_obj
 from app.settings import SqlDBSettings
 
 

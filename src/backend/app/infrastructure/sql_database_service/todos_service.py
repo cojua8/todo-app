@@ -5,8 +5,8 @@ from sqlalchemy.ext.asyncio import AsyncEngine
 
 from app.domain.models.todo import Todo
 from app.domain.services.todo_service_protocol import TodoServiceProtocol
-from app.services.sql_database_service.base_service import BaseService
-from app.services.sql_database_service.models import todo_table
+from app.infrastructure.sql_database_service.base_service import BaseService
+from app.infrastructure.sql_database_service.models import todo_table
 
 
 class TodosService(BaseService[Todo], TodoServiceProtocol):

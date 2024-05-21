@@ -4,8 +4,8 @@ import os
 import pytest
 from testcontainers.postgres import PostgresContainer
 
-from app.services.sql_database_service.engine import engine
-from app.services.sql_database_service.models import metadata_obj
+from app.infrastructure.sql_database_service.engine import engine
+from app.infrastructure.sql_database_service.models import metadata_obj
 from app.settings import SqlDBSettings
 
 
