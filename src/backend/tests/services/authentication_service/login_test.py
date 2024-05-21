@@ -1,7 +1,7 @@
 import pytest
 
+from app.domain.exceptions.login_exception import LoginError
 from app.domain.services.user_service_protocol import UserServiceProtocol
-from app.exceptions.login_exception import LoginError
 from app.infrastructure.authentication_service import AuthenticationService
 
 
