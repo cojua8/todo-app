@@ -3,7 +3,7 @@ from app.domain.services.authentication_service_protocol import (
     RegistrationResult,
 )
 from app.domain.services.user_service_protocol import UserServiceProtocol
-from app.services.authentication_service import AuthenticationService
+from app.infrastructure.authentication_service import AuthenticationService
 
 
 async def test_passwords_not_matching(faker, mocker):
