@@ -6,11 +6,11 @@ from dependency_injector.wiring import Provide, inject
 from fastapi import APIRouter, Body, Response
 
 from app.containers import Container
+from app.domain.exceptions.login_exception import LoginError
 from app.domain.models.user import User
 from app.domain.services.authentication_service_protocol import (
     AuthenticationServiceProtocol,
 )
-from app.exceptions.login_exception import LoginError
 
 login_router = APIRouter()
 

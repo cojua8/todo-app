@@ -21,9 +21,7 @@ class Container(containers.DeclarativeContainer):
     def add_config(cls) -> type[Container]:
         cls.config = Settings()  # type: ignore reportGeneralTypeIssues
 
-        cls.wiring_config = containers.WiringConfiguration(
-            packages=["app.resources"]
-        )
+        cls.wiring_config = containers.WiringConfiguration(packages=["app"])
 
         return cls
 
