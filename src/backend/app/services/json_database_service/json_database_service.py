@@ -2,7 +2,7 @@ from abc import ABC
 from typing import Generic
 from uuid import UUID
 
-from app.services.service_protocols.database_service_protocol import (
+from app.domain.services.database_service_protocol import (
     BMT,
     DatabaseServiceProtocol,
 )

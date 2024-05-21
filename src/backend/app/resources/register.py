@@ -8,7 +8,7 @@ from pydantic import EmailStr
 
 from app.containers import Container
 from app.domain.models.user import User
-from app.services.service_protocols.authentication_service_protocol import (
+from app.domain.services.authentication_service_protocol import (
     AuthenticationServiceProtocol,
     RegistrationResult,
 )

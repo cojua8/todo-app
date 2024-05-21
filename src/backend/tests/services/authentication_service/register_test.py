@@ -1,11 +1,9 @@
 from app.domain.models.user import User
-from app.services.authentication_service import AuthenticationService
-from app.services.service_protocols.authentication_service_protocol import (
+from app.domain.services.authentication_service_protocol import (
     RegistrationResult,
 )
-from app.services.service_protocols.user_service_protocol import (
-    UserServiceProtocol,
-)
+from app.domain.services.user_service_protocol import UserServiceProtocol
+from app.services.authentication_service import AuthenticationService
 
 
 async def test_passwords_not_matching(faker, mocker):

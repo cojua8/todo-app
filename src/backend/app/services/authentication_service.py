@@ -1,12 +1,10 @@
 from app.domain.models.user import User
-from app.exceptions.login_exception import LoginError
-from app.services.service_protocols.authentication_service_protocol import (
+from app.domain.services.authentication_service_protocol import (
     AuthenticationServiceProtocol,
     RegistrationResult,
 )
-from app.services.service_protocols.user_service_protocol import (
-    UserServiceProtocol,
-)
+from app.domain.services.user_service_protocol import UserServiceProtocol
+from app.exceptions.login_exception import LoginError
 
 
 class AuthenticationService(AuthenticationServiceProtocol):
