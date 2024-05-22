@@ -50,9 +50,10 @@ class BaseService(DatabaseServiceProtocol[BMT], Generic[BMT], ABC):
     async def create(self, new: BMT) -> BMT:
         entity = self._mappers.model_to_entity(new)
         async with self._engine.connect() as conn:
-            result = await conn.execute(
-                insert(self._table).values(**entity).returning(self._table.c)
+            stmt = (
+                insert(self._table).values(**entity).returning(*self._table.c)
             )
+            result = await conn.execute(stmt)
             await conn.commit()
 
         return self._mappers.entity_to_model(
@@ -71,12 +72,13 @@ class BaseService(DatabaseServiceProtocol[BMT], Generic[BMT], ABC):
     async def put(self, id_: UUID, new: BMT) -> BMT | None:
         entity = self._mappers.model_to_entity(new)
         async with self._engine.connect() as conn:
-            result = await conn.execute(
+            stmt = (
                 update(self._table)
                 .where(self._table.c.id == id_)
                 .values(**entity)
-                .returning(self._table.c)
+                .returning(*self._table.c)
             )
+            result = await conn.execute(stmt)
             await conn.commit()
 
         if updated_entity := result.fetchone():
