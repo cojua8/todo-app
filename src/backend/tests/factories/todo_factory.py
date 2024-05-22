@@ -1,13 +1,13 @@
 import factory
 
 from app.domain.models.todo import Todo
-from tests.factories.base_factories import BaseModelFactory
 
 
-class TodoFactory(BaseModelFactory):
+class TodoFactory(factory.Factory):
     class Meta:
         model = Todo
 
+    id = factory.Faker("uuid4", cast_to=None)  # noqa: A003
     owner_id = factory.Faker("uuid4", cast_to=None)
     description = factory.Faker("paragraph")
     due_date = factory.Faker("date_object")

@@ -1,13 +1,13 @@
 import factory
 
 from app.domain.models.user import User
-from tests.factories.base_factories import BaseModelFactory
 
 
-class UserFactory(BaseModelFactory):
+class UserFactory(factory.Factory):
     class Meta:
         model = User
 
+    id = factory.Faker("uuid4", cast_to=None)  # noqa: A003
     username = factory.Faker("user_name")
     email = factory.Faker("email")
     password = factory.Faker("password")
