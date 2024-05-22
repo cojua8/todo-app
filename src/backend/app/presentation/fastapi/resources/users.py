@@ -4,7 +4,7 @@ from uuid import UUID
 
 import fastapi
 from dependency_injector.wiring import Provide, inject
-from fastapi import APIRouter, Body, Response
+from fastapi import APIRouter, Body
 from fastapi.responses import JSONResponse
 
 from app.containers import Container
@@ -75,11 +75,9 @@ async def delete(
     result = await user_service.delete(id_)
 
     if not result:
-        return JSONResponse(  # type:ignore[return-value]
+        return JSONResponse(  # type:ignore[reportReturnType]
             status_code=HTTPStatus.NOT_FOUND, content=UserNotFoundError()
         )
-
-    return Response(status_code=HTTPStatus.NO_CONTENT)
 
 
 @users_router.put(

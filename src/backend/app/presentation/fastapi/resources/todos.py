@@ -75,7 +75,7 @@ async def delete(
     result = await todo_service.delete(id_)
 
     if not result:
-        return JSONResponse(  # type:ignore[return-value]
+        return JSONResponse(  # type:ignore[reportReturnType]
             status_code=HTTPStatus.NOT_FOUND, content=TodoNotFoundError()
         )
 

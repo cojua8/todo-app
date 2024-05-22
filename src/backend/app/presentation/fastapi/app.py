@@ -16,7 +16,7 @@ from app.presentation.fastapi.resources.users import users_router
 
 def app_factory() -> FastAPI:
     fastapi = FastAPI()
-    fastapi.container = Container()  # type: ignore[container]
+    fastapi.container = Container()  # type:ignore [reportAttributeAccessIssue]
 
     add_cors_policy(fastapi)
     add_instrumentation(fastapi)

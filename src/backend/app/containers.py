@@ -19,7 +19,7 @@ from app.settings import JsonDBSettings, Settings, SqlDBSettings
 class Container(containers.DeclarativeContainer):
     @classmethod
     def add_config(cls) -> type[Container]:
-        cls.config = Settings()  # type: ignore reportGeneralTypeIssues
+        cls.config = Settings()  # type:ignore [reportCallIssue]
 
         cls.wiring_config = containers.WiringConfiguration(packages=["app"])
 
@@ -27,7 +27,7 @@ class Container(containers.DeclarativeContainer):
 
     @classmethod
     def _add_json_database_services(cls) -> type[Container]:
-        settings = JsonDBSettings()  # type: ignore reportGeneralTypeIssues
+        settings = JsonDBSettings()  # type:ignore [reportCallIssue]
         cls.users_io_service = providers.Resource(
             FileIOService.create_service, settings.database_path, "users.json"
         )
@@ -49,7 +49,7 @@ class Container(containers.DeclarativeContainer):
     @classmethod
     def _add_postgresql_services(cls) -> type[Container]:
         cls.engine = providers.Singleton(
-            engine, SqlDBSettings()  # type: ignore reportGeneralTypeIssues
+            engine, SqlDBSettings()  # type:ignore [reportCallIssue]
         )
 
         cls.users_service = providers.Factory(UsersService, engine=cls.engine)
