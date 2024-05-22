@@ -44,8 +44,8 @@
     onSuccess: async () => {
       page.redirect("/dashboard");
     },
-    onError: async ({ result }) => {
-      switch (result) {
+    onError: async ({ detail }) => {
+      switch (detail) {
         case "USERNAME_ALREADY_EXISTS":
           setErrors({ username: "Username already exists" });
           break;
