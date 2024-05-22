@@ -1,4 +1,3 @@
-import asyncio
 import os
 
 import pytest
@@ -24,14 +23,6 @@ def sqlalchemy_settings():
             db_port=int(postgres.get_exposed_port(5432)),
             db_name=postgres.POSTGRES_DB,
         )
-
-
-@pytest.fixture(scope="session")
-def event_loop():  # used by pytest-asyncio
-    policy = asyncio.get_event_loop_policy()
-    loop = policy.new_event_loop()
-    yield loop
-    loop.close()
 
 
 @pytest.fixture
