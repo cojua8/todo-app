@@ -44,15 +44,15 @@
     onSuccess: async () => {
       page.redirect("/dashboard");
     },
-    onError: async ({ detail }) => {
-      switch (detail) {
-        case "USERNAME_ALREADY_EXISTS":
+    onError: async ({ result }) => {
+      switch (result.toLowerCase()) {
+        case "username_already_exists":
           setErrors({ username: "Username already exists" });
           break;
-        case "EMAIL_ALREADY_EXISTS":
+        case "email_already_exists":
           setErrors({ email: "Email already exists" });
           break;
-        case "PASSWORD_NOT_MATCHING":
+        case "password_not_matching":
           setErrors({ confirmPassword: "Passwords do not match" });
           break;
         default:
