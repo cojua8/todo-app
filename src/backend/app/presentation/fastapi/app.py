@@ -16,30 +16,40 @@ from app.presentation.fastapi.resources.users import users_router
 
 def app_factory() -> FastAPI:
     fastapi = FastAPI()
-    fastapi.add_middleware(
+    fastapi.container = Container()  # type: ignore[container]
+
+    add_cors_policy(fastapi)
+    add_instrumentation(fastapi)
+    add_routers(fastapi)
+
+    fastapi.get("/")(lambda: "Up and running")
+    return fastapi
+
+
+def add_cors_policy(app: FastAPI) -> None:
+    app.add_middleware(
         CORSMiddleware,
         allow_origins=["http://localhost:3000"],
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
     )
-    instrumentator = Instrumentator().instrument(fastapi)
 
-    @fastapi.on_event("startup")
+
+def add_instrumentation(app: FastAPI) -> None:
+    instrumentator = Instrumentator().instrument(app)
+
+    @app.on_event("startup")
     async def _startup() -> None:
-        instrumentator.expose(fastapi)
+        instrumentator.expose(app)
 
-    fastapi.mount("/metrics", prometheus_asgi_app())
+    app.mount("/metrics", prometheus_asgi_app())
 
-    fastapi.container = Container()  # type: ignore[container]
 
-    fastapi.get("/")(lambda: "Up and running")
-
-    fastapi.include_router(register_router)
-    fastapi.include_router(users_router)
-    fastapi.include_router(user_listing_router)
-    fastapi.include_router(todo_router)
-    fastapi.include_router(todo_listing_router)
-    fastapi.include_router(login_router)
-
-    return fastapi
+def add_routers(app: FastAPI) -> None:
+    app.include_router(register_router)
+    app.include_router(users_router)
+    app.include_router(user_listing_router)
+    app.include_router(todo_router)
+    app.include_router(todo_listing_router)
+    app.include_router(login_router)
