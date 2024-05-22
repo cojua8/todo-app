@@ -17,7 +17,7 @@ class Mappers:
         return model.model_dump()
 
     def entity_to_model(self, entity: Row, model_type: type[BMT]) -> BMT:
-        return model_type(**entity._asdict())
+        return model_type.model_validate(entity, from_attributes=True)
 
 
 class BaseService(DatabaseServiceProtocol[BMT], Generic[BMT], ABC):
