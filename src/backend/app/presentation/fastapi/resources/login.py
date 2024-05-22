@@ -4,7 +4,6 @@ from typing import Annotated, Any
 import fastapi
 from dependency_injector.wiring import Provide, inject
 from fastapi import APIRouter, Body
-from fastapi.responses import JSONResponse
 
 from app.containers import Container
 from app.domain.exceptions.login_exception import LoginError
@@ -16,6 +15,7 @@ from app.presentation.fastapi.exceptions.login_error import (
 )
 from app.presentation.fastapi.models.login_data import LoginData
 from app.presentation.fastapi.models.user import User as ApiUser
+from app.presentation.fastapi.utils import PydanticModelResponse
 
 login_router = APIRouter()
 
@@ -37,8 +37,8 @@ async def post(
             username=logged_user.username, password=logged_user.password
         )
     except LoginError:
-        return JSONResponse(
-            status_code=HTTPStatus.BAD_REQUEST, content=ApiLoginError()
+        return PydanticModelResponse(
+            status_code=HTTPStatus.BAD_REQUEST, content_model=ApiLoginError()
         )
     else:
         return user

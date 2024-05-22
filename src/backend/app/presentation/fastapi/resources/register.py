@@ -4,7 +4,6 @@ from typing import Annotated, Any
 import fastapi
 from dependency_injector.wiring import Provide, inject
 from fastapi import APIRouter, Body, status
-from fastapi.responses import JSONResponse
 
 from app.containers import Container
 from app.domain.services.authentication_service_protocol import (
@@ -14,6 +13,7 @@ from app.domain.services.authentication_service_protocol import (
 from app.presentation.fastapi.exceptions.register_error import RegisterError
 from app.presentation.fastapi.models.register_data import RegisterData
 from app.presentation.fastapi.models.user import User as ApiUser
+from app.presentation.fastapi.utils import PydanticModelResponse
 
 register_router = APIRouter()
 
@@ -39,9 +39,9 @@ async def post(
     )
 
     if result != RegistrationResult.SUCCESS:
-        return JSONResponse(
+        return PydanticModelResponse(
             status_code=HTTPStatus.BAD_REQUEST,
-            content=RegisterError(result=result),
+            content_model=RegisterError(result=result),
         )
 
     return user

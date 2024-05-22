@@ -5,7 +5,6 @@ from uuid import UUID
 import fastapi
 from dependency_injector.wiring import Provide, inject
 from fastapi import APIRouter, Body
-from fastapi.responses import JSONResponse
 
 from app.containers import Container
 from app.domain.models.todo import Todo
@@ -16,6 +15,7 @@ from app.presentation.fastapi.exceptions.todo_not_found_error import (
 from app.presentation.fastapi.models.todo import Todo as ApiTodo
 from app.presentation.fastapi.models.todo_create_data import TodoCreateData
 from app.presentation.fastapi.models.todo_update_data import TodoUpdateData
+from app.presentation.fastapi.utils import PydanticModelResponse
 
 todo_router = APIRouter()
 
@@ -35,8 +35,8 @@ async def get(
     todo = await todo_service.get(id_)
 
     if not todo:
-        return JSONResponse(
-            status_code=HTTPStatus.NOT_FOUND, content=TodoNotFoundError()
+        return PydanticModelResponse(
+            status_code=HTTPStatus.NOT_FOUND, content_model=TodoNotFoundError()
         )
 
     return todo
@@ -75,8 +75,8 @@ async def delete(
     result = await todo_service.delete(id_)
 
     if not result:
-        return JSONResponse(  # type:ignore[reportReturnType]
-            status_code=HTTPStatus.NOT_FOUND, content=TodoNotFoundError()
+        return PydanticModelResponse(  # type:ignore[reportReturnType]
+            status_code=HTTPStatus.NOT_FOUND, content_model=TodoNotFoundError()
         )
 
 
@@ -104,8 +104,8 @@ async def put(
 
     todo = await todo_service.put(id_, new)
     if not todo:
-        return JSONResponse(
-            status_code=HTTPStatus.NOT_FOUND, content=TodoNotFoundError()
+        return PydanticModelResponse(
+            status_code=HTTPStatus.NOT_FOUND, content_model=TodoNotFoundError()
         )
 
     return todo

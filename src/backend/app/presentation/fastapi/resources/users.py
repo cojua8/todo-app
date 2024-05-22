@@ -5,7 +5,6 @@ from uuid import UUID
 import fastapi
 from dependency_injector.wiring import Provide, inject
 from fastapi import APIRouter, Body
-from fastapi.responses import JSONResponse
 
 from app.containers import Container
 from app.domain.models.user import User
@@ -16,6 +15,7 @@ from app.presentation.fastapi.exceptions.user_not_found_error import (
 from app.presentation.fastapi.models.user import User as ApiUser
 from app.presentation.fastapi.models.user_create_data import UserCreateData
 from app.presentation.fastapi.models.user_update_data import UserUpdateData
+from app.presentation.fastapi.utils import PydanticModelResponse
 
 users_router = APIRouter()
 
@@ -35,8 +35,8 @@ async def get(
     user = await user_service.get(id_)
 
     if not user:
-        return JSONResponse(
-            status_code=HTTPStatus.NOT_FOUND, content=UserNotFoundError()
+        return PydanticModelResponse(
+            status_code=HTTPStatus.NOT_FOUND, content_model=UserNotFoundError()
         )
 
     return user
@@ -75,8 +75,8 @@ async def delete(
     result = await user_service.delete(id_)
 
     if not result:
-        return JSONResponse(  # type:ignore[reportReturnType]
-            status_code=HTTPStatus.NOT_FOUND, content=UserNotFoundError()
+        return PydanticModelResponse(  # type:ignore[reportReturnType]
+            status_code=HTTPStatus.NOT_FOUND, content_model=UserNotFoundError()
         )
 
 
@@ -102,8 +102,8 @@ async def put(
     user = await user_service.put(id_, new)
 
     if not user:
-        return JSONResponse(
-            status_code=HTTPStatus.NOT_FOUND, content=UserNotFoundError()
+        return PydanticModelResponse(
+            status_code=HTTPStatus.NOT_FOUND, content_model=UserNotFoundError()
         )
 
     return user
