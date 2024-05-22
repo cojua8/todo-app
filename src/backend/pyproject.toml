@@ -21,13 +21,13 @@ pydantic-settings = "^2.1.0"
 
 
 [tool.poetry.group.test.dependencies]
-pytest = "^7.2.1"
-pytest-asyncio = "^0.21.1"
-pytest-factoryboy = "^2.5.1"
-freezegun = "^1.2.2"
-pytest-mock = "^3.10.0"
+pytest = "8.2.1"
+pytest-asyncio = "^0.23.7"
+pytest-factoryboy = "2.7.0"
+freezegun = "1.5.1"
+pytest-mock = "3.14.0"
 testcontainers-postgres = "^0.0.1rc1"
-
+requests = "2.31.0" # For testcontainers compatibility. Remove when solved https://github.com/docker/docker-py/issues/3256
 
 [tool.poetry.group.development.dependencies]
 black = "24.4.2"
