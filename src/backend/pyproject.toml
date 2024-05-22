@@ -32,7 +32,7 @@ testcontainers-postgres = "^0.0.1rc1"
 [tool.poetry.group.development.dependencies]
 black = "^23.7.0"
 ruff = "^0.0.284"
-pyright = "^1.1.322"
+mypy = "1.10.0"
 
 [build-system]
 requires = ["poetry-core"]
