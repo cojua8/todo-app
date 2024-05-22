@@ -41,7 +41,9 @@ class BaseService(DatabaseServiceProtocol[BMT], Generic[BMT], ABC):
     async def get(self, id_: UUID) -> BMT | None:
         async with self._engine.connect() as conn:
             result = await conn.execute(
-                select(self._table).where(self._table.c.id == id_).limit(1)
+                select(self._table)
+                .where(self._table.columns.id == id_)
+                .limit(1)
             )
 
         if entity := result.fetchone():
@@ -51,7 +53,9 @@ class BaseService(DatabaseServiceProtocol[BMT], Generic[BMT], ABC):
         entity = self._mappers.model_to_entity(new)
         async with self._engine.connect() as conn:
             stmt = (
-                insert(self._table).values(**entity).returning(*self._table.c)
+                insert(self._table)
+                .values(**entity)
+                .returning(*self._table.columns)
             )
             result = await conn.execute(stmt)
             await conn.commit()
@@ -63,7 +67,7 @@ class BaseService(DatabaseServiceProtocol[BMT], Generic[BMT], ABC):
     async def delete(self, id_: UUID) -> bool:
         async with self._engine.connect() as conn:
             result = await conn.execute(
-                delete(self._table).where(self._table.c.id == id_)
+                delete(self._table).where(self._table.columns.id == id_)
             )
             await conn.commit()
 
@@ -74,9 +78,9 @@ class BaseService(DatabaseServiceProtocol[BMT], Generic[BMT], ABC):
         async with self._engine.connect() as conn:
             stmt = (
                 update(self._table)
-                .where(self._table.c.id == id_)
+                .where(self._table.columns.id == id_)
                 .values(**entity)
-                .returning(*self._table.c)
+                .returning(*self._table.columns)
             )
             result = await conn.execute(stmt)
             await conn.commit()

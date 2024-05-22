@@ -16,7 +16,9 @@ class TodosService(BaseService[Todo], TodoServiceProtocol):
     async def get_all_by_user_id(self, user_id: UUID) -> list[Todo]:
         async with self._engine.connect() as conn:
             rows = await conn.execute(
-                select(self._table).where(self._table.c.owner_id == user_id)
+                select(self._table).where(
+                    self._table.columns.owner_id == user_id
+                )
             )
         return [
             self._mappers.entity_to_model(entity, self._model)

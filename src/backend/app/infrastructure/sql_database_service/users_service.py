@@ -15,7 +15,7 @@ class UsersService(BaseService[User], UserServiceProtocol):
         async with self._engine.connect() as conn:
             rows = await conn.execute(
                 select(self._table)
-                .where(self._table.c.email == email)
+                .where(self._table.columns.email == email)
                 .limit(1)
             )
         if entity := next(rows, None):
@@ -25,7 +25,7 @@ class UsersService(BaseService[User], UserServiceProtocol):
         async with self._engine.connect() as conn:
             rows = await conn.execute(
                 select(self._table)
-                .where(self._table.c.username == username)
+                .where(self._table.columns.username == username)
                 .limit(1)
             )
         if entity := next(rows, None):
