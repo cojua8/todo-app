@@ -1,8 +1,10 @@
+from http import HTTPStatus
 from typing import Annotated, Any
 
 import fastapi
 from dependency_injector.wiring import Provide, inject
 from fastapi import APIRouter, Body
+from fastapi.responses import JSONResponse
 
 from app.containers import Container
 from app.domain.exceptions.login_exception import LoginError
@@ -18,7 +20,11 @@ from app.presentation.fastapi.models.user import User as ApiUser
 login_router = APIRouter()
 
 
-@login_router.post("/login", response_model=ApiUser)
+@login_router.post(
+    "/login",
+    response_model=ApiUser,
+    responses={HTTPStatus.BAD_REQUEST: {"model": ApiLoginError}},
+)
 @inject
 async def post(
     logged_user: Annotated[LoginData, Body()],
@@ -30,7 +36,9 @@ async def post(
         user = await authentication_service.login(
             username=logged_user.username, password=logged_user.password
         )
-    except LoginError as err:
-        raise ApiLoginError from err
+    except LoginError:
+        return JSONResponse(
+            status_code=HTTPStatus.BAD_REQUEST, content=ApiLoginError()
+        )
     else:
         return user

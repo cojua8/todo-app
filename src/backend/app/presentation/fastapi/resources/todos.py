@@ -5,6 +5,7 @@ from uuid import UUID
 import fastapi
 from dependency_injector.wiring import Provide, inject
 from fastapi import APIRouter, Body
+from fastapi.responses import JSONResponse
 
 from app.containers import Container
 from app.domain.models.todo import Todo
@@ -19,7 +20,11 @@ from app.presentation.fastapi.models.todo_update_data import TodoUpdateData
 todo_router = APIRouter()
 
 
-@todo_router.get("/todo/{id_}", response_model=ApiTodo)
+@todo_router.get(
+    "/todo/{id_}",
+    response_model=ApiTodo,
+    responses={HTTPStatus.NOT_FOUND: {"model": TodoNotFoundError}},
+)
 @inject
 async def get(
     id_: UUID,
@@ -30,7 +35,9 @@ async def get(
     todo = await todo_service.get(id_)
 
     if not todo:
-        raise TodoNotFoundError
+        return JSONResponse(
+            status_code=HTTPStatus.NOT_FOUND, content=TodoNotFoundError()
+        )
 
     return todo
 
@@ -53,7 +60,11 @@ async def post(
     return await todo_service.create(new_todo)
 
 
-@todo_router.delete("/todo/{id_}", status_code=HTTPStatus.NO_CONTENT)
+@todo_router.delete(
+    "/todo/{id_}",
+    status_code=HTTPStatus.NO_CONTENT,
+    responses={HTTPStatus.NOT_FOUND: {"model": TodoNotFoundError}},
+)
 @inject
 async def delete(
     id_: UUID,
@@ -64,10 +75,16 @@ async def delete(
     result = await todo_service.delete(id_)
 
     if not result:
-        raise TodoNotFoundError
+        return JSONResponse(  # type:ignore[return-value]
+            status_code=HTTPStatus.NOT_FOUND, content=TodoNotFoundError()
+        )
 
 
-@todo_router.put("/todo/{id_}", response_model=ApiTodo)
+@todo_router.put(
+    "/todo/{id_}",
+    response_model=ApiTodo,
+    responses={HTTPStatus.NOT_FOUND: {"model": TodoNotFoundError}},
+)
 @inject
 async def put(
     id_: UUID,
@@ -87,6 +104,8 @@ async def put(
 
     todo = await todo_service.put(id_, new)
     if not todo:
-        raise TodoNotFoundError
+        return JSONResponse(
+            status_code=HTTPStatus.NOT_FOUND, content=TodoNotFoundError()
+        )
 
     return todo

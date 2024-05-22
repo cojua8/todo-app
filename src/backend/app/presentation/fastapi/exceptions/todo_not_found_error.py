@@ -1,8 +1,5 @@
-from http import HTTPStatus
-
-from fastapi import HTTPException
+from pydantic import BaseModel
 
 
-class TodoNotFoundError(HTTPException):
-    def __init__(self) -> None:
-        super().__init__(status_code=HTTPStatus.NOT_FOUND)
+class TodoNotFoundError(BaseModel):
+    detail: str = "Todo not found"

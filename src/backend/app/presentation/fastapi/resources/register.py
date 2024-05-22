@@ -1,8 +1,10 @@
+from http import HTTPStatus
 from typing import Annotated, Any
 
 import fastapi
 from dependency_injector.wiring import Provide, inject
 from fastapi import APIRouter, Body, status
+from fastapi.responses import JSONResponse
 
 from app.containers import Container
 from app.domain.services.authentication_service_protocol import (
@@ -17,7 +19,10 @@ register_router = APIRouter()
 
 
 @register_router.post(
-    "/register", status_code=status.HTTP_201_CREATED, response_model=ApiUser
+    "/register",
+    status_code=status.HTTP_201_CREATED,
+    response_model=ApiUser,
+    responses={HTTPStatus.BAD_REQUEST: {"model": RegisterError}},
 )
 @inject
 async def post(
@@ -34,6 +39,9 @@ async def post(
     )
 
     if result != RegistrationResult.SUCCESS:
-        raise RegisterError(result)
+        return JSONResponse(
+            status_code=HTTPStatus.BAD_REQUEST,
+            content=RegisterError(result=result),
+        )
 
     return user

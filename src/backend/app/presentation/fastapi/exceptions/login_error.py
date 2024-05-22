@@ -1,8 +1,5 @@
-from http import HTTPStatus
-
-from fastapi import HTTPException
+from pydantic import BaseModel
 
 
-class LoginError(HTTPException):
-    def __init__(self) -> None:
-        super().__init__(HTTPStatus.BAD_REQUEST)
+class LoginError(BaseModel):
+    detail: str = "Login error wrong user or password."

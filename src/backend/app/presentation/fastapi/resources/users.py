@@ -4,7 +4,8 @@ from uuid import UUID
 
 import fastapi
 from dependency_injector.wiring import Provide, inject
-from fastapi import APIRouter, Body
+from fastapi import APIRouter, Body, Response
+from fastapi.responses import JSONResponse
 
 from app.containers import Container
 from app.domain.models.user import User
@@ -19,7 +20,11 @@ from app.presentation.fastapi.models.user_update_data import UserUpdateData
 users_router = APIRouter()
 
 
-@users_router.get("/user/{id_}", response_model=ApiUser)
+@users_router.get(
+    "/user/{id_}",
+    response_model=ApiUser,
+    responses={HTTPStatus.NOT_FOUND: {"model": UserNotFoundError}},
+)
 @inject
 async def get(
     id_: UUID,
@@ -30,7 +35,9 @@ async def get(
     user = await user_service.get(id_)
 
     if not user:
-        raise UserNotFoundError
+        return JSONResponse(
+            status_code=HTTPStatus.NOT_FOUND, content=UserNotFoundError()
+        )
 
     return user
 
@@ -53,7 +60,11 @@ async def post(
     return await user_service.create(new_user)
 
 
-@users_router.delete("/user/{id_}", status_code=HTTPStatus.NO_CONTENT)
+@users_router.delete(
+    "/user/{id_}",
+    status_code=HTTPStatus.NO_CONTENT,
+    responses={HTTPStatus.NOT_FOUND: {"model": UserNotFoundError}},
+)
 @inject
 async def delete(
     id_: UUID,
@@ -64,10 +75,18 @@ async def delete(
     result = await user_service.delete(id_)
 
     if not result:
-        raise UserNotFoundError
+        return JSONResponse(  # type:ignore[return-value]
+            status_code=HTTPStatus.NOT_FOUND, content=UserNotFoundError()
+        )
+
+    return Response(status_code=HTTPStatus.NO_CONTENT)
 
 
-@users_router.put("/user/{id_}", response_model=ApiUser)
+@users_router.put(
+    "/user/{id_}",
+    response_model=ApiUser,
+    responses={HTTPStatus.NOT_FOUND: {"model": UserNotFoundError}},
+)
 @inject
 async def put(
     id_: UUID,
@@ -85,6 +104,8 @@ async def put(
     user = await user_service.put(id_, new)
 
     if not user:
-        raise UserNotFoundError
+        return JSONResponse(
+            status_code=HTTPStatus.NOT_FOUND, content=UserNotFoundError()
+        )
 
     return user

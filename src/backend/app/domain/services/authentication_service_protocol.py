@@ -1,10 +1,10 @@
-from enum import Enum, auto
+from enum import StrEnum, auto
 from typing import Protocol
 
 from app.domain.models.user import User
 
 
-class RegistrationResult(Enum):
+class RegistrationResult(StrEnum):
     SUCCESS = auto()
     PASSWORD_NOT_MATCHING = auto()
     USERNAME_ALREADY_EXISTS = auto()
