@@ -30,9 +30,8 @@ testcontainers-postgres = "^0.0.1rc1"
 
 
 [tool.poetry.group.development.dependencies]
-black = "^23.7.0"
-ruff = "^0.0.284"
-mypy = "1.10.0"
+black = "24.4.2"
+ruff = "0.4.4"
 pyright="1.1.364"
 
 [build-system]
@@ -54,6 +53,14 @@ asyncio_mode = "auto"
 pythonversion = "3.11"
 
 [tool.ruff]
+line-length = 79
+show-fixes = true
+output-format = "full"
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["ALL"]
+unfixable = ["ERA001"]
 ignore = [
     "ANN003", #Missing type annotation for `**kwargs` 
     "ANN101", #Missing type annotation for `self` in method
@@ -74,30 +81,23 @@ ignore = [
     "D212",   #Multi-line docstring summary should start at the first line
     "RET503", #Missing explicit `return` at the end of function able to return non-`None` value
 ]
-unfixable = ["ERA001"]
 
-select = ["ALL"]
-line-length = 79
-show-fixes = true
-show-source = true
-target-version = "py311"
-
-[tool.ruff.flake8-import-conventions]
-[tool.ruff.flake8-import-conventions.extend-aliases]
+[tool.ruff.lint.flake8-import-conventions]
+[tool.ruff.lint.flake8-import-conventions.extend-aliases]
 "datetime" = "dt"
 
-[tool.ruff.flake8-pytest-style]
+[tool.ruff.lint.flake8-pytest-style]
 fixture-parentheses = false
 
-[tool.ruff.flake8-tidy-imports]
+[tool.ruff.lint.flake8-tidy-imports]
 ban-relative-imports = "all"
 
-[tool.ruff.isort]
+[tool.ruff.lint.isort]
 combine-as-imports = true
 known-first-party = ["app", "tests"]
 
-[tool.ruff.mccabe]
+[tool.ruff.lint.mccabe]
 max-complexity = 5
 
-[tool.ruff.flake8-bugbear]
+[tool.ruff.lint.flake8-bugbear]
 extend-immutable-calls = ["fastapi.Depends"]
