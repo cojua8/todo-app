@@ -5,7 +5,7 @@ from pydantic import BaseModel, Field
 
 
 class Todo(BaseModel):
-    id_: UUID = Field(..., alias="id")
+    id: UUID
     owner_id: UUID = Field(..., serialization_alias="ownerId")
     description: str
     due_date: dt.date = Field(..., serialization_alias="dueDate")

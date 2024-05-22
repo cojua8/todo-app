@@ -7,7 +7,7 @@ class TodoFactory(factory.Factory):
     class Meta:
         model = Todo
 
-    id = factory.Faker("uuid4", cast_to=None)  # noqa: A003
+    id = factory.Faker("uuid4", cast_to=None)
     owner_id = factory.Faker("uuid4", cast_to=None)
     description = factory.Faker("paragraph")
     due_date = factory.Faker("date_object")

@@ -4,4 +4,4 @@ from pydantic import BaseModel as PydanticBaseModel, Field
 
 
 class BaseModel(PydanticBaseModel):
-    id: UUID = Field(default_factory=uuid4)  # noqa: A003
+    id: UUID = Field(default_factory=uuid4)
