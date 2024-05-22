@@ -8,5 +8,4 @@ from app.domain.services.database_service_protocol import (
 
 
 class TodoServiceProtocol(DatabaseServiceProtocol[Todo], Protocol):
-    async def get_all_by_user_id(self, user_id: UUID) -> list[Todo]:
-        ...
+    async def get_all_by_user_id(self, user_id: UUID) -> list[Todo]: ...
