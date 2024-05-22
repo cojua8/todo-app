@@ -4,7 +4,7 @@ from app.domain.models.user import User
 
 
 class UserFactory(factory.Factory):
-    class Meta:
+    class Meta:  # type:ignore [reportIncompatibleVariableOverride]
         model = User
 
     id = factory.Faker("uuid4", cast_to=None)

@@ -4,7 +4,7 @@ from app.domain.models.todo import Todo
 
 
 class TodoFactory(factory.Factory):
-    class Meta:
+    class Meta:  # type:ignore [reportIncompatibleVariableOverride]
         model = Todo
 
     id = factory.Faker("uuid4", cast_to=None)
