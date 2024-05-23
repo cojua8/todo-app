@@ -1,3 +1,9 @@
-from app.presentation.fastapi.app import app_factory
+from app.settings import Settings
+
+settings = Settings()  # type: ignore[reportCallIssue]
+if settings.framework == "flask":
+    from app.presentation.flask.app_factory import app_factory
+else:
+    from app.presentation.fastapi.app import app_factory
 
 app = app_factory()

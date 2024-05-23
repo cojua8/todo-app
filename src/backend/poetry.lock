@@ -64,6 +64,20 @@ test = ["anyio[trio]", "coverage[toml] (>=4.5)", "hypothesis (>=4.0)", "mock (>=
 trio = ["trio (<0.22)"]
 
 [[package]]
+name = "asgiref"
+version = "3.8.1"
+description = "ASGI specs, helper code, and adapters"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "asgiref-3.8.1-py3-none-any.whl", hash = "sha256:3e1e3ecc849832fe52ccf2cb6686b7a55f82bb1d6aee72a58826471390335e47"},
+    {file = "asgiref-3.8.1.tar.gz", hash = "sha256:c343bd80a0bec947a9860adb4c432ffa7db769836c64238fc34bdc3fec84d590"},
+]
+
+[package.extras]
+tests = ["mypy (>=0.800)", "pytest", "pytest-asyncio"]
+
+[[package]]
 name = "async-timeout"
 version = "4.0.3"
 description = "Timeout context manager for asyncio programs"
@@ -1106,6 +1120,21 @@ files = [
 [package.dependencies]
 prometheus-client = ">=0.8.0,<1.0.0"
 starlette = ">=0.30.0,<1.0.0"
+
+[[package]]
+name = "prometheus-flask-exporter"
+version = "0.23.0"
+description = "Prometheus metrics exporter for Flask"
+optional = false
+python-versions = "*"
+files = [
+    {file = "prometheus_flask_exporter-0.23.0-py3-none-any.whl", hash = "sha256:7a026b4fdd54ebeddb77589333efe3a1ec43c7c717468825b0b3e9b6c33f7e9e"},
+    {file = "prometheus_flask_exporter-0.23.0.tar.gz", hash = "sha256:e4e6beb1b8e1e164da6d70fe1edefc95ef184f113b5047f66f4b7262233da9c0"},
+]
+
+[package.dependencies]
+flask = "*"
+prometheus-client = "*"
 
 [[package]]
 name = "psycopg2-binary"
@@ -2261,4 +2290,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "20f5ba152c7f2f8b5ff0176a0b4aec647d274bc78f80f61c7f650103420bcc9f"
+content-hash = "ddc75ea6861f440b24a6d37c17f0bb97c59e65b41b07cb860b7dfe024dce42be"

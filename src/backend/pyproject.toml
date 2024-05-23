@@ -47,6 +47,8 @@ optional = true
 
 [tool.poetry.group.flask.dependencies]
 flask = "3.0.3"
+prometheus-flask-exporter = "^0.23.0"
+asgiref = "^3.8.1"
 
 
 [build-system]

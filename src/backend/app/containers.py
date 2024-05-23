@@ -21,7 +21,9 @@ class Container(containers.DeclarativeContainer):
     def add_config(cls) -> type[Container]:
         cls.config = Settings()  # type:ignore [reportCallIssue]
 
-        cls.wiring_config = containers.WiringConfiguration(packages=["app"])
+        cls.wiring_config = containers.WiringConfiguration(
+            packages=[f"app.presentation.{cls.config.framework}"]
+        )
 
         return cls
 
