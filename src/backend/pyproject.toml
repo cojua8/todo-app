@@ -3,7 +3,6 @@ name = "todo-app-backend"
 version = "0.1.0"
 description = ""
 authors = ["Joaquín Neira <joaquin.neiraj@gmail.com>"]
-readme = "README.md"
 packages = []
 
 [tool.poetry.dependencies]
