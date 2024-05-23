@@ -41,7 +41,6 @@ services:
       # in the container, saves the database in this path
       # - DATABASE=json
       # - DATABASE_PATH=/database/json_database
-      - FRAMEWORK=flask
       - DATABASE=postgresql
       - DB_DIALECT=postgresql
       - DB_USERNAME=postgres
