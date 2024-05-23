@@ -17,3 +17,4 @@ class SqlDBSettings(BaseSettings):
 
 class Settings(BaseSettings):
     database: str = Field(validation_alias="DATABASE")
+    framework: str = Field(validation_alias="FRAMEWORK")
