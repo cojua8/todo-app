@@ -9,13 +9,11 @@ from fastapi import APIRouter, Body
 from app.containers import Container
 from app.domain.models.user import User
 from app.domain.services.user_service_protocol import UserServiceProtocol
-from app.presentation.fastapi.exceptions.user_not_found_error import (
-    UserNotFoundError,
-)
-from app.presentation.fastapi.models.user import User as ApiUser
-from app.presentation.fastapi.models.user_create_data import UserCreateData
-from app.presentation.fastapi.models.user_update_data import UserUpdateData
 from app.presentation.fastapi.utils import PydanticModelResponse
+from app.presentation.models.user import User as ApiUser
+from app.presentation.models.user_create_data import UserCreateData
+from app.presentation.models.user_not_found_error import UserNotFoundError
+from app.presentation.models.user_update_data import UserUpdateData
 
 users_router = APIRouter()
 

@@ -9,13 +9,11 @@ from fastapi import APIRouter, Body
 from app.containers import Container
 from app.domain.models.todo import Todo
 from app.domain.services.todo_service_protocol import TodoServiceProtocol
-from app.presentation.fastapi.exceptions.todo_not_found_error import (
-    TodoNotFoundError,
-)
-from app.presentation.fastapi.models.todo import Todo as ApiTodo
-from app.presentation.fastapi.models.todo_create_data import TodoCreateData
-from app.presentation.fastapi.models.todo_update_data import TodoUpdateData
 from app.presentation.fastapi.utils import PydanticModelResponse
+from app.presentation.models.todo import Todo as ApiTodo
+from app.presentation.models.todo_create_data import TodoCreateData
+from app.presentation.models.todo_not_found_error import TodoNotFoundError
+from app.presentation.models.todo_update_data import TodoUpdateData
 
 todo_router = APIRouter()
 

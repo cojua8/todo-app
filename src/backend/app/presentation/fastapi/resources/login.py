@@ -10,12 +10,10 @@ from app.domain.exceptions.login_exception import LoginError
 from app.domain.services.authentication_service_protocol import (
     AuthenticationServiceProtocol,
 )
-from app.presentation.fastapi.exceptions.login_error import (
-    LoginError as ApiLoginError,
-)
-from app.presentation.fastapi.models.login_data import LoginData
-from app.presentation.fastapi.models.user import User as ApiUser
 from app.presentation.fastapi.utils import PydanticModelResponse
+from app.presentation.models.login_data import LoginData
+from app.presentation.models.login_error import LoginError as ApiLoginError
+from app.presentation.models.user import User as ApiUser
 
 login_router = APIRouter()
 

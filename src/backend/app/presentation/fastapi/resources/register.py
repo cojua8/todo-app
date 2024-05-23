@@ -10,10 +10,10 @@ from app.domain.services.authentication_service_protocol import (
     AuthenticationServiceProtocol,
     RegistrationResult,
 )
-from app.presentation.fastapi.exceptions.register_error import RegisterError
-from app.presentation.fastapi.models.register_data import RegisterData
-from app.presentation.fastapi.models.user import User as ApiUser
 from app.presentation.fastapi.utils import PydanticModelResponse
+from app.presentation.models.register_data import RegisterData
+from app.presentation.models.register_error import RegisterError
+from app.presentation.models.user import User as ApiUser
 
 register_router = APIRouter()
 

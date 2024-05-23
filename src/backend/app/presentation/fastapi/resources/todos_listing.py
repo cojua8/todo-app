@@ -7,7 +7,7 @@ from fastapi import APIRouter, Query
 
 from app.containers import Container
 from app.domain.services.todo_service_protocol import TodoServiceProtocol
-from app.presentation.fastapi.models.todo import Todo as ApiTodo
+from app.presentation.models.todo import Todo as ApiTodo
 
 todo_listing_router = APIRouter()
 

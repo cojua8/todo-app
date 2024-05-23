@@ -6,7 +6,7 @@ from fastapi import APIRouter
 
 from app.containers import Container
 from app.domain.services.user_service_protocol import UserServiceProtocol
-from app.presentation.fastapi.models.user import User as ApiUser
+from app.presentation.models.user import User as ApiUser
 
 user_listing_router = APIRouter()
 
