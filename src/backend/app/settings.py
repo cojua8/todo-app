@@ -18,3 +18,16 @@ class SqlDBSettings(BaseSettings):
 class Settings(BaseSettings):
     database: str = Field(validation_alias="DATABASE")
     framework: str = Field(validation_alias="FRAMEWORK")
+
+
+class CorsSettings(BaseSettings):
+    origins: list[str] = Field(
+        ["http://localhost:3000"], validation_alias="CORS_ORIGINS"
+    )
+    methods: list[str] = Field(["*"], validation_alias="CORS_METHODS")
+    allow_headers: list[str] = Field(
+        ["*"], validation_alias="CORS_ALLOW_HEADERS"
+    )
+    supports_credentials: bool = Field(
+        default=True, validation_alias="CORS_SUPPORTS_CREDENTIALS"
+    )

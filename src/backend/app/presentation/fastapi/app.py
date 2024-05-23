@@ -27,12 +27,13 @@ def app_factory() -> FastAPI:
 
 
 def add_cors_policy(app: FastAPI) -> None:
+    settings = CorsSettings()  # type:ignore[reportCallIssue]  # noqa: F821
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=["http://localhost:3000"],
-        allow_credentials=True,
-        allow_methods=["*"],
-        allow_headers=["*"],
+        allow_origins=settings.origins,
+        allow_credentials=settings.supports_credentials,
+        allow_methods=settings.methods,
+        allow_headers=settings.allow_headers,
     )
 
 
