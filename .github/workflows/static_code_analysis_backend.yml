@@ -25,7 +25,7 @@ jobs:
           cache: poetry
 
       - name: Install dependencies
-        run: poetry install
+        run: poetry install --with fastapi,flask
       # TODO: learn how to cache all previous work and use it in different jobs
 
       - name: Check ruff
