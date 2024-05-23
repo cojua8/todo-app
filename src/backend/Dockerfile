@@ -8,6 +8,7 @@ COPY ./pyproject.toml .
 ENV POETRY_HOME=/opt/poetry
 ENV POETRY_CACHE_DIR=/opt/poetry/cache
 
-RUN pip install poetry
-RUN poetry install
+ARG FRAMEWORK
+RUN pip install poetry 
+RUN poetry install --with $FRAMEWORK
 CMD poetry run uvicorn app.app:app --reload --host 0.0.0.0 --port 5000

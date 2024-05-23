@@ -26,6 +26,8 @@ services:
       - todo_app_postgres
     build:
       context: ./src/backend
+      args:
+        - FRAMEWORK=flask
     ports:
       - 5000:5000
     restart: unless-stopped
@@ -39,6 +41,7 @@ services:
       # in the container, saves the database in this path
       # - DATABASE=json
       # - DATABASE_PATH=/database/json_database
+      - FRAMEWORK=flask
       - DATABASE=postgresql
       - DB_DIALECT=postgresql
       - DB_USERNAME=postgres
