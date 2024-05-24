@@ -7,6 +7,8 @@ ENV PYTHONDONTWRITEBYTECODE=1
 # Turns off buffering for easier container logging
 ENV PYTHONUNBUFFERED=1
 
+ENV POETRY_HOME=/opt/poetry
+ENV POETRY_CACHE_DIR=/opt/poetry/cache
 ARG FRAMEWORK
 ENV FRAMEWORK=$FRAMEWORK
 
