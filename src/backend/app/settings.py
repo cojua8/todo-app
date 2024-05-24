@@ -24,9 +24,12 @@ class CorsSettings(BaseSettings):
     origins: list[str] = Field(
         ["http://localhost:3000"], validation_alias="CORS_ORIGINS"
     )
-    methods: list[str] = Field(["*"], validation_alias="CORS_METHODS")
-    allow_headers: list[str] = Field(
-        ["*"], validation_alias="CORS_ALLOW_HEADERS"
+    methods: list[str] | str = Field(
+        ["GET", "HEAD", "POST", "OPTIONS", "PUT", "PATCH", "DELETE"],
+        validation_alias="CORS_METHODS",
+    )
+    allow_headers: list[str] | str = Field(
+        "*", validation_alias="CORS_ALLOW_HEADERS"
     )
     supports_credentials: bool = Field(
         default=True, validation_alias="CORS_SUPPORTS_CREDENTIALS"
