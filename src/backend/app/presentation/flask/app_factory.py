@@ -3,11 +3,14 @@ from flask import Flask
 from flask_cors import CORS
 from prometheus_flask_exporter import PrometheusMetrics
 
+from app.containers import Container
 from app.settings import CorsSettings
 
 
 def app_factory() -> WsgiToAsgi:
     app = Flask(__name__)
+    app.container = Container()  # type:ignore[reportAttributeAccessIssue]
+
     add_cors_policy(app)
     add_instrumentation(app)
     add_routers(app)
