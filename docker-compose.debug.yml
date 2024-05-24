@@ -1,25 +1,4 @@
 services:
-  grafana:
-    image: grafana/grafana
-    container_name: grafana
-    ports:
-      - 7000:3000
-    restart: unless-stopped
-    volumes:
-      - ./grafana/datasources:/etc/grafana/provisioning/datasources
-      - ./grafana/dashboards:/etc/grafana/provisioning/dashboards
-
-  prometheus:
-    image: prom/prometheus
-    container_name: prometheus
-    command:
-      - "--config.file=/etc/prometheus/prometheus.yml"
-    ports:
-      - 9090:9090
-    restart: unless-stopped
-    volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
-
   todo-app-backend:
     container_name: backend
     depends_on:
@@ -28,8 +7,15 @@ services:
       context: ./src/backend
       args:
         - FRAMEWORK=flask
+    command:
+      [
+        "sh",
+        "-c",
+        "pip install debugpy -t /tmp && poetry run python /tmp/debugpy --wait-for-client --listen 0.0.0.0:5678 -m uvicorn app.app:app --reload --host 0.0.0.0 --port 5000"
+      ]
     ports:
       - 5000:5000
+      - 5678:5678
     restart: unless-stopped
     volumes:
       # this binds the host folder to the container folder
@@ -74,29 +60,6 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=todo_db
-
-  postgres_metrics:
-    container_name: postgres_metrics
-    image: quay.io/prometheuscommunity/postgres-exporter
-    restart: unless-stopped
-    environment:
-      - DATA_SOURCE_NAME=postgresql://postgres:postgres@postgres_db:5432/todo_db?sslmode=disable
-    ports:
-      - 9187:9187
-
-  node-exporter:
-    image: prom/node-exporter:latest
-    container_name: node-exporter
-    restart: unless-stopped
-    volumes:
-      - /proc:/host/proc:ro
-      - /sys:/host/sys:ro
-      - /:/rootfs:ro
-    command:
-      - "--path.procfs=/host/proc"
-      - "--path.rootfs=/rootfs"
-      - "--path.sysfs=/host/sys"
-      - "--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)"
 
 # the path of data won't be erased on rebuild
 volumes:
