@@ -12,6 +12,7 @@ from app.presentation.fastapi.resources.todos_listing import (
 )
 from app.presentation.fastapi.resources.user_listing import user_listing_router
 from app.presentation.fastapi.resources.users import users_router
+from app.settings import CorsSettings
 
 
 def app_factory() -> FastAPI:
@@ -27,7 +28,7 @@ def app_factory() -> FastAPI:
 
 
 def add_cors_policy(app: FastAPI) -> None:
-    settings = CorsSettings()  # type:ignore[reportCallIssue]  # noqa: F821
+    settings = CorsSettings()  # type:ignore[reportCallIssue]
     app.add_middleware(
         CORSMiddleware,
         allow_origins=settings.origins,
