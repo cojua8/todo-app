@@ -4,6 +4,8 @@ from flask_cors import CORS
 from prometheus_flask_exporter import PrometheusMetrics
 
 from app.containers import Container
+from app.presentation.flask.resources.login import login_blueprint
+from app.presentation.flask.resources.register import register_blueprint
 from app.settings import CorsSettings
 
 
@@ -35,4 +37,6 @@ def add_instrumentation(app: Flask) -> None:
     PrometheusMetrics(app)
 
 
-def add_routers(_: Flask) -> None: ...
+def add_routers(app: Flask) -> None:
+    app.register_blueprint(login_blueprint)
+    app.register_blueprint(register_blueprint)
