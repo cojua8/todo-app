@@ -17,7 +17,7 @@ from app.presentation.models.user import User as ApiUser
 register_blueprint = Blueprint("register", __name__)
 
 
-@register_blueprint.route("/register", methods=["POST"])
+@register_blueprint.post("/register")
 @inject
 async def post(
     authentication_service: AuthenticationServiceProtocol = Provide[

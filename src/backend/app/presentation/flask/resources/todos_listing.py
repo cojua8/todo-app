@@ -13,7 +13,7 @@ from app.presentation.models.todo import Todo as ApiTodo
 todos_listing_blueprint = Blueprint("todos", __name__)
 
 
-@todos_listing_blueprint.route("/todos", methods=["GET"])
+@todos_listing_blueprint.get("/todos")
 @inject
 async def get(
     todo_service: TodoServiceProtocol = Provide[Container.todos_service],

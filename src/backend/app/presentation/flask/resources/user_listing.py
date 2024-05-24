@@ -12,7 +12,7 @@ from app.presentation.models.user import User as ApiUser
 users_listing_blueprint = Blueprint("users", __name__)
 
 
-@users_listing_blueprint.route("/users", methods=["GET"])
+@users_listing_blueprint.get("/users")
 @inject
 async def get(
     user_service: UserServiceProtocol = Provide[Container.users_service],
