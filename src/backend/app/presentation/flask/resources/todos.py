@@ -27,12 +27,11 @@ async def get(
 
     if not todo:
         return PydanticModelResponse(
-            content_model=TodoNotFoundError(), status_code=HTTPStatus.NOT_FOUND
+            content=TodoNotFoundError(), status_code=HTTPStatus.NOT_FOUND
         )
 
     return PydanticModelResponse(
-        content_model=ApiTodo.model_validate(todo, from_attributes=True),
-        status_code=HTTPStatus.OK,
+        content=todo, content_model=ApiTodo, status_code=HTTPStatus.OK
     )
 
 
@@ -50,8 +49,7 @@ async def post(
     todo = await todo_service.create(new_todo)
 
     return PydanticModelResponse(
-        content_model=ApiTodo.model_validate(todo, from_attributes=True),
-        status_code=HTTPStatus.CREATED,
+        content=todo, content_model=ApiTodo, status_code=HTTPStatus.CREATED
     )
 
 
@@ -65,7 +63,7 @@ async def delete(
 
     if not result:
         return PydanticModelResponse(
-            content_model=TodoNotFoundError(), status_code=HTTPStatus.NOT_FOUND
+            content=TodoNotFoundError(), status_code=HTTPStatus.NOT_FOUND
         )
 
 
@@ -88,10 +86,9 @@ async def put(
     todo = await todo_service.put(id_, new)
     if not todo:
         return PydanticModelResponse(
-            status_code=HTTPStatus.NOT_FOUND, content_model=TodoNotFoundError()
+            content=TodoNotFoundError(), status_code=HTTPStatus.NOT_FOUND
         )
 
     return PydanticModelResponse(
-        content_model=ApiTodo.model_validate(todo, from_attributes=True),
-        status_code=HTTPStatus.OK,
+        content=todo, content_model=ApiTodo, status_code=HTTPStatus.OK
     )

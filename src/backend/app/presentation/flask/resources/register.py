@@ -34,11 +34,10 @@ async def post(
 
     if result != RegistrationResult.SUCCESS:
         return PydanticModelResponse(
-            content_model=RegisterError(result=result),
+            content=RegisterError(result=result),
             status_code=HTTPStatus.BAD_REQUEST,
         )
 
     return PydanticModelResponse(
-        content_model=ApiUser.model_validate(user, from_attributes=True),
-        status_code=HTTPStatus.CREATED,
+        content=user, content_model=ApiUser, status_code=HTTPStatus.CREATED
     )

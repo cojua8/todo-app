@@ -27,12 +27,11 @@ async def get(
 
     if not user:
         return PydanticModelResponse(
-            status_code=HTTPStatus.NOT_FOUND, content_model=UserNotFoundError()
+            content=UserNotFoundError(), status_code=HTTPStatus.NOT_FOUND
         )
 
     return PydanticModelResponse(
-        content_model=ApiUser.model_validate(user, from_attributes=True),
-        status_code=HTTPStatus.OK,
+        content=user, content_model=ApiUser, status_code=HTTPStatus.OK
     )
 
 
@@ -50,8 +49,7 @@ async def post(
     user = await user_service.create(new_user)
 
     return PydanticModelResponse(
-        content_model=ApiUser.model_validate(user, from_attributes=True),
-        status_code=HTTPStatus.CREATED,
+        content=user, content_model=ApiUser, status_code=HTTPStatus.CREATED
     )
 
 
@@ -65,7 +63,7 @@ async def delete(
 
     if not result:
         return PydanticModelResponse(
-            status_code=HTTPStatus.NOT_FOUND, content_model=UserNotFoundError()
+            content=UserNotFoundError(), status_code=HTTPStatus.NOT_FOUND
         )
 
 
@@ -86,10 +84,9 @@ async def put(
 
     if not user:
         return PydanticModelResponse(
-            status_code=HTTPStatus.NOT_FOUND, content_model=UserNotFoundError()
+            content=UserNotFoundError(), status_code=HTTPStatus.NOT_FOUND
         )
 
     return PydanticModelResponse(
-        content_model=ApiUser.model_validate(user, from_attributes=True),
-        status_code=HTTPStatus.OK,
+        content=user, content_model=ApiUser, status_code=HTTPStatus.OK
     )

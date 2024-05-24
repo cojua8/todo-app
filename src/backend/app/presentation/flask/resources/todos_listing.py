@@ -7,7 +7,7 @@ from flask import Blueprint, request
 
 from app.containers import Container
 from app.domain.services.todo_service_protocol import TodoServiceProtocol
-from app.presentation.flask.utils import PydanticListModelResponse
+from app.presentation.flask.utils import PydanticModelResponse
 from app.presentation.models.todo import Todo as ApiTodo
 
 todos_listing_blueprint = Blueprint("todos", __name__)
@@ -22,6 +22,6 @@ async def get(
 
     todos = await todo_service.get_all_by_user_id(user_id)
 
-    return PydanticListModelResponse(
-        item_type=ApiTodo, items=todos, status_code=HTTPStatus.OK
+    return PydanticModelResponse(
+        content=todos, content_model=list[ApiTodo], status_code=HTTPStatus.OK
     )

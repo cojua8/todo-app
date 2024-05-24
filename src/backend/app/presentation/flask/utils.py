@@ -1,4 +1,3 @@
-from collections.abc import Sequence
 from http import HTTPStatus
 from typing import TypeVar
 
@@ -11,40 +10,27 @@ T = TypeVar("T", bound=BaseModel)
 class PydanticModelResponse(Response):
     def __init__(
         self,
-        content_model: BaseModel,
+        content: object,
+        content_model: type | None = None,
         status_code: HTTPStatus = HTTPStatus.OK,
         **kwargs
     ):
+        if content_model is None:
+            content_model = type(content)
+
         super().__init__(
-            response=content_model.model_dump_json(),
+            response=self.adapt_content(content_model, content),
             status=status_code,
             mimetype=kwargs.pop("mimetype", "application/json"),
             **kwargs,
         )
 
+    def adapt_content(self, content_model: type, content: object) -> bytes:
+        adapter = TypeAdapter(content_model)
 
-class PydanticListModelResponse(Response):
-    def __init__(
-        self,
-        item_type: type[BaseModel],
-        items: Sequence[BaseModel],
-        status_code: HTTPStatus = HTTPStatus.OK,
-        **kwargs
-    ):
-        adapted = self.model_list_json(item_type, items)
-        super().__init__(
-            response=adapted,
-            status=status_code,
-            mimetype=kwargs.pop("mimetype", "application/json"),
-            **kwargs,
-        )
+        adapted = adapter.validate_python(content, from_attributes=True)
 
-    def model_list_json(self, model: type[T], values: object) -> bytes:
-        adapter = TypeAdapter(list[model])
-
-        adapted = adapter.validate_python(values, from_attributes=True)
-
-        return adapter.dump_json(adapted)
+        return adapter.dump_json(adapted, by_alias=True)
 
 
 def get_body(model: type[T]) -> T:

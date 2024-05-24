@@ -6,7 +6,7 @@ from flask import Blueprint
 
 from app.containers import Container
 from app.domain.services.user_service_protocol import UserServiceProtocol
-from app.presentation.flask.utils import PydanticListModelResponse
+from app.presentation.flask.utils import PydanticModelResponse
 from app.presentation.models.user import User as ApiUser
 
 users_listing_blueprint = Blueprint("users", __name__)
@@ -19,6 +19,6 @@ async def get(
 ) -> Any:  # noqa: ANN401
     users = await user_service.get_all()
 
-    return PydanticListModelResponse(
-        item_type=ApiUser, items=users, status_code=HTTPStatus.OK
+    return PydanticModelResponse(
+        content=users, content_model=list[ApiUser], status_code=HTTPStatus.OK
     )

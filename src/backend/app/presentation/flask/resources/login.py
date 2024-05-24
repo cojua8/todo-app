@@ -31,10 +31,9 @@ async def login(
         )
     except LoginError:
         return PydanticModelResponse(
-            content_model=ApiLoginError(), status_code=HTTPStatus.BAD_REQUEST
+            content=ApiLoginError(), status_code=HTTPStatus.BAD_REQUEST
         )
     else:
         return PydanticModelResponse(
-            content_model=ApiUser.model_validate(user, from_attributes=True),
-            status_code=HTTPStatus.OK,
+            content=user, content_model=ApiUser, status_code=HTTPStatus.OK
         )
