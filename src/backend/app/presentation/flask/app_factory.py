@@ -6,6 +6,14 @@ from prometheus_flask_exporter import PrometheusMetrics
 from app.containers import Container
 from app.presentation.flask.resources.login import login_blueprint
 from app.presentation.flask.resources.register import register_blueprint
+from app.presentation.flask.resources.todos import todo_blueprint
+from app.presentation.flask.resources.todos_listing import (
+    todos_listing_blueprint,
+)
+from app.presentation.flask.resources.user_listing import (
+    users_listing_blueprint,
+)
+from app.presentation.flask.resources.users import user_blueprint
 from app.settings import CorsSettings
 
 
@@ -40,3 +48,7 @@ def add_instrumentation(app: Flask) -> None:
 def add_routers(app: Flask) -> None:
     app.register_blueprint(login_blueprint)
     app.register_blueprint(register_blueprint)
+    app.register_blueprint(todos_listing_blueprint)
+    app.register_blueprint(users_listing_blueprint)
+    app.register_blueprint(todo_blueprint)
+    app.register_blueprint(user_blueprint)
