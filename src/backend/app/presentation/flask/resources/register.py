@@ -2,34 +2,40 @@ from http import HTTPStatus
 from typing import Any
 
 from dependency_injector.wiring import Provide, inject
-from flask import Blueprint
+from flask_openapi3 import APIBlueprint
 
 from app.containers import Container
 from app.domain.services.authentication_service_protocol import (
     AuthenticationServiceProtocol,
     RegistrationResult,
 )
-from app.presentation.flask.utils import PydanticModelResponse, get_body
+from app.presentation.flask.utils import PydanticModelResponse
 from app.presentation.models.register_data import RegisterData
 from app.presentation.models.register_error import RegisterError
 from app.presentation.models.user import User as ApiUser
 
-register_blueprint = Blueprint("register", __name__)
+register_blueprint = APIBlueprint("register", __name__)
 
 
-@register_blueprint.post("/register")
+@register_blueprint.post(
+    "/register",
+    responses={
+        HTTPStatus.CREATED: ApiUser,
+        HTTPStatus.BAD_REQUEST: RegisterError,
+    },
+)
 @inject
 async def post(
+    body: RegisterData,
     authentication_service: AuthenticationServiceProtocol = Provide[
         Container.authentication_service
     ],
 ) -> Any:  # noqa: ANN401
-    register_data = get_body(RegisterData)
     result, user = await authentication_service.register(
-        username=register_data.username,
-        email=register_data.email,
-        password=register_data.password,
-        confirm_password=register_data.confirm_password,
+        username=body.username,
+        email=body.email,
+        password=body.password,
+        confirm_password=body.confirm_password,
     )
 
     if result != RegistrationResult.SUCCESS:

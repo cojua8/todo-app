@@ -2,32 +2,35 @@ from http import HTTPStatus
 from typing import Any
 
 from dependency_injector.wiring import Provide, inject
-from flask import Blueprint
+from flask_openapi3 import APIBlueprint
 
 from app.containers import Container
 from app.domain.exceptions.login_exception import LoginError
 from app.domain.services.authentication_service_protocol import (
     AuthenticationServiceProtocol,
 )
-from app.presentation.flask.utils import PydanticModelResponse, get_body
+from app.presentation.flask.utils import PydanticModelResponse
 from app.presentation.models.login_data import LoginData
 from app.presentation.models.login_error import LoginError as ApiLoginError
 from app.presentation.models.user import User as ApiUser
 
-login_blueprint = Blueprint("login", __name__)
+login_blueprint = APIBlueprint("login", __name__)
 
 
-@login_blueprint.post("/login")
+@login_blueprint.post(
+    "/login",
+    responses={HTTPStatus.OK: ApiUser, HTTPStatus.BAD_REQUEST: ApiLoginError},
+)
 @inject
 async def login(
+    body: LoginData,
     authentication_service: AuthenticationServiceProtocol = Provide[
         Container.authentication_service
     ],
 ) -> Any:  # noqa: ANN401
-    login_data = get_body(LoginData)
     try:
         user = await authentication_service.login(
-            username=login_data.username, password=login_data.password
+            username=body.username, password=body.password
         )
     except LoginError:
         return PydanticModelResponse(

@@ -1,29 +1,35 @@
 from http import HTTPStatus
 from typing import Any
-from uuid import UUID
 
 from dependency_injector.wiring import Provide, inject
-from flask import Blueprint
+from flask_openapi3 import APIBlueprint
 
 from app.containers import Container
 from app.domain.models.user import User
 from app.domain.services.user_service_protocol import UserServiceProtocol
-from app.presentation.flask.utils import PydanticModelResponse, get_body
+from app.presentation.flask.utils import PydanticModelResponse
+from app.presentation.models.path_id import PathId
 from app.presentation.models.user import User as ApiUser
 from app.presentation.models.user_create_data import UserCreateData
 from app.presentation.models.user_not_found_error import UserNotFoundError
 from app.presentation.models.user_update_data import UserUpdateData
 
-user_blueprint = Blueprint("user", __name__)
+user_blueprint = APIBlueprint("user", __name__)
 
 
-@user_blueprint.get("/user/<uuid:id_>")
+@user_blueprint.get(
+    "/user/<uuid:id_>",
+    responses={
+        HTTPStatus.OK: ApiUser,
+        HTTPStatus.NOT_FOUND: UserNotFoundError,
+    },
+)
 @inject
 async def get(
-    id_: UUID,
+    path: PathId,
     user_service: UserServiceProtocol = Provide[Container.users_service],
 ) -> PydanticModelResponse:
-    user = await user_service.get(id_)
+    user = await user_service.get(path.id)
 
     if not user:
         return PydanticModelResponse(
@@ -35,16 +41,14 @@ async def get(
     )
 
 
-@user_blueprint.post("/user")
+@user_blueprint.post("/user", responses={HTTPStatus.CREATED: ApiUser})
 @inject
 async def post(
+    body: UserCreateData,
     user_service: UserServiceProtocol = Provide[Container.users_service],
 ) -> PydanticModelResponse:
-    user_create_data = get_body(UserCreateData)
     new_user = User(
-        username=user_create_data.username,
-        email=user_create_data.email,
-        password=user_create_data.password,
+        username=body.username, email=body.email, password=body.password
     )
     user = await user_service.create(new_user)
 
@@ -53,13 +57,19 @@ async def post(
     )
 
 
-@user_blueprint.delete("/user/<uuid:id_>")
+@user_blueprint.delete(
+    "/user/<uuid:id_>",
+    responses={
+        HTTPStatus.NO_CONTENT: None,
+        HTTPStatus.NOT_FOUND: UserNotFoundError,
+    },
+)
 @inject
 async def delete(
-    id_: UUID,
+    path: PathId,
     user_service: UserServiceProtocol = Provide[Container.users_service],
 ) -> Any:  # noqa: ANN401
-    result = await user_service.delete(id_)
+    result = await user_service.delete(path.id)
 
     if not result:
         return PydanticModelResponse(
@@ -67,20 +77,26 @@ async def delete(
         )
 
 
-@user_blueprint.put("/user/<uuid:id_>")
+@user_blueprint.put(
+    "/user/<uuid:id_>",
+    responses={
+        HTTPStatus.OK: ApiUser,
+        HTTPStatus.NOT_FOUND: UserNotFoundError,
+    },
+)
 @inject
 async def put(
-    id_: UUID,
+    path: PathId,
+    body: UserUpdateData,
     user_service: UserServiceProtocol = Provide[Container.users_service],
 ) -> Any:  # noqa: ANN401
-    user_update_data = get_body(UserUpdateData)
     new = User(
-        id=id_,
-        username=user_update_data.username,
-        email=user_update_data.email,
-        password=user_update_data.password,
+        id=path.id,
+        username=body.username,
+        email=body.email,
+        password=body.password,
     )
-    user = await user_service.put(id_, new)
+    user = await user_service.put(path.id, new)
 
     if not user:
         return PydanticModelResponse(
