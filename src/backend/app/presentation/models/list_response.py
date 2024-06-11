@@ -5,5 +5,4 @@ from pydantic import BaseModel, RootModel
 T = TypeVar("T", bound=BaseModel)
 
 
-class ListOf(RootModel[list[T]]):
-    ...
+class ListOf(RootModel[list[T]]): ...
