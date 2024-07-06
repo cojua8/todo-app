@@ -1,28 +1,20 @@
-import os
-
 import pytest
-from testcontainers.postgres import PostgresContainer
 
 from app.infrastructure.sql_database_service.engine import engine
 from app.infrastructure.sql_database_service.models import metadata_obj
 from app.settings import SqlDBSettings
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture
 def sqlalchemy_settings():
-    # this makes testcontainers work in windows
-    # https://github.com/testcontainers/testcontainers-python/issues/108#issuecomment-1540584987
-    os.environ["TC_HOST"] = "localhost"
-
-    with PostgresContainer("postgres:16.2-alpine") as postgres:
-        yield SqlDBSettings.model_construct(
-            db_dialect="postgresql",
-            db_username=postgres.POSTGRES_USER,
-            db_password=postgres.POSTGRES_PASSWORD,
-            db_host=postgres.get_container_host_ip(),
-            db_port=int(postgres.get_exposed_port(5432)),
-            db_name=postgres.POSTGRES_DB,
-        )
+    return SqlDBSettings.model_construct(
+        db_dialect="postgresql",
+        db_username="postgres",
+        db_password="postgres",  # noqa: S106
+        db_host="postgres_db",
+        db_port=5432,
+        db_name="app_db",
+    )
 
 
 @pytest.fixture

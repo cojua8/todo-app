@@ -4,6 +4,7 @@ version = "0.1.0"
 description = ""
 authors = ["Joaquín Neira <joaquin.neiraj@gmail.com>"]
 packages = []
+package-mode = false
 
 [tool.poetry.dependencies]
 python = "^3.11"
@@ -24,8 +25,6 @@ pytest-asyncio = "0.23.7"
 pytest-factoryboy = "2.7.0"
 freezegun = "1.5.1"
 pytest-mock = "3.14.0"
-testcontainers-postgres = "0.0.1rc1"
-requests = "2.31.0" # For testcontainers compatibility. Remove when solved https://github.com/docker/docker-py/issues/3256
 
 
 [tool.poetry.group.dev.dependencies]
