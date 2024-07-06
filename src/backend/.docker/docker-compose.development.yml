@@ -1,0 +1,23 @@
+volumes:
+  postgres-data:
+
+services:
+  app:
+    container_name: app
+    image: "mcr.microsoft.com/devcontainers/python:1-3.11-bullseye"
+
+    volumes:
+      - ..:/workspace:cached
+
+    command: /bin/sh -c "while sleep 1000; do :; done"
+
+  postgres:
+    container_name: postgres_db
+    image: postgres:15.1-alpine
+    restart: unless-stopped
+    volumes:
+      - postgres-data:/database/postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=app_db
