@@ -10,14 +10,14 @@
 	"service": "app",
 	"workspaceFolder": "/workspace",
 	// Features to add to the dev container. More info: https://containers.dev/features.
-	"features": {	"ghcr.io/devcontainers-contrib/features/poetry:2": {}},
+	//"features": {},
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "poetry config virtualenvs.in-project true && poetry install --with fastapi,flask",
-	
+	"postCreateCommand": "pipx install poetry && poetry config virtualenvs.in-project true && poetry install --with fastapi,flask",
+
 	// Configure tool-specific properties.
 	"customizations": {
 		"vscode": {
