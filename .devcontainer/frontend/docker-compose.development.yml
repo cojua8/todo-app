@@ -5,9 +5,12 @@ services:
 
     volumes:
       - ../..:/workspace
-      - /workspace/src/frontend/node_modules/
+      - node_modules:/workspace/src/frontend/node_modules/
 
     ports:
       - 3000:3000
 
     command: /bin/sh -c "while sleep 1000; do :; done"
+
+volumes:
+  node_modules:

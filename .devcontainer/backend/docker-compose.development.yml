@@ -1,5 +1,6 @@
 volumes:
   postgres-data:
+  venv:
 
 
 services:
@@ -9,7 +10,7 @@ services:
 
     volumes:
       - ../..:/workspace
-      - /workspace/src/backend/.venv
+      - venv:/workspace/src/backend/.venv
 
     command: /bin/sh -c "while sleep 1000; do :; done"
 
