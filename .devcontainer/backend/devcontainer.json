@@ -14,7 +14,7 @@
     // Use 'forwardPorts' to make a list of ports inside the container available locally.
     // "forwardPorts": [],
     // Use 'postCreateCommand' to run commands after the container is created.
-    "postCreateCommand": "pipx install poetry && poetry config virtualenvs.in-project true && poetry install --with fastapi,flask",
+    "postCreateCommand": "sudo chown $USER .venv && pipx install poetry && poetry config virtualenvs.in-project true && poetry install --with fastapi,flask",
     // Configure tool-specific properties.
     "customizations": {
         "vscode": {
