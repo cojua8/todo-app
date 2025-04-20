@@ -12,6 +12,16 @@ services:
       - ../..:/workspace
       - venv:/workspace/src/backend/.venv
 
+    environment:
+      - FRAMEWORK=fastapi
+      - DATABASE=postgresql
+      - DB_DIALECT=postgresql
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=postgres
+      - DB_HOST=postgres_db
+      - DB_PORT=5432
+      - DB_NAME=app_db
+
     command: /bin/sh -c "while sleep 1000; do :; done"
 
   postgres:
