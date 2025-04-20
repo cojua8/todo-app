@@ -16,6 +16,8 @@ asyncpg = "0.29.0"
 pydantic = {extras = ["email"], version = "2.7.0"}
 prometheus-client = "0.20.0"
 pydantic-settings = "2.2.0"
+opentelemetry-distro = "^0.53b1"
+opentelemetry-exporter-otlp = "^1.32.1"
 
 
 [tool.poetry.group.test.dependencies]
