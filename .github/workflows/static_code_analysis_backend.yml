@@ -11,6 +11,23 @@ jobs:
       run:
         working-directory: src/backend
     runs-on: ubuntu-latest
+    services:
+      # Label used to access the service container
+      postgres_db:
+        # Docker Hub image
+        image: postgres
+        # Provide the password for postgres
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: app_db
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
