@@ -13,7 +13,7 @@ class PydanticModelResponse(Response):
         content: object,
         content_model: type | None = None,
         status_code: HTTPStatus = HTTPStatus.OK,
-        **kwargs
+        **kwargs,
     ):
         if content_model is None:
             content_model = type(content)
