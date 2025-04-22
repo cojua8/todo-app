@@ -6,9 +6,6 @@ on:
       - src/backend/**
       - .github/workflows/*_backend.yml
 
-env:
-  DB_TEST_HOST: localhost
-
 jobs:
   Setup-repo:
     defaults:
@@ -61,4 +58,7 @@ jobs:
         run: poetry run pyright .
 
       - name: Run tests
-        run: poetry run pytest
+        run: poetry run pytest        
+        env:
+          DB_TEST_HOST: localhost
+
