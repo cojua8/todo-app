@@ -35,14 +35,14 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v4
 
-      - name: Install poetry
-        run: pipx install poetry
-
       - name: Install python
         uses: actions/setup-python@v5
         with:
           python-version-file: src/backend/.python-version
           cache: poetry
+
+      - name: Install poetry
+        run: pipx install poetry
 
       - name: Install dependencies
         run: poetry install --with fastapi,flask
