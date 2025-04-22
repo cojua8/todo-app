@@ -21,6 +21,11 @@ services:
       - DB_HOST=postgres_db
       - DB_PORT=5432
       - DB_NAME=app_db
+      - OTEL_SERVICE_NAME=todo_app_backend
+      - OTEL_PYTHON_LOGGING_AUTO_INSTRUMENTATION_ENABLED=true
+      - OTEL_TRACES_EXPORTER=console
+      - OTEL_METRICS_EXPORTER=console
+      - OTEL_LOGS_EXPORTER=console
 
     command: /bin/sh -c "while sleep 1000; do :; done"
 
