@@ -24,7 +24,8 @@
                 "GitHub.copilot",
                 "GitHub.copilot-chat",
                 "eamodio.gitlens",
-                "ms-python.black-formatter"
+                "ms-python.black-formatter",
+                "tamasfe.even-better-toml"
             ]
         }
     }
