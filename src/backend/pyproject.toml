@@ -5,8 +5,6 @@ description = ""
 authors = [
     {name="Joaquín Neira", email= "joaquin.neiraj@gmail.com"},
 ]
-packages = []
-package-mode = false
 requires-python= ">=3.11.0,<3.12.0"
 dependencies=[
     "aiopath == 0.6.11",
@@ -23,6 +21,7 @@ dependencies=[
 
 [tool.poetry]
 requires-poetry = "=2.1.2"
+package-mode = false
 
 
 [tool.poetry.group.test.dependencies]
