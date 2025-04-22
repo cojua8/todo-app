@@ -5,6 +5,10 @@ on:
     paths:
       - src/backend/**
       - .github/workflows/*_backend.yml
+
+env:
+  DB_TEST_HOST: localhost
+
 jobs:
   Setup-repo:
     defaults:
