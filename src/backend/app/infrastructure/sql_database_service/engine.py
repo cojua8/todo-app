@@ -1,3 +1,4 @@
+from opentelemetry.instrumentation.sqlalchemy import SQLAlchemyInstrumentor
 from sqlalchemy import URL
 from sqlalchemy.ext.asyncio import AsyncEngine, create_async_engine
 
@@ -15,6 +16,8 @@ async def engine(config: SqlDBSettings) -> AsyncEngine:
         database=config.db_name,
     )
     engine = create_async_engine(db_url, echo=True)
+
+    SQLAlchemyInstrumentor().instrument(engine=engine.sync_engine)
 
     async with engine.begin() as conn:
         await conn.run_sync(metadata_obj.create_all)
