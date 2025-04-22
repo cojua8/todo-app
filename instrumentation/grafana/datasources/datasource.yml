@@ -11,7 +11,7 @@ datasources:
       timeInterval: 5s
   - name: Postgres
     type: postgres
-    url: postgres_db:5432
+    url: http://todo_app_postgres:5432
     user: postgres
     access: proxy
     editable: true
@@ -21,3 +21,19 @@ datasources:
       timeInterval: 5s
     secureJsonData:
       password: postgres
+  - name: Tempo
+    type: tempo
+    access: proxy
+    orgId: 1
+    url: http://tempo:3200
+    basicAuth: false
+    version: 1
+    editable: true
+    apiVersion: 1
+  #   uid: tempo
+  #   jsonData:
+  #     httpMethod: GET
+  #     serviceMap:
+  #       datasourceUid: prometheus
+  #     streamingEnabled: 
+  #       search: true

@@ -5,9 +5,14 @@ services:
     ports:
       - 7000:3000
     restart: unless-stopped
+    environment:
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+      - GF_AUTH_DISABLE_LOGIN_FORM=true
+      - GF_FEATURE_TOGGLES_ENABLE=traceqlEditor
     volumes:
-      - ./grafana/datasources:/etc/grafana/provisioning/datasources
-      - ./grafana/dashboards:/etc/grafana/provisioning/dashboards
+      - ./instrumentation/grafana/datasources:/etc/grafana/provisioning/datasources
+      - ./instrumentation/grafana/dashboards:/etc/grafana/provisioning/dashboards
 
   prometheus:
     image: prom/prometheus
@@ -18,16 +23,16 @@ services:
       - 9090:9090
     restart: unless-stopped
     volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./instrumentation/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
 
   todo-app-backend:
-    container_name: backend
+    container_name: todo_app_backend
     depends_on:
       - todo_app_postgres
     build:
       context: ./src/backend
       args:
-        - FRAMEWORK=flask
+        - FRAMEWORK=fastapi
     ports:
       - 5000:5000
     restart: unless-stopped
@@ -45,12 +50,21 @@ services:
       - DB_DIALECT=postgresql
       - DB_USERNAME=postgres
       - DB_PASSWORD=postgres
-      - DB_HOST=postgres_db
+      - DB_HOST=todo_app_postgres
       - DB_PORT=5432
       - DB_NAME=todo_db
+      - OTEL_SERVICE_NAME=todo_app_backend
+      - OTEL_PYTHON_LOGGING_AUTO_INSTRUMENTATION_ENABLED=true
+      - OTEL_TRACES_EXPORTER=otlp,console
+      - OTEL_METRICS_EXPORTER=console,otlp
+      - OTEL_LOGS_EXPORTER=console
+      - OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=tempo:4317
+      - OTEL_EXPORTER_OTLP_TRACES_INSECURE=true
+      - GRPC_VERBOSITY=debug
+      - GRPC_TRACE=http,call_error,connectivity_state
 
   todo-app-frontend:
-    container_name: frontend
+    container_name: todo_app_frontend
     build:
       context: ./src/frontend
     ports:
@@ -65,7 +79,7 @@ services:
       - CHOKIDAR_USEPOLLING=true # allows hot reload on windows
 
   todo_app_postgres:
-    container_name: postgres_db
+    container_name: todo_app_postgres_db
     image: postgres:15.1-alpine
     restart: unless-stopped
     volumes:
@@ -76,17 +90,17 @@ services:
       - POSTGRES_DB=todo_db
 
   postgres_metrics:
-    container_name: postgres_metrics
+    container_name: todo_app_postgres_metrics
     image: quay.io/prometheuscommunity/postgres-exporter
     restart: unless-stopped
     environment:
-      - DATA_SOURCE_NAME=postgresql://postgres:postgres@postgres_db:5432/todo_db?sslmode=disable
+      - DATA_SOURCE_NAME=postgresql://postgres:postgres@todo_app_postgres:5432/todo_db?sslmode=disable
     ports:
       - 9187:9187
 
   node-exporter:
     image: prom/node-exporter:latest
-    container_name: node-exporter
+    container_name: todo-app-node-exporter
     restart: unless-stopped
     volumes:
       - /proc:/host/proc:ro
@@ -97,6 +111,30 @@ services:
       - "--path.rootfs=/rootfs"
       - "--path.sysfs=/host/sys"
       - "--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)"
+
+  tempo-init:
+    image: grafana/tempo:latest
+    user: root
+    entrypoint:
+      - "chown"
+      - "10001:10001"
+      - "/var/tempo"
+    volumes:
+      - ./instrumentation/tempo/tempo-data:/var/tempo
+
+  tempo:
+    image: grafana/tempo:latest
+    container_name: todo-app-tempo
+    command:
+      - "run"
+      - "--config.file=/etc/tempo.yaml"
+    volumes:
+      - ./instrumentation/tempo/tempo.yaml:/etc/tempo.yaml
+      - ./instrumentation/tempo/tempo-data:/var/tempo
+    ports:
+      - 4317:4317
+    depends_on:
+      - tempo-init
 
 # the path of data won't be erased on rebuild
 volumes:
