@@ -25,4 +25,5 @@ RUN poetry install --with $FRAMEWORK
 RUN adduser -u 5678 --disabled-password --gecos "" appuser && chown -R appuser /app
 USER appuser
 
-CMD ["poetry", "run", "opentelemetry-instrument", "uvicorn", "app.app:app", "--reload", "--host", "0.0.0.0",  "--port", "5000"]
+#using --reload here fucks up otlp. Maybe try another tool like watchdog
+CMD ["poetry", "run", "opentelemetry-instrument", "uvicorn", "app.app:app", "--host", "0.0.0.0", "--port", "5000"]
