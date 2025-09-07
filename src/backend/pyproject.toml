@@ -2,15 +2,15 @@
 name = "todo-app-backend"
 version = "0.1.0"
 description = ""
-authors = [{ name = "Joaquín Neira"}]
-requires-python = ">=3.11.0,<3.12.0"
+authors = [{ name = "Joaquín Neira" }]
+requires-python = ">=3.13.0,<3.14.0"
 dependencies = [
-    "aiopath==0.6.11",
-    "dependency-injector==4.41.0",
-    "sqlalchemy[asyncio]==2.0.30",
+    "aiopath==0.7.7",
+    "dependency-injector==4.48.1",
+    "sqlalchemy[asyncio]==2.0.43",
     "uvicorn[standard]==0.29.0",
-    "asyncpg==0.29.0",
-    "pydantic[email]==2.7.0",
+    "asyncpg==0.30.0",
+    "pydantic[email]==2.11.7",
     "prometheus-client==0.20.0",
     "pydantic-settings==2.2.0",
     "opentelemetry-distro>=0.53b1",
@@ -21,16 +21,16 @@ dependencies = [
 [dependency-groups]
 test = [
     "factory-boy==3.3.0",
-    "pytest==8.2.1",
+    "pytest==8.4.2",
     "pytest-asyncio==0.23.7",
-    "pytest-factoryboy==2.7.0",
+    "pytest-factoryboy==2.8.1",
     "freezegun==1.5.1",
     "pytest-mock==3.14.0",
 ]
 dev = [
     "black==24.4.2",
     "ruff==0.4.4",
-    "pyright==1.1.364",
+    "pyright==1.1.405",
 ]
 fastapi = [
     "fastapi==0.111.0",
@@ -48,12 +48,7 @@ flask = [
 
 [tool.uv]
 package = false
-default-groups = [
-    "test",
-    "dev",
-    "fastapi",
-    "flask",
-]
+default-groups = ["test", "dev", "fastapi", "flask"]
 
 [build-system]
 requires = ["hatchling"]
@@ -68,7 +63,7 @@ testpaths = ["tests"]
 asyncio_mode = "auto"
 
 [tool.pyright]
-pythonversion = "3.11"
+pythonversion = "3.13"
 
 [tool.ruff]
 line-length = 79

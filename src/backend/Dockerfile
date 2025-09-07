@@ -1,4 +1,4 @@
-FROM python:3.11.9-slim
+FROM python:3.13.7-slim
 WORKDIR /app
 
 # Keeps Python from generating .pyc files in the container
