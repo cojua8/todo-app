@@ -40,19 +40,19 @@ For linting and formatting, do:
 
 ## Backend development:
 
-To start development of the frontend app, do the following:
+To start development of the backend app, do the following:
 
-    cd src\backend && poetry install
+    cd src\backend && uv sync
 
 For linting and formatting, do:
 
-    poetry run pyright .
-    poetry run ruff check .
-    poetry run black --check .
+    uv run pyright .
+    uv run ruff check .
+    uv run black --check .
 
 Tests require Docker to be running. To run them, just do:
 
-    poetry run pytest
+    uv run pytest
 
 ## On Python
 

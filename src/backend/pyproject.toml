@@ -2,9 +2,7 @@
 name = "todo-app-backend"
 version = "0.1.0"
 description = ""
-authors = [
-    {name="Joaquín Neira", email= "joaquin.neiraj@gmail.com"},
-]
+authors = [{ name = "Joaquín Neira"}]
 requires-python = ">=3.11.0,<3.12.0"
 dependencies = [
     "aiopath==0.6.11",
@@ -12,7 +10,7 @@ dependencies = [
     "sqlalchemy[asyncio]==2.0.30",
     "uvicorn[standard]==0.29.0",
     "asyncpg==0.29.0",
-    "pydantic[email]==2.7.0" ,
+    "pydantic[email]==2.7.0",
     "prometheus-client==0.20.0",
     "pydantic-settings==2.2.0",
     "opentelemetry-distro>=0.53b1",
@@ -20,62 +18,55 @@ dependencies = [
     "opentelemetry-instrumentation-sqlalchemy (>=0.53b1,<0.54)",
 ]
 
-[tool.poetry]
-requires-poetry = "=2.1.2"
-package-mode = false
+[dependency-groups]
+test = [
+    "factory-boy==3.3.0",
+    "pytest==8.2.1",
+    "pytest-asyncio==0.23.7",
+    "pytest-factoryboy==2.7.0",
+    "freezegun==1.5.1",
+    "pytest-mock==3.14.0",
+]
+dev = [
+    "black==24.4.2",
+    "ruff==0.4.4",
+    "pyright==1.1.364",
+]
+fastapi = [
+    "fastapi==0.111.0",
+    "prometheus-fastapi-instrumentator==7.0.0",
+    "opentelemetry-instrumentation-fastapi>=0.53b1,<0.54",
+]
+flask = [
+    "flask[async]==3.0.3",
+    "prometheus-flask-exporter==0.23.0",
+    "asgiref==3.8.1",
+    "flask-cors==4.0.1",
+    "flask-openapi3==3.1.1",
+    "opentelemetry-instrumentation-flask>=0.53b1,<0.54",
+]
 
-
-[tool.poetry.group.test.dependencies]
-factory-boy = "3.3.0"
-pytest = "8.2.1"
-pytest-asyncio = "0.23.7"
-pytest-factoryboy = "2.7.0"
-freezegun = "1.5.1"
-pytest-mock = "3.14.0"
-
-
-[tool.poetry.group.dev.dependencies]
-black = "24.4.2"
-ruff = "0.4.4"
-pyright = "1.1.364"
-
-
-[tool.poetry.group.fastapi]
-optional = true
-
-[tool.poetry.group.fastapi.dependencies]
-fastapi = "0.111.0"
-prometheus-fastapi-instrumentator = "7.0.0"
-opentelemetry-instrumentation-fastapi = "^0.53b1"
-
-
-[tool.poetry.group.flask]
-optional = true
-
-[tool.poetry.group.flask.dependencies]
-flask = { extras = ["async"], version = "3.0.3" }
-prometheus-flask-exporter = "0.23.0"
-asgiref = "3.8.1"
-flask-cors = "4.0.1"
-flask-openapi3 = "3.1.1"
-opentelemetry-instrumentation-flask = "^0.53b1"
-
+[tool.uv]
+package = false
+default-groups = [
+    "test",
+    "dev",
+    "fastapi",
+    "flask",
+]
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
-# Formatting
 [tool.black]
 line-length = 79
 skip-magic-trailing-comma = true
 
-# Testing
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 asyncio_mode = "auto"
 
-# typing
 [tool.pyright]
 pythonversion = "3.11"
 
@@ -109,7 +100,6 @@ ignore = [
     "RET503", #Missing explicit `return` at the end of function able to return non-`None` value
 ]
 
-[tool.ruff.lint.flake8-import-conventions]
 [tool.ruff.lint.flake8-import-conventions.extend-aliases]
 "datetime" = "dt"
 
