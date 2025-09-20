@@ -58,7 +58,7 @@ services:
       - OTEL_TRACES_EXPORTER=otlp,console
       - OTEL_METRICS_EXPORTER=console,otlp
       - OTEL_LOGS_EXPORTER=console
-      - OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=otel-collector:4317
+      - OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=alloy:4317
       - OTEL_EXPORTER_OTLP_TRACES_INSECURE=true
       - GRPC_VERBOSITY=debug
       - GRPC_TRACE=http,call_error,connectivity_state
@@ -134,19 +134,20 @@ services:
     depends_on:
       - tempo-init
 
-  otel-collector:
-    image: otel/opentelemetry-collector-contrib:0.100.0
-    command:
-      - "--config=/conf/config.yaml"
+  alloy:
+    image: grafana/alloy:latest
     volumes:
-      - ./instrumentation/otel-collector/otel-collector-config.yaml:/conf/config.yaml
+      - ./instrumentation/alloy/config.alloy:/etc/alloy/config.alloy
+    command:
+      - run
+      - /etc/alloy/config.alloy
+      - --server.http.listen-addr=0.0.0.0:12345
+      - --storage.path=/var/lib/alloy/data
     ports:
-      - "4317:4317" # OTLP gRPC receiver
-      - "4318:4318" # OTLP http receiver
-      - "8889:8889" # Prometheus metrics exporter
-    restart: on-failure
-    depends_on:
-      - tempo
+      - 12345:12345
+      - 4317:4317
+      - 4318:4318
+
 
 # the path of data won't be erased on rebuild
 volumes:
