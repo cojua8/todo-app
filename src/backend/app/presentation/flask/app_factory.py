@@ -2,7 +2,6 @@ from asgiref.wsgi import WsgiToAsgi
 from flask import Flask
 from flask_cors import CORS
 from flask_openapi3 import OpenAPI
-from prometheus_flask_exporter import PrometheusMetrics
 
 from app.containers import Container
 from app.presentation.flask.resources.login import login_blueprint
@@ -23,7 +22,6 @@ def app_factory() -> WsgiToAsgi:
     app.container = Container()  # type:ignore[reportAttributeAccessIssue]
 
     add_cors_policy(app)
-    add_instrumentation(app)
     add_routers(app)
 
     app.route("/")(lambda: "Up and running")
@@ -40,10 +38,6 @@ def add_cors_policy(app: Flask) -> None:
         methods=settings.methods,
         allow_headers=settings.allow_headers,
     )
-
-
-def add_instrumentation(app: Flask) -> None:
-    PrometheusMetrics(app)
 
 
 def add_routers(app: OpenAPI) -> None:

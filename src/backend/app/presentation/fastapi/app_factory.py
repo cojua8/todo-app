@@ -1,7 +1,5 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from prometheus_client import make_asgi_app as prometheus_asgi_app
-from prometheus_fastapi_instrumentator import Instrumentator
 
 from app.containers import Container
 from app.presentation.fastapi.resources.login import login_router
@@ -20,7 +18,6 @@ def app_factory() -> FastAPI:
     fastapi.container = Container()  # type:ignore [reportAttributeAccessIssue]
 
     add_cors_policy(fastapi)
-    add_instrumentation(fastapi)
     add_routers(fastapi)
 
     fastapi.get("/")(lambda: "Up and running")
@@ -36,16 +33,6 @@ def add_cors_policy(app: FastAPI) -> None:
         allow_methods=settings.methods,
         allow_headers=settings.allow_headers,
     )
-
-
-def add_instrumentation(app: FastAPI) -> None:
-    instrumentator = Instrumentator().instrument(app)
-
-    @app.on_event("startup")
-    async def _startup() -> None:
-        instrumentator.expose(app)
-
-    app.mount("/metrics", prometheus_asgi_app())
 
 
 def add_routers(app: FastAPI) -> None:

@@ -844,41 +844,6 @@ wheels = [
 ]
 
 [[package]]
-name = "prometheus-client"
-version = "0.20.0"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/3d/39/3be07741a33356127c4fe633768ee450422c1231c6d34b951fee1458308d/prometheus_client-0.20.0.tar.gz", hash = "sha256:287629d00b147a32dcb2be0b9df905da599b2d82f80377083ec8463309a4bb89", size = 78278, upload-time = "2024-02-14T15:55:14.761Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/c7/98/745b810d822103adca2df8decd4c0bbe839ba7ad3511af3f0d09692fc0f0/prometheus_client-0.20.0-py3-none-any.whl", hash = "sha256:cde524a85bce83ca359cc837f28b8c0db5cac7aa653a588fd7e84ba061c329e7", size = 54474, upload-time = "2024-02-14T15:55:03.957Z" },
-]
-
-[[package]]
-name = "prometheus-fastapi-instrumentator"
-version = "7.0.0"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "prometheus-client" },
-    { name = "starlette" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/0e/42/eeb55ea9b0eae7d6854bef6aef3ecd34674f85813bc3877efdaeb582ab7e/prometheus_fastapi_instrumentator-7.0.0.tar.gz", hash = "sha256:5ba67c9212719f244ad7942d75ded80693b26331ee5dfc1e7571e4794a9ccbed", size = 20077, upload-time = "2024-03-13T16:25:08.564Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/59/66/2e93a8f56adb51ede41d0ef5f4f0277522acc4adc87937f5457b7b5692a8/prometheus_fastapi_instrumentator-7.0.0-py3-none-any.whl", hash = "sha256:96030c43c776ee938a3dae58485ec24caed7e05bfc60fe067161e0d5b5757052", size = 19005, upload-time = "2024-03-13T16:25:03.687Z" },
-]
-
-[[package]]
-name = "prometheus-flask-exporter"
-version = "0.23.0"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "flask" },
-    { name = "prometheus-client" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/05/5a/7b4346cdd1273ef2875b2aa478ffd97a47cb132d3c7de443a31338cda8ee/prometheus_flask_exporter-0.23.0.tar.gz", hash = "sha256:e4e6beb1b8e1e164da6d70fe1edefc95ef184f113b5047f66f4b7262233da9c0", size = 31580, upload-time = "2023-10-27T00:04:03.889Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/2c/f7/ad9ad5bdab5af0bc2dca568687234f0bac5484dcb3666c5d9da43e46b93d/prometheus_flask_exporter-0.23.0-py3-none-any.whl", hash = "sha256:7a026b4fdd54ebeddb77589333efe3a1ec43c7c717468825b0b3e9b6c33f7e9e", size = 18936, upload-time = "2023-10-27T00:04:02.275Z" },
-]
-
-[[package]]
 name = "protobuf"
 version = "5.29.5"
 source = { registry = "https://pypi.org/simple" }
@@ -1220,7 +1185,6 @@ dependencies = [
     { name = "opentelemetry-distro" },
     { name = "opentelemetry-exporter-otlp" },
     { name = "opentelemetry-instrumentation-sqlalchemy" },
-    { name = "prometheus-client" },
     { name = "pydantic", extra = ["email"] },
     { name = "pydantic-settings" },
     { name = "sqlalchemy", extra = ["asyncio"] },
@@ -1236,7 +1200,6 @@ dev = [
 fastapi = [
     { name = "fastapi" },
     { name = "opentelemetry-instrumentation-fastapi" },
-    { name = "prometheus-fastapi-instrumentator" },
 ]
 flask = [
     { name = "asgiref" },
@@ -1244,7 +1207,6 @@ flask = [
     { name = "flask-cors" },
     { name = "flask-openapi3" },
     { name = "opentelemetry-instrumentation-flask" },
-    { name = "prometheus-flask-exporter" },
 ]
 test = [
     { name = "factory-boy" },
@@ -1263,7 +1225,6 @@ requires-dist = [
     { name = "opentelemetry-distro", specifier = ">=0.53b1" },
     { name = "opentelemetry-exporter-otlp", specifier = ">=1.32.1" },
     { name = "opentelemetry-instrumentation-sqlalchemy", specifier = ">=0.53b1,<0.54" },
-    { name = "prometheus-client", specifier = "==0.20.0" },
     { name = "pydantic", extras = ["email"], specifier = "==2.11.7" },
     { name = "pydantic-settings", specifier = "==2.2.0" },
     { name = "sqlalchemy", extras = ["asyncio"], specifier = "==2.0.43" },
@@ -1279,7 +1240,6 @@ dev = [
 fastapi = [
     { name = "fastapi", specifier = "==0.111.0" },
     { name = "opentelemetry-instrumentation-fastapi", specifier = ">=0.53b1,<0.54" },
-    { name = "prometheus-fastapi-instrumentator", specifier = "==7.0.0" },
 ]
 flask = [
     { name = "asgiref", specifier = "==3.8.1" },
@@ -1287,7 +1247,6 @@ flask = [
     { name = "flask-cors", specifier = "==4.0.1" },
     { name = "flask-openapi3", specifier = "==3.1.1" },
     { name = "opentelemetry-instrumentation-flask", specifier = ">=0.53b1,<0.54" },
-    { name = "prometheus-flask-exporter", specifier = "==0.23.0" },
 ]
 test = [
     { name = "factory-boy", specifier = "==3.3.0" },
