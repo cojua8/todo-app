@@ -17,6 +17,7 @@ otelcol.receiver.otlp "default" {
   }
 }
 
+
 otelcol.processor.batch "default" {
   output {
     traces = [
@@ -34,6 +35,10 @@ otelcol.exporter.otlp "default" {
       insecure = true
     }
   }
+}
+
+otelcol.exporter.prometheus "default" {
+  forward_to = [prometheus.remote_write.metrics_prom.receiver]
 }
 
 otelcol.connector.spanmetrics "default" {
@@ -67,39 +72,19 @@ otelcol.connector.spanmetrics "default" {
     }
   }
 
-  output { }
+  output {
+    metrics = [otelcol.exporter.prometheus.default.input]
+   }
 }
 
-otelcol.connector.spanmetrics "spanmetrics_default" {
-  dimension {
-    name = "http.method"
-  }
 
-  dimension {
-    name = "http.status_code"
-  }
+prometheus.remote_write "metrics_prom" {
+    endpoint {
+        url = "http://prometheus:9090/api/v1/write"
 
-  dimension {
-    name = "http.route"
-  }
-
-  histogram {
-    explicit { }
-  }
-
-  events {
-    dimension {
-      name = "http.method"
+        // basic_auth {
+        //   username = "admin"
+        //   password = "admin"
+        // }
     }
-
-    dimension {
-      name = "http.status_code"
-    }
-
-    dimension {
-      name = "http.route"
-    }
-  }
-
-  output { }
 }

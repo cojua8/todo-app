@@ -147,9 +147,9 @@ services:
       - 12345:12345
       - 4317:4317
       - 4318:4318
+      # - 8889:8889
 
-
-# the path of data won't be erased on rebuild
+      # the path of data won't be erased on rebuild
 volumes:
   data:
   postgres_db:
