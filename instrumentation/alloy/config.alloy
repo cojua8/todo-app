@@ -1,0 +1,118 @@
+logging {
+  level  = "info"
+  format = "json"
+}
+
+otelcol.receiver.otlp "default" {
+  grpc {
+    endpoint = "0.0.0.0:4317"
+  }
+
+  http {
+    endpoint = "0.0.0.0:4318"
+  }
+
+  output {
+    traces = [otelcol.processor.batch.default.input]
+  }
+}
+
+
+otelcol.processor.batch "default" {
+  output {
+    traces = [
+      otelcol.connector.spanmetrics.default.input,
+      otelcol.exporter.otlp.default.input,
+    ]
+  }
+}
+
+otelcol.exporter.otlp "default" {
+  client {
+    endpoint = "tempo:4317"
+
+    tls {
+      insecure = true
+    }
+  }
+}
+
+otelcol.exporter.prometheus "default" {
+  forward_to = [prometheus.remote_write.metrics_prom.receiver]
+}
+
+otelcol.connector.spanmetrics "default" {
+  dimension {
+    name = "http.method"
+  }
+
+  dimension {
+    name = "http.status_code"
+  }
+
+  dimension {
+    name = "http.route"
+  }
+
+  histogram {
+    explicit { }
+  }
+
+  events {
+    dimension {
+      name = "http.method"
+    }
+
+    dimension {
+      name = "http.status_code"
+    }
+
+    dimension {
+      name = "http.route"
+    }
+  }
+
+  output {
+    metrics = [otelcol.exporter.prometheus.default.input]
+   }
+}
+
+
+prometheus.scrape "custom_targets" {
+  targets = [
+    // {
+    //   job = "prometheus",
+    //   __scrape_interval__ = "10s",
+    //   __address__ = "prometheus:9090",
+    // },
+    {
+      job = "backend",
+      __scrape_interval__ = "5s",
+      __address__ = "backend:5000",
+    },
+    {
+      job = "postgres",
+      __scrape_interval__ = "5s",
+      __address__ = "postgres_metrics:9187",
+    },
+    {
+      job = "node",
+      __scrape_interval__ = "15s",
+      __address__ = "node-exporter:9100",
+    },
+  ]
+
+  forward_to = [prometheus.remote_write.metrics_prom.receiver]
+}
+
+
+prometheus.remote_write "metrics_prom" {
+    endpoint {
+        url = "http://prometheus:9090/api/v1/write"
+
+        // basic_auth {
+        //   username = "admin"
+        //   password = "admin"
+        // }
+    }
+}
