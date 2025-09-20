@@ -78,6 +78,34 @@ otelcol.connector.spanmetrics "default" {
 }
 
 
+prometheus.scrape "custom_targets" {
+  targets = [
+    // {
+    //   job = "prometheus",
+    //   __scrape_interval__ = "10s",
+    //   __address__ = "prometheus:9090",
+    // },
+    {
+      job = "backend",
+      __scrape_interval__ = "5s",
+      __address__ = "backend:5000",
+    },
+    {
+      job = "postgres",
+      __scrape_interval__ = "5s",
+      __address__ = "postgres_metrics:9187",
+    },
+    {
+      job = "node",
+      __scrape_interval__ = "15s",
+      __address__ = "node-exporter:9100",
+    },
+  ]
+
+  forward_to = [prometheus.remote_write.metrics_prom.receiver]
+}
+
+
 prometheus.remote_write "metrics_prom" {
     endpoint {
         url = "http://prometheus:9090/api/v1/write"

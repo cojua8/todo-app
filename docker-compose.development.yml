@@ -19,6 +19,7 @@ services:
     container_name: prometheus
     command:
       - "--config.file=/etc/prometheus/prometheus.yml"
+      - --web.enable-remote-write-receiver
     ports:
       - 9090:9090
     restart: unless-stopped
@@ -60,6 +61,8 @@ services:
       - OTEL_LOGS_EXPORTER=console
       - OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=alloy:4317
       - OTEL_EXPORTER_OTLP_TRACES_INSECURE=true
+      - OTEL_EXPORTER_OTLP_METRICS_ENDPOINT=alloy:4317
+      - OTEL_EXPORTER_OTLP_METRICS_INSECURE=true
       - GRPC_VERBOSITY=debug
       - GRPC_TRACE=http,call_error,connectivity_state
 

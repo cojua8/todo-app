@@ -1,19 +1,19 @@
-global:
-  scrape_interval: 60s
+# global:
+#   scrape_interval: 60s
 
-scrape_configs:
-  # - job_name: 'prometheus'
-  #   scrape_interval: 10s
-  #   static_configs:
-  #     - targets: ['prometheus:9090']
-  - job_name: "postgres"
-    scrape_interval: 5s
-    static_configs:
-      - targets: ["postgres_metrics:9187"]
-  - job_name: "node"
-    scrape_interval: 15s
-    static_configs:
-      - targets: ["node-exporter:9100"]
-  # - job_name: "aggregated-trace-metrics"
-  #   static_configs:
-  #     - targets: ["alloy:8889"]
+# scrape_configs:
+#   # - job_name: 'prometheus'
+#   #   scrape_interval: 10s
+#   #   static_configs:
+#   #     - targets: ['prometheus:9090']
+#   - job_name: "postgres"
+#     scrape_interval: 5s
+#     static_configs:
+#       - targets: ["postgres_metrics:9187"]
+#   - job_name: "node"
+#     scrape_interval: 15s
+#     static_configs:
+#       - targets: ["node-exporter:9100"]
+#   # - job_name: "aggregated-trace-metrics"
+#   #   static_configs:
+#   #     - targets: ["alloy:8889"]
