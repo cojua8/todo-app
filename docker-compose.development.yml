@@ -5,14 +5,10 @@ services:
     ports:
       - 7000:3000
     restart: unless-stopped
-    environment:
-      - GF_AUTH_ANONYMOUS_ENABLED=true
-      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
-      - GF_AUTH_DISABLE_LOGIN_FORM=true
-      - GF_FEATURE_TOGGLES_ENABLE=traceqlEditor
     volumes:
       - ./instrumentation/grafana/datasources:/etc/grafana/provisioning/datasources
       - ./instrumentation/grafana/dashboards:/etc/grafana/provisioning/dashboards
+      - ./instrumentation/grafana/grafana.ini:/etc/grafana/grafana.ini
 
   prometheus:
     image: prom/prometheus
