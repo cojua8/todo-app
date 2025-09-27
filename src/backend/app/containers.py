@@ -1,8 +1,10 @@
 from __future__ import annotations
 
+import logging
+
 from dependency_injector import containers, providers
 
-from app.infrastructure.authentication_service import AuthenticationService
+from app.domain.services.authentication_service import AuthenticationService
 from app.infrastructure.io_service import FileIOService
 from app.infrastructure.json_database_service.todos_json_database_service import (  # noqa: E501
     TodosJsonDatabaseService,
@@ -15,10 +17,13 @@ from app.infrastructure.sql_database_service.todos_service import TodosService
 from app.infrastructure.sql_database_service.users_service import UsersService
 from app.settings import JsonDBSettings, Settings, SqlDBSettings
 
+logger = logging.getLogger(__name__)
+
 
 class Container(containers.DeclarativeContainer):
     @classmethod
     def add_config(cls) -> type[Container]:
+        logger.debug("Configuring dependency injection")
         cls.config = Settings()  # type:ignore [reportCallIssue]
 
         cls.wiring_config = containers.WiringConfiguration(
@@ -63,8 +68,10 @@ class Container(containers.DeclarativeContainer):
     @classmethod
     def add_database_services(cls) -> type[Container]:
         if cls.config.database == "json":
+            logger.debug("Using JSON database services")
             cls._add_json_database_services()
         elif cls.config.database == "postgresql":
+            logger.debug("Using PostgreSQL database services")
             cls._add_postgresql_services()
 
         return cls

@@ -1,3 +1,5 @@
+import logging
+
 from asgiref.wsgi import WsgiToAsgi
 from flask import Flask
 from flask_cors import CORS
@@ -16,6 +18,8 @@ from app.presentation.flask.resources.user_listing import (
 from app.presentation.flask.resources.users import user_blueprint
 from app.settings import CorsSettings
 
+logger = logging.getLogger(__name__)
+
 
 def app_factory() -> WsgiToAsgi:
     app = OpenAPI(__name__, doc_prefix="/docs")
@@ -30,6 +34,7 @@ def app_factory() -> WsgiToAsgi:
 
 
 def add_cors_policy(app: Flask) -> None:
+    logger.debug("Adding CORS middleware")
     settings = CorsSettings()  # type:ignore[reportCallIssue]
     CORS(
         app,
@@ -41,6 +46,7 @@ def add_cors_policy(app: Flask) -> None:
 
 
 def add_routers(app: OpenAPI) -> None:
+    logger.debug("Adding routers")
     app.register_api(login_blueprint)
     app.register_api(register_blueprint)
     app.register_api(todos_listing_blueprint)

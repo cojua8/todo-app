@@ -1,3 +1,5 @@
+import logging
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -12,6 +14,8 @@ from app.presentation.fastapi.resources.user_listing import user_listing_router
 from app.presentation.fastapi.resources.users import users_router
 from app.settings import CorsSettings
 
+logger = logging.getLogger(__name__)
+
 
 def app_factory() -> FastAPI:
     fastapi = FastAPI()
@@ -25,6 +29,7 @@ def app_factory() -> FastAPI:
 
 
 def add_cors_policy(app: FastAPI) -> None:
+    logger.debug("Adding CORS middleware")
     settings = CorsSettings()  # type:ignore[reportCallIssue]
     app.add_middleware(
         CORSMiddleware,
@@ -36,6 +41,7 @@ def add_cors_policy(app: FastAPI) -> None:
 
 
 def add_routers(app: FastAPI) -> None:
+    logger.debug("Adding routers")
     app.include_router(register_router)
     app.include_router(users_router)
     app.include_router(user_listing_router)

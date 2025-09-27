@@ -1,3 +1,4 @@
+
 from pydantic import Field
 from pydantic_settings import BaseSettings
 
@@ -18,6 +19,7 @@ class SqlDBSettings(BaseSettings):
 class Settings(BaseSettings):
     database: str = Field(validation_alias="DATABASE")
     framework: str = Field(validation_alias="FRAMEWORK")
+    log_level: str = Field(validation_alias="LOG_LEVEL")
 
 
 class CorsSettings(BaseSettings):

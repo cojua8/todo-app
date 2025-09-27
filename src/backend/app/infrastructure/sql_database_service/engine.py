@@ -15,7 +15,7 @@ async def engine(config: SqlDBSettings) -> AsyncEngine:
         port=config.db_port,
         database=config.db_name,
     )
-    engine = create_async_engine(db_url, echo=True)
+    engine = create_async_engine(db_url)  # use for debugging echo=True)
 
     SQLAlchemyInstrumentor().instrument(engine=engine.sync_engine)
 

@@ -1,8 +1,8 @@
 import pytest
 
 from app.domain.exceptions.login_exception import LoginError
+from app.domain.services.authentication_service import AuthenticationService
 from app.domain.services.user_service_protocol import UserServiceProtocol
-from app.infrastructure.authentication_service import AuthenticationService
 
 
 async def test_inexistent_user_raises_login_exception(mocker, faker):
