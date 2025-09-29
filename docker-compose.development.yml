@@ -33,6 +33,7 @@ services:
     ports:
       - 5000:5000
     restart: unless-stopped
+    user: ${UID:-0}:${GID:-0} # Allow file write
     volumes:
       # this binds the host folder to the container folder
       - ./src/backend/app:/app/app
