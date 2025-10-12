@@ -148,10 +148,20 @@ services:
       - 12345:12345
       - 4317:4317
       - 4318:4318
-      # - 8889:8889
 
-      # the path of data won't be erased on rebuild
+  loki:
+    restart: unless-stopped
+    image: grafana/loki:latest
+    ports:
+      - 3100:3100
+    volumes:
+      - ./instrumentation/loki/loki-config.yaml:/etc/loki/local-config.yaml
+      - loki-data:/loki
+    command: -config.file=/etc/loki/local-config.yaml
+
+# the path of data won't be erased on rebuild
 volumes:
+  loki-data:
   data:
   postgres_db:
     driver: local

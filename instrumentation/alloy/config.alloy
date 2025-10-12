@@ -3,6 +3,10 @@ logging {
   format = "json"
 }
 
+livedebugging {
+  enabled = true
+}
+
 otelcol.receiver.otlp "default" {
   grpc {
     endpoint = "0.0.0.0:4317"
