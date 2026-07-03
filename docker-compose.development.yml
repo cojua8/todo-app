@@ -54,14 +54,14 @@ services:
       - LOG_LEVEL=INFO
       - OTEL_SERVICE_NAME=todo_app_backend
       - OTEL_PYTHON_LOGGING_AUTO_INSTRUMENTATION_ENABLED=true
-      - OTEL_TRACES_EXPORTER=otlp,console
-      - OTEL_METRICS_EXPORTER=console,otlp
-      - OTEL_LOGS_EXPORTER=console
+      - OTEL_TRACES_EXPORTER=otlp
+      # - OTEL_METRICS_EXPORTER=otlp
+      # - OTEL_LOGS_EXPORTER=console
       - OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=alloy:4317
       - OTEL_EXPORTER_OTLP_TRACES_INSECURE=true
-      - OTEL_EXPORTER_OTLP_METRICS_ENDPOINT=alloy:4317
-      - OTEL_EXPORTER_OTLP_METRICS_INSECURE=true
-      - GRPC_VERBOSITY=debug
+      # - OTEL_EXPORTER_OTLP_METRICS_ENDPOINT=alloy:4317
+      # - OTEL_EXPORTER_OTLP_METRICS_INSECURE=true
+      - GRPC_VERBOSITY=none
       - GRPC_TRACE=http,call_error,connectivity_state
 
   todo-app-frontend:
@@ -139,6 +139,7 @@ services:
     image: grafana/alloy:latest
     volumes:
       - ./instrumentation/alloy/config.alloy:/etc/alloy/config.alloy
+      - /var/run/docker.sock:/var/run/docker.sock:ro
     command:
       - run
       - /etc/alloy/config.alloy

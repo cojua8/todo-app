@@ -120,3 +120,31 @@ prometheus.remote_write "metrics_prom" {
         // }
     }
 }
+
+
+discovery.docker "linux" {
+  host = "unix:///var/run/docker.sock"
+}
+
+discovery.relabel "docker_backend_only" {
+  targets = discovery.docker.linux.targets  
+
+  rule {
+    action       = "replace"
+    target_label = "service_name"
+    replacement  = "$1"
+    source_labels = ["__meta_docker_container_label_com_docker_compose_service"]
+  }
+}
+
+loki.source.docker "default" {
+  host       = "unix:///var/run/docker.sock"
+  targets    = discovery.relabel.docker_backend_only.output
+  forward_to = [loki.write.local.receiver]
+}
+
+loki.write "local" {
+  endpoint {
+    url = "http://loki:3100/loki/api/v1/push"
+  }
+}
