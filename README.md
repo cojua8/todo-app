@@ -21,9 +21,9 @@ The best way to get the running is by using Docker. To do this, you must have Do
 This will get you:
 
 - The frontend running in [port 3000](http://localhost:3000/)
-- The backend running in [port 5000](http://localhost:5000/)
+- The backend running in [port 5001](http://localhost:5001/)
 - Prometheus running in [port 9090](http://localhost:9090/)
-- Grafana running in [port 7000](http://localhost:7000/)
+- Grafana running in [port 7001](http://localhost:7001/)
 
 > To stop the app, you can run: `docker compose -f docker-compose.development.yml down`
 

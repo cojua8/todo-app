@@ -3,7 +3,7 @@ services:
     image: grafana/grafana
     container_name: grafana
     ports:
-      - 7000:3000
+      - 7001:3000
     restart: unless-stopped
     volumes:
       - ./instrumentation/grafana/datasources:/etc/grafana/provisioning/datasources
@@ -31,7 +31,7 @@ services:
       args:
         - FRAMEWORK=fastapi
     ports:
-      - 5000:5000
+      - 5001:5000
     restart: unless-stopped
     user: ${UID:-0}:${GID:-0} # Allow file write
     volumes:
@@ -113,16 +113,6 @@ services:
       - "--path.sysfs=/host/sys"
       - "--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)"
 
-  tempo-init:
-    image: grafana/tempo:latest
-    user: root
-    entrypoint:
-      - "chown"
-      - "10001:10001"
-      - "/var/tempo"
-    volumes:
-      - ./instrumentation/tempo/tempo-data:/var/tempo
-
   tempo:
     image: grafana/tempo:latest
     container_name: todo-app-tempo
@@ -132,8 +122,6 @@ services:
     volumes:
       - ./instrumentation/tempo/tempo.yaml:/etc/tempo.yaml
       - ./instrumentation/tempo/tempo-data:/var/tempo
-    depends_on:
-      - tempo-init
 
   alloy:
     image: grafana/alloy:latest
@@ -160,9 +148,22 @@ services:
       - loki-data:/loki
     command: -config.file=/etc/loki/local-config.yaml
 
+  openobserve:
+    image: openobserve/openobserve:latest
+    environment:
+      - ZO_DATA_DIR=/data
+      - ZO_ROOT_USER_EMAIL=root@example.com
+      - ZO_ROOT_USER_PASSWORD=Complexpass#123
+    ports:
+      - 5080:5080
+    volumes:
+      - openobserve-data:/data
+
+
 # the path of data won't be erased on rebuild
 volumes:
   loki-data:
   data:
+  openobserve-data:
   postgres_db:
     driver: local

@@ -27,6 +27,7 @@ otelcol.processor.batch "default" {
     traces = [
       otelcol.connector.spanmetrics.default.input,
       otelcol.exporter.otlp.default.input,
+      otelcol.exporter.otlphttp.openobserve.input,
     ]
   }
 }
@@ -41,8 +42,23 @@ otelcol.exporter.otlp "default" {
   }
 }
 
+otelcol.exporter.otlphttp "openobserve" {
+  client {
+    endpoint = "http://openobserve:5080/api/default"
+    auth     = otelcol.auth.basic.openobserve.handler
+    }
+}
+
+otelcol.auth.basic "openobserve" {
+  password  = "Complexpass#123"
+  username = "root@example.com"
+}
+
 otelcol.exporter.prometheus "default" {
-  forward_to = [prometheus.remote_write.metrics_prom.receiver]
+  forward_to = [
+    prometheus.remote_write.metrics_prom.receiver,
+    prometheus.remote_write.openobserve.receiver,
+  ]
 }
 
 otelcol.connector.spanmetrics "default" {
@@ -106,7 +122,10 @@ prometheus.scrape "custom_targets" {
     },
   ]
 
-  forward_to = [prometheus.remote_write.metrics_prom.receiver]
+  forward_to = [
+    prometheus.remote_write.metrics_prom.receiver,
+    prometheus.remote_write.openobserve.receiver,
+    ]
 }
 
 
@@ -121,13 +140,24 @@ prometheus.remote_write "metrics_prom" {
     }
 }
 
+prometheus.remote_write "openobserve" {
+  endpoint {
+    url = "http://openobserve:5080/api/default/prometheus/api/v1/write"
+    basic_auth {
+      password  = "Complexpass#123"
+      username = "root@example.com"
+    }
+  }
+
+}
+
 
 discovery.docker "linux" {
   host = "unix:///var/run/docker.sock"
 }
 
 discovery.relabel "docker_backend_only" {
-  targets = discovery.docker.linux.targets  
+  targets = discovery.docker.linux.targets
 
   rule {
     action       = "replace"
@@ -135,16 +165,32 @@ discovery.relabel "docker_backend_only" {
     replacement  = "$1"
     source_labels = ["__meta_docker_container_label_com_docker_compose_service"]
   }
+
+    rule {
+    action       = "keep"
+    regex        = "todo-app"
+    source_labels = ["__meta_docker_container_label_com_docker_compose_project"]
+  }
 }
 
 loki.source.docker "default" {
   host       = "unix:///var/run/docker.sock"
   targets    = discovery.relabel.docker_backend_only.output
-  forward_to = [loki.write.local.receiver]
+  forward_to = [loki.write.local.receiver, loki.write.openobserver.receiver]
 }
 
 loki.write "local" {
   endpoint {
     url = "http://loki:3100/loki/api/v1/push"
+  }
+}
+
+loki.write "openobserver" {
+  endpoint {
+    url = "http://openobserve:5080/api/default/loki/api/v1/push"
+    basic_auth {
+      password  = "Complexpass#123"
+      username = "root@example.com"
+    }
   }
 }

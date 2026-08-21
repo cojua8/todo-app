@@ -1,4 +1,4 @@
-const baseURL = "http://localhost:5000";
+const baseURL = "http://localhost:5001";
 
 const fetchFromApi = async (method, endpoint, body) => {
   return await fetch(baseURL + endpoint, {
